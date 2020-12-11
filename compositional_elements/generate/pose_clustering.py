@@ -4,11 +4,11 @@ import cv2
 import numpy as np
 from shapely.geometry import Polygon
 
-from . import visualize
-from .bisection import get_bisection_point
-from .config import config
-from .converter import k, p
-from .types import *
+from compositional_elements. import visualize
+from compositional_elements.bisection import get_bisection_point
+from compositional_elements.config import config
+from compositional_elements.detect.converter import k, p
+from compositional_elements.types import *
 
 
 def get_pose_cluster_convex_hull(poses: Poses) -> Polygon:

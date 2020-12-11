@@ -1,7 +1,7 @@
 import numpy as np
 
-from .config import config
-from .types import *
+from compositional_elements.config import config
+from compositional_elements.types import *
 
 
 def get_poselines(poses: Poses) -> Sequence[PoseLine]:

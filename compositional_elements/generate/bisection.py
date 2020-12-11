@@ -5,8 +5,8 @@ import numpy as np
 import numpy.linalg as la
 from shapely.geometry import Polygon
 
-from .config import config
-from .types import *
+from compositional_elements.config import config
+from compositional_elements.types import *
 
 CORRECTION_ANGLE=config["bisection"]["correction_angle"]
 CONE_OPENING_ANGLE=config["bisection"]["cone_opening_angle"]

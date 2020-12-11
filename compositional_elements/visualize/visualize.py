@@ -4,9 +4,9 @@ import cv2
 import numpy as np
 from numpy.core import numeric
 
-from .config import config
-from .converter import k, p
-from .types import *
+from compositional_elements.config import config
+from compositional_elements.detect.converter import k, p
+from compositional_elements.types import *
 
 
 def create_blank() -> Sequence[Sequence[int]]:

@@ -7,7 +7,7 @@ setup(
     author='Tilman Marquart',
     license='MIT',
     python_requires='>=3.8',
-    install_requires=['opencv-python','numpy','typing'],
+    install_requires=['opencv-python','numpy','typing','shapely'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     test_suite='tests',

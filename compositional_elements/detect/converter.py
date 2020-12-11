@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from .types import *
+from compositional_elements.types import *
 
 
 def hrnet_to_icc_poses(pose_data) -> Poses:
