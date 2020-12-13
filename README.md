@@ -18,4 +18,4 @@ See doc and tests for example usage.
 `python setup.py pytest`
 
 ## Build the documentation:
-`rm -rf doc && pdoc --html --output-dir doc --config show_source_code=False compositional_elements`
+`rm -rf docs && pdoc --html --output-dir docs --config show_source_code=False compositional_elements`
