@@ -4,8 +4,8 @@ import cv2
 import numpy as np
 from shapely.geometry import Polygon
 
-from compositional_elements. import visualize
-from compositional_elements.bisection import get_bisection_point
+from compositional_elements import visualize
+from compositional_elements.generate.bisection import get_bisection_point
 from compositional_elements.config import config
 from compositional_elements.detect.converter import k, p
 from compositional_elements.types import *

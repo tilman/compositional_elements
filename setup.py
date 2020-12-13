@@ -1,6 +1,4 @@
 from setuptools import find_packages, setup
-from sphinx.setup_command import BuildDoc
-cmdclass = {'build_sphinx': BuildDoc}
 NAME = 'compositional_elements'
 VERSION = '0.1.0'
 setup(
@@ -11,17 +9,8 @@ setup(
     author='Tilman Marquart',
     license='MIT',
     python_requires='>=3.8',
-    install_requires=['opencv-python','numpy','typing','shapely','yaml'],
+    install_requires=['opencv-python','numpy','typing','shapely','pyyaml'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     test_suite='tests',
-    cmdclass=cmdclass,
-    command_options={
-        'build_sphinx': {
-            'project': ('setup.py', NAME),
-            'version': ('setup.py', VERSION),
-            'release': ('setup.py', VERSION),
-            'source_dir': ('setup.py', 'doc')
-        }
-    },
 )
