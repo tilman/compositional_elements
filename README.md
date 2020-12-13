@@ -1,4 +1,10 @@
 # compositional_elements
 Library for generating and comparing compositional elements from art historic images
 
-tested with python 3.8
+# installation
+
+# Examples:
+See tests for examples
+
+# run Test
+python setup.py pytest
