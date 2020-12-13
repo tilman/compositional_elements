@@ -22,54 +22,6 @@
 <h1 class="title">Module <code>compositional_elements.generate.pose_abstraction</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import numpy as np
-
-from compositional_elements.config import config
-from compositional_elements.types import *
-
-
-def get_poselines(poses: Poses) -&gt; Sequence[PoseLine]:
-    pose_lines: Sequence[PoseLine] = [];
-    for pose in poses:
-        pose_lines.append(get_pose_abstraction(pose))
-    return pose_lines
-
-def get_posetriangles(poses: Poses) -&gt; Sequence[PoseTriangle]:
-    pose_triangles: Sequence[PoseTriangle] = [];
-    for pose in poses:
-        pose_triangles.append(get_posetriangle(pose))
-    return pose_triangles
-
-def get_pose_abstraction(pose: Pose) -&gt; PoseLine:
-    triangle = get_posetriangle(pose)
-    poseline = get_poseline(triangle)
-    return poseline
-
-def get_posetriangle(pose: Pose) -&gt; PoseTriangle:
-    pose_keypoints = np.array(pose.keypoints, dtype=Keypoint)
-    
-    # Partition the keypoint list in three sequences corresponding to left, right, top triangle corner points
-    left_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config[&#34;pose_abstraction&#34;][&#34;keypoint_list&#34;][&#34;left&#34;]].tolist()
-    right_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config[&#34;pose_abstraction&#34;][&#34;keypoint_list&#34;][&#34;right&#34;]].tolist()
-    top_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config[&#34;pose_abstraction&#34;][&#34;keypoint_list&#34;][&#34;top&#34;]].tolist()
-
-    # Select first keypoint of each partition witch is not None
-    left_keypoint = list(filter(lambda kp: not kp.isNone, left_keypoint_selection))[0]
-    right_keypoint = list(filter(lambda kp: not kp.isNone, right_keypoint_selection))[0]
-    top_keypoint = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))[0]
-
-    return PoseTriangle(top_keypoint, right_keypoint, left_keypoint)
-
-def get_poseline(triangle: PoseTriangle) -&gt; PoseLine:
-    bottom_line = LineString([[triangle.left.x, triangle.left.y], [triangle.right.x, triangle.right.y]])
-    top_point = Point(triangle.top.x, triangle.top.y)
-    bottom_point = Point(bottom_line.centroid)
-    return PoseLine(top_point, bottom_point)</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -83,88 +35,30 @@ def get_poseline(triangle: PoseTriangle) -&gt; PoseLine:
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_pose_abstraction(pose: Pose) -&gt; PoseLine:
-    triangle = get_posetriangle(pose)
-    poseline = get_poseline(triangle)
-    return poseline</code></pre>
-</details>
 </dd>
 <dt id="compositional_elements.generate.pose_abstraction.get_poseline"><code class="name flex">
 <span>def <span class="ident">get_poseline</span></span>(<span>triangle: <a title="compositional_elements.types.PoseTriangle" href="../types.html#compositional_elements.types.PoseTriangle">PoseTriangle</a>) ‑> <a title="compositional_elements.types.PoseLine" href="../types.html#compositional_elements.types.PoseLine">PoseLine</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_poseline(triangle: PoseTriangle) -&gt; PoseLine:
-    bottom_line = LineString([[triangle.left.x, triangle.left.y], [triangle.right.x, triangle.right.y]])
-    top_point = Point(triangle.top.x, triangle.top.y)
-    bottom_point = Point(bottom_line.centroid)
-    return PoseLine(top_point, bottom_point)</code></pre>
-</details>
 </dd>
 <dt id="compositional_elements.generate.pose_abstraction.get_poselines"><code class="name flex">
 <span>def <span class="ident">get_poselines</span></span>(<span>poses: Sequence[<a title="compositional_elements.types.Pose" href="../types.html#compositional_elements.types.Pose">Pose</a>]) ‑> Sequence[<a title="compositional_elements.types.PoseLine" href="../types.html#compositional_elements.types.PoseLine">PoseLine</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_poselines(poses: Poses) -&gt; Sequence[PoseLine]:
-    pose_lines: Sequence[PoseLine] = [];
-    for pose in poses:
-        pose_lines.append(get_pose_abstraction(pose))
-    return pose_lines</code></pre>
-</details>
 </dd>
 <dt id="compositional_elements.generate.pose_abstraction.get_posetriangle"><code class="name flex">
 <span>def <span class="ident">get_posetriangle</span></span>(<span>pose: <a title="compositional_elements.types.Pose" href="../types.html#compositional_elements.types.Pose">Pose</a>) ‑> <a title="compositional_elements.types.PoseTriangle" href="../types.html#compositional_elements.types.PoseTriangle">PoseTriangle</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_posetriangle(pose: Pose) -&gt; PoseTriangle:
-    pose_keypoints = np.array(pose.keypoints, dtype=Keypoint)
-    
-    # Partition the keypoint list in three sequences corresponding to left, right, top triangle corner points
-    left_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config[&#34;pose_abstraction&#34;][&#34;keypoint_list&#34;][&#34;left&#34;]].tolist()
-    right_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config[&#34;pose_abstraction&#34;][&#34;keypoint_list&#34;][&#34;right&#34;]].tolist()
-    top_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config[&#34;pose_abstraction&#34;][&#34;keypoint_list&#34;][&#34;top&#34;]].tolist()
-
-    # Select first keypoint of each partition witch is not None
-    left_keypoint = list(filter(lambda kp: not kp.isNone, left_keypoint_selection))[0]
-    right_keypoint = list(filter(lambda kp: not kp.isNone, right_keypoint_selection))[0]
-    top_keypoint = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))[0]
-
-    return PoseTriangle(top_keypoint, right_keypoint, left_keypoint)</code></pre>
-</details>
 </dd>
 <dt id="compositional_elements.generate.pose_abstraction.get_posetriangles"><code class="name flex">
 <span>def <span class="ident">get_posetriangles</span></span>(<span>poses: Sequence[<a title="compositional_elements.types.Pose" href="../types.html#compositional_elements.types.Pose">Pose</a>]) ‑> Sequence[<a title="compositional_elements.types.PoseTriangle" href="../types.html#compositional_elements.types.PoseTriangle">PoseTriangle</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_posetriangles(poses: Poses) -&gt; Sequence[PoseTriangle]:
-    pose_triangles: Sequence[PoseTriangle] = [];
-    for pose in poses:
-        pose_triangles.append(get_posetriangle(pose))
-    return pose_triangles</code></pre>
-</details>
 </dd>
 </dl>
 </section>

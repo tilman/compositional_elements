@@ -22,75 +22,6 @@
 <h1 class="title">Module <code>compositional_elements.generate.pose_direction</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">from typing import Iterator, Tuple, cast
-
-import cv2
-import numpy as np
-
-from compositional_elements import visualize
-from compositional_elements.generate.bisection import get_bisection_point
-from compositional_elements.config import config
-from compositional_elements.detect.converter import k, p
-from compositional_elements.types import *
-
-
-def get_pose_directions(poses: Poses) -&gt; Sequence[PoseDirection]:
-    &#34;&#34;&#34;Generate pose directions from multiple input Poses
-
-    Args:
-        poses (Poses): Poses obtained by keypoint detection method
-
-    Returns:
-        Sequence[PoseDirection]: A list of pose directions
-    &#34;&#34;&#34;
-    pose_directions: Sequence[PoseDirection] = []
-    # pose_directions: Sequence[Tuple[Point, Point]] = [];
-    for pose in poses:
-        try:
-            pose_directions.append(get_pose_direction(pose))
-        except ValueError:
-            print(&#39;skipping pose because of missing points&#39;)
-    return pose_directions
-
-def get_pose_direction(pose: Pose) -&gt; PoseDirection:
-    # type 1
-    # left_bisection_keypoints: Sequence[Keypoint] = np.array(pose.keypoints)[[4,6,12]]
-    # left_base_point: Keypoint = pose.keypoints[6]
-    # right_bisection_keypoints: Sequence[Keypoint] = np.array(pose.keypoints)[[3,10,11]]
-    # right_base_point: Keypoint = pose.keypoints[10]
-    # if len(left_bisection_keypoints) == 3:
-    #     left_bisection = get_bisection_point(*left_bisection_keypoints)
-    # else:
-    #     raise ValueError(&#39;Left pose part is missing some points for pose calculation!&#39;)
-    # if len(right_bisection_keypoints) == 3:
-    #     right_bisection = get_bisection_point(*right_bisection_keypoints)
-    # else:
-    #     raise ValueError(&#39;Right pose part is missing some points for pose calculation!&#39;)
-
-    # left_pose_direction = PoseDirection(Point(k(left_base_point)), left_bisection)
-    # right_pose_direction = PoseDirection(Point(k(right_base_point)), right_bisection)
-
-    # type 2
-    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(zip(np.array(pose.keypoints)[[4,6,12]], np.array(pose.keypoints)[[3,10,11]]))
-    if len(bisection_keypoint_pairs) != 3:
-        raise ValueError(&#39;missing some points for pose calculation!&#39;)
-    keypoint_pairs = [Keypoint(*p(cast(Point, LineString([k(a),k(b)]).centroid))) for a,b in bisection_keypoint_pairs]
-    middle_bisection = get_bisection_point(*keypoint_pairs)
-    middle_pose_direction = PoseDirection(Point(k(keypoint_pairs[1])), middle_bisection)
-
-    # img = cv2.imread(&#39;/Users/Tilman/Documents/Programme/Python/forschungspraktikum/PoseBasedRetrievalDemo/src/API/data/intermediate_results/test.jpg&#39;)
-    # img = visualize.pose(pose, img)
-    # img = visualize.pose(Pose(keypoint_pairs), img, [0, 1, 2], &#34;_m&#34;)
-    # #img = visualize.pose_direction(left_pose_direction, img, (255, 0, 0)) # blue
-    # #img = visualize.pose_direction(middle_pose_direction, img, (0, 255, 0)) # green
-    # #img = visualize.pose_direction(right_pose_direction, img, (0, 0, 255)) # red
-    # visualize.draw_window(&#39;pose_lines&#39;, img)
-    return middle_pose_direction</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -104,45 +35,6 @@ def get_pose_direction(pose: Pose) -&gt; PoseDirection:
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_pose_direction(pose: Pose) -&gt; PoseDirection:
-    # type 1
-    # left_bisection_keypoints: Sequence[Keypoint] = np.array(pose.keypoints)[[4,6,12]]
-    # left_base_point: Keypoint = pose.keypoints[6]
-    # right_bisection_keypoints: Sequence[Keypoint] = np.array(pose.keypoints)[[3,10,11]]
-    # right_base_point: Keypoint = pose.keypoints[10]
-    # if len(left_bisection_keypoints) == 3:
-    #     left_bisection = get_bisection_point(*left_bisection_keypoints)
-    # else:
-    #     raise ValueError(&#39;Left pose part is missing some points for pose calculation!&#39;)
-    # if len(right_bisection_keypoints) == 3:
-    #     right_bisection = get_bisection_point(*right_bisection_keypoints)
-    # else:
-    #     raise ValueError(&#39;Right pose part is missing some points for pose calculation!&#39;)
-
-    # left_pose_direction = PoseDirection(Point(k(left_base_point)), left_bisection)
-    # right_pose_direction = PoseDirection(Point(k(right_base_point)), right_bisection)
-
-    # type 2
-    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(zip(np.array(pose.keypoints)[[4,6,12]], np.array(pose.keypoints)[[3,10,11]]))
-    if len(bisection_keypoint_pairs) != 3:
-        raise ValueError(&#39;missing some points for pose calculation!&#39;)
-    keypoint_pairs = [Keypoint(*p(cast(Point, LineString([k(a),k(b)]).centroid))) for a,b in bisection_keypoint_pairs]
-    middle_bisection = get_bisection_point(*keypoint_pairs)
-    middle_pose_direction = PoseDirection(Point(k(keypoint_pairs[1])), middle_bisection)
-
-    # img = cv2.imread(&#39;/Users/Tilman/Documents/Programme/Python/forschungspraktikum/PoseBasedRetrievalDemo/src/API/data/intermediate_results/test.jpg&#39;)
-    # img = visualize.pose(pose, img)
-    # img = visualize.pose(Pose(keypoint_pairs), img, [0, 1, 2], &#34;_m&#34;)
-    # #img = visualize.pose_direction(left_pose_direction, img, (255, 0, 0)) # blue
-    # #img = visualize.pose_direction(middle_pose_direction, img, (0, 255, 0)) # green
-    # #img = visualize.pose_direction(right_pose_direction, img, (0, 0, 255)) # red
-    # visualize.draw_window(&#39;pose_lines&#39;, img)
-    return middle_pose_direction</code></pre>
-</details>
 </dd>
 <dt id="compositional_elements.generate.pose_direction.get_pose_directions"><code class="name flex">
 <span>def <span class="ident">get_pose_directions</span></span>(<span>poses: Sequence[<a title="compositional_elements.types.Pose" href="../types.html#compositional_elements.types.Pose">Pose</a>]) ‑> Sequence[<a title="compositional_elements.types.PoseDirection" href="../types.html#compositional_elements.types.PoseDirection">PoseDirection</a>]</span>
@@ -159,28 +51,6 @@ def get_pose_direction(pose: Pose) -&gt; PoseDirection:
 <dt><code>Sequence[PoseDirection]</code></dt>
 <dd>A list of pose directions</dd>
 </dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_pose_directions(poses: Poses) -&gt; Sequence[PoseDirection]:
-    &#34;&#34;&#34;Generate pose directions from multiple input Poses
-
-    Args:
-        poses (Poses): Poses obtained by keypoint detection method
-
-    Returns:
-        Sequence[PoseDirection]: A list of pose directions
-    &#34;&#34;&#34;
-    pose_directions: Sequence[PoseDirection] = []
-    # pose_directions: Sequence[Tuple[Point, Point]] = [];
-    for pose in poses:
-        try:
-            pose_directions.append(get_pose_direction(pose))
-        except ValueError:
-            print(&#39;skipping pose because of missing points&#39;)
-    return pose_directions</code></pre>
-</details>
 </dd>
 </dl>
 </section>
