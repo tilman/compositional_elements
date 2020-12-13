@@ -12,7 +12,7 @@ python setup.py install
 ```
 
 ## Usage:
-See doc and tests for example usage.
+See [docs](https://tilman.github.io/compositional_elements/compositional_elements/) and [tests](tests/generate/test_pose_direction.py) for example usage.
 
 ## Run Test Suite:
 `python setup.py pytest`
