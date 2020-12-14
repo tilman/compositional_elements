@@ -11,6 +11,23 @@ from compositional_elements.types import *
 CORRECTION_ANGLE=config["bisection"]["correction_angle"]
 CONE_OPENING_ANGLE=config["bisection"]["cone_opening_angle"]
 
+def get_bisection_point(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) -> Point:
+    """Returns the end point of the bisection vector of three input points. The length of the vector is the double of the length from top_kp to middle_kp.
+
+    Args:
+        top_kp (Keypoint): Some keypoint from head region
+        middle_kp (Keypoint): Some keypoint from upper body region
+        bottom_kp (Keypoint): Some keypoint from lower body region
+
+    Returns:
+        Point: Endpoint of bisection vector
+    """
+    a = np.array([top_kp.x, top_kp.y])
+    b = np.array([middle_kp.x, middle_kp.y])
+    c = np.array([bottom_kp.x, bottom_kp.y])
+    r = getBisecPoint(a,b,c)
+    return Point(r[0], r[1])
+
 def getAngle(a,b,c):
     ba = a - b
     bc = c - b
@@ -44,13 +61,6 @@ def angleMapper(pose):
 
 def getGlobalLineAngle(poses):
     return np.mean([angleMapper(pose) for pose in poses if not 0.0 in pose[[0,1,8]][:,2:]])
-
-def get_bisection_point(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) -> Point:
-    a = np.array([top_kp.x, top_kp.y])
-    b = np.array([middle_kp.x, middle_kp.y])
-    c = np.array([bottom_kp.x, bottom_kp.y])
-    r = getBisecPoint(a,b,c)
-    return Point(r[0], r[1])
 
 def getBisecPoint(a,b,c) -> Tuple[int, int]:
     angle = getAngleGroundNormed(a,b,c)

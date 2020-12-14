@@ -4,13 +4,13 @@ from compositional_elements.config import config
 from compositional_elements.types import *
 
 
-def get_poselines(poses: Poses) -> Sequence[PoseLine]:
+def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
     pose_lines: Sequence[PoseLine] = [];
     for pose in poses:
         pose_lines.append(get_pose_abstraction(pose))
     return pose_lines
 
-def get_posetriangles(poses: Poses) -> Sequence[PoseTriangle]:
+def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
     pose_triangles: Sequence[PoseTriangle] = [];
     for pose in poses:
         pose_triangles.append(get_posetriangle(pose))

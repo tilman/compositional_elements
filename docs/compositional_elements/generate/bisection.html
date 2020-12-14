@@ -76,7 +76,21 @@
 <span>def <span class="ident">get_bisection_point</span></span>(<span>top_kp: <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>, middle_kp: <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>, bottom_kp: <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>) ‑> shapely.geometry.point.Point</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns the end point of the bisection vector of three input points. The length of the vector is the double of the length from top_kp to middle_kp.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>top_kp</code></strong> :&ensp;<code>Keypoint</code></dt>
+<dd>Some keypoint from head region</dd>
+<dt><strong><code>middle_kp</code></strong> :&ensp;<code>Keypoint</code></dt>
+<dd>Some keypoint from upper body region</dd>
+<dt><strong><code>bottom_kp</code></strong> :&ensp;<code>Keypoint</code></dt>
+<dd>Some keypoint from lower body region</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Point</code></dt>
+<dd>Endpoint of bisection vector</dd>
+</dl></div>
 </dd>
 <dt id="compositional_elements.generate.bisection.poseToBisectCone"><code class="name flex">
 <span>def <span class="ident">poseToBisectCone</span></span>(<span>pose, length)</span>
