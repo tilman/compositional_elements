@@ -36,12 +36,6 @@
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="compositional_elements.generate.bisection.coneIntersections"><code class="name flex">
-<span>def <span class="ident">coneIntersections</span></span>(<span>bisecCones)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="compositional_elements.generate.bisection.getAngle"><code class="name flex">
 <span>def <span class="ident">getAngle</span></span>(<span>a, b, c)</span>
 </code></dt>
@@ -54,12 +48,6 @@
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="compositional_elements.generate.bisection.getBisecCone"><code class="name flex">
-<span>def <span class="ident">getBisecCone</span></span>(<span>a, b, c, length)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="compositional_elements.generate.bisection.getBisecPoint"><code class="name flex">
 <span>def <span class="ident">getBisecPoint</span></span>(<span>a, b, c) ‑> Tuple[int, int]</span>
 </code></dt>
@@ -68,6 +56,12 @@
 </dd>
 <dt id="compositional_elements.generate.bisection.getGlobalLineAngle"><code class="name flex">
 <span>def <span class="ident">getGlobalLineAngle</span></span>(<span>poses)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compositional_elements.generate.bisection.get_bisect_cone"><code class="name flex">
+<span>def <span class="ident">get_bisect_cone</span></span>(<span>top_kp: <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>, middle_kp: <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>, bottom_kp: <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>) ‑> shapely.geometry.polygon.Polygon</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -92,11 +86,27 @@
 <dd>Endpoint of bisection vector</dd>
 </dl></div>
 </dd>
-<dt id="compositional_elements.generate.bisection.poseToBisectCone"><code class="name flex">
-<span>def <span class="ident">poseToBisectCone</span></span>(<span>pose, length)</span>
+<dt id="compositional_elements.generate.bisection.get_centroids_for_bisection"><code class="name flex">
+<span>def <span class="ident">get_centroids_for_bisection</span></span>(<span>keypoints: Sequence[<a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>]) ‑> Tuple[<a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>, <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>, <a title="compositional_elements.types.Keypoint" href="../types.html#compositional_elements.types.Keypoint">Keypoint</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Helper method for transforming HRNet input in a way that we can calculate the bisection vector of upper,
+middle and lower keypoints. Therefore we calculate the centroid of theses pairs: (4,3) (6,10) (12,11)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keypoints</code></strong> :&ensp;<code>Pose.keypoints</code></dt>
+<dd>transformed HRNet output</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>is raised if one of the above keypoints is missing</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[Keypoint, Keypoint, Keypoint]</code></dt>
+<dd>top_kp, middle_kp, bottom_kp</dd>
+</dl></div>
 </dd>
 <dt id="compositional_elements.generate.bisection.poseToBisectVector"><code class="name flex">
 <span>def <span class="ident">poseToBisectVector</span></span>(<span>pose)</span>
@@ -123,14 +133,13 @@
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="compositional_elements.generate.bisection.angleMapper" href="#compositional_elements.generate.bisection.angleMapper">angleMapper</a></code></li>
-<li><code><a title="compositional_elements.generate.bisection.coneIntersections" href="#compositional_elements.generate.bisection.coneIntersections">coneIntersections</a></code></li>
 <li><code><a title="compositional_elements.generate.bisection.getAngle" href="#compositional_elements.generate.bisection.getAngle">getAngle</a></code></li>
 <li><code><a title="compositional_elements.generate.bisection.getAngleGroundNormed" href="#compositional_elements.generate.bisection.getAngleGroundNormed">getAngleGroundNormed</a></code></li>
-<li><code><a title="compositional_elements.generate.bisection.getBisecCone" href="#compositional_elements.generate.bisection.getBisecCone">getBisecCone</a></code></li>
 <li><code><a title="compositional_elements.generate.bisection.getBisecPoint" href="#compositional_elements.generate.bisection.getBisecPoint">getBisecPoint</a></code></li>
 <li><code><a title="compositional_elements.generate.bisection.getGlobalLineAngle" href="#compositional_elements.generate.bisection.getGlobalLineAngle">getGlobalLineAngle</a></code></li>
+<li><code><a title="compositional_elements.generate.bisection.get_bisect_cone" href="#compositional_elements.generate.bisection.get_bisect_cone">get_bisect_cone</a></code></li>
 <li><code><a title="compositional_elements.generate.bisection.get_bisection_point" href="#compositional_elements.generate.bisection.get_bisection_point">get_bisection_point</a></code></li>
-<li><code><a title="compositional_elements.generate.bisection.poseToBisectCone" href="#compositional_elements.generate.bisection.poseToBisectCone">poseToBisectCone</a></code></li>
+<li><code><a title="compositional_elements.generate.bisection.get_centroids_for_bisection" href="#compositional_elements.generate.bisection.get_centroids_for_bisection">get_centroids_for_bisection</a></code></li>
 <li><code><a title="compositional_elements.generate.bisection.poseToBisectVector" href="#compositional_elements.generate.bisection.poseToBisectVector">poseToBisectVector</a></code></li>
 </ul>
 </li>
