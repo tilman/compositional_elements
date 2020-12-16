@@ -3,7 +3,6 @@ from typing import Sequence
 
 from shapely.geometry import LineString, Point, Polygon
 
-
 class Keypoint:
     x: int
     y: int
@@ -52,7 +51,9 @@ class PoseDirection:
     line: LineString
     start: Point
     end: Point
-    def __init__(self, start:Point, end: Point): 
+    cone: Polygon
+    def __init__(self, start:Point, end: Point, cone: Polygon): 
         self.start = start
         self.end = end
         self.line = LineString([[start.x, start.y], [end.x, end.y]])
+        self.cone = cone

@@ -1,8 +1,8 @@
+from typing import Tuple
 import numpy as np
 
 from compositional_elements.config import config
 from compositional_elements.types import *
-
 
 def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
     pose_lines: Sequence[PoseLine] = [];
@@ -13,15 +13,15 @@ def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
 def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
     pose_triangles: Sequence[PoseTriangle] = [];
     for pose in poses:
-        pose_triangles.append(get_posetriangle(pose))
+        pose_triangles.append(get_pose_triangle(pose))
     return pose_triangles
 
 def get_pose_abstraction(pose: Pose) -> PoseLine:
-    triangle = get_posetriangle(pose)
-    poseline = get_poseline(triangle)
+    triangle = get_pose_triangle(pose)
+    poseline = get_pose_line(triangle)
     return poseline
 
-def get_posetriangle(pose: Pose) -> PoseTriangle:
+def get_pose_triangle(pose: Pose) -> PoseTriangle:
     pose_keypoints = np.array(pose.keypoints, dtype=Keypoint)
     
     # Partition the keypoint list in three sequences corresponding to left, right, top triangle corner points
@@ -36,7 +36,7 @@ def get_posetriangle(pose: Pose) -> PoseTriangle:
 
     return PoseTriangle(top_keypoint, right_keypoint, left_keypoint)
 
-def get_poseline(triangle: PoseTriangle) -> PoseLine:
+def get_pose_line(triangle: PoseTriangle) -> PoseLine:
     bottom_line = LineString([[triangle.left.x, triangle.left.y], [triangle.right.x, triangle.right.y]])
     top_point = Point(triangle.top.x, triangle.top.y)
     bottom_point = Point(bottom_line.centroid)

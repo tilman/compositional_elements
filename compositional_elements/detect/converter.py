@@ -7,8 +7,8 @@ def hrnet_to_icc_poses(pose_data) -> Poses:
     poses: Poses = []
     for entry in pose_data["pose_entries"]:
         keypoints: Sequence[Keypoint] = []
-        for keypoint in entry:
-            if keypoint != -1:
+        for ik, keypoint in enumerate(entry):
+            if keypoint != -1 and ik != 18 and ik != 17:
                 try:
                     y, x = list(pose_data["all_keypoints"][int(keypoint)][0:2])
                     keypoint = Keypoint(int(x), int(y))

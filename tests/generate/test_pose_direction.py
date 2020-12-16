@@ -17,5 +17,6 @@ def run_before():
 def test_get_pose_directions():
     script_dir, img, poses = run_before()
     pose_directions = pose_direction.get_pose_directions(poses)
+    img = visualize.poses(poses, img)
     img = visualize.pose_directions(pose_directions, img)
     visualize.safe(os.path.join(script_dir, "output_test_get_pose_directions.jpg"), img)

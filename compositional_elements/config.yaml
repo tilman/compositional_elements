@@ -2,6 +2,7 @@ dim: [1878, 2024]
 bisection:
   correction_angle: 10
   cone_opening_angle: 30
+  cone_shape_length: 2000
   left_pose_points: [4,6,12]
   right_pose_points: [3,10,11]
 pose_abstraction:

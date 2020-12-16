@@ -32,8 +32,8 @@ def pose_triangles(pose_lines: Sequence[PoseTriangle], img=None) -> Sequence[Seq
 def poses(poses: Poses, img=None, keypoint_filter=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]) -> Sequence[Sequence[int]]:
     if img is None:
         img = create_blank()
-    for p in poses:
-        pose(p, img, keypoint_filter)
+    for ip, p in enumerate(poses):
+        pose(p, img, keypoint_filter, "_"+str(ip))
     return img
 
 def pose(pose: Pose, img=None, keypoint_filter=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17], suffix="") -> Sequence[Sequence[int]]:
@@ -42,8 +42,8 @@ def pose(pose: Pose, img=None, keypoint_filter=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,
     for i, kp in enumerate(pose.keypoints):
         if i in keypoint_filter:
             color = config["keypoint_colors"][i]
-            cv2.circle(img, k(kp), 5, color, -1)
-            cv2.putText(img, str(i)+suffix, k(kp), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
+            cv2.circle(img, k(kp), 3, color, -1)
+            cv2.putText(img, str(i)+suffix, k(kp), cv2.FONT_HERSHEY_SIMPLEX, 0.3, color)
     return img
 
 def point_tuple_line(tuple: Tuple[Point, Point], img=None) -> Sequence[Sequence[int]]:

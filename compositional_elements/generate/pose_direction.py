@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from compositional_elements import visualize
-from compositional_elements.generate.bisection import get_bisection_point
+from compositional_elements.generate.bisection import get_bisect_cone, get_bisection_point, get_centroids_for_bisection
 from compositional_elements.config import config
 from compositional_elements.detect.converter import k, p
 from compositional_elements.types import *
@@ -47,12 +47,10 @@ def get_pose_direction(pose: Pose) -> PoseDirection:
     # right_pose_direction = PoseDirection(Point(k(right_base_point)), right_bisection)
 
     # type 2
-    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(zip(np.array(pose.keypoints)[[4,6,12]], np.array(pose.keypoints)[[3,10,11]]))
-    if len(bisection_keypoint_pairs) != 3:
-        raise ValueError('missing some points for pose calculation!')
-    keypoint_pairs = [Keypoint(*p(cast(Point, LineString([k(a),k(b)]).centroid))) for a,b in bisection_keypoint_pairs]
-    middle_bisection = get_bisection_point(*keypoint_pairs)
-    middle_pose_direction = PoseDirection(Point(k(keypoint_pairs[1])), middle_bisection)
+    top_kp, middle_kp, bottom_kp = get_centroids_for_bisection(pose.keypoints)
+    middle_bisection = get_bisection_point(top_kp, middle_kp, bottom_kp)
+    cone = get_bisect_cone(top_kp, middle_kp, bottom_kp)
+    middle_pose_direction = PoseDirection(Point(k(middle_kp)), middle_bisection, cone)
 
     # img = cv2.imread('/Users/Tilman/Documents/Programme/Python/forschungspraktikum/PoseBasedRetrievalDemo/src/API/data/intermediate_results/test.jpg')
     # img = visualize.pose(pose, img)
