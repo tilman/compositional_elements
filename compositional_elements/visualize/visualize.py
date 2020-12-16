@@ -52,17 +52,19 @@ def point_tuple_line(tuple: Tuple[Point, Point], img=None) -> Sequence[Sequence[
     cv2.line(img, p(tuple[0]), p(tuple[1]), (0,255,255), 5)
     return img
 
-def pose_directions(pose_directions: Sequence[PoseDirection], img=None) -> Sequence[Sequence[int]]:
+def pose_directions(pose_directions: Sequence[PoseDirection], img=None, color=(0,255,255), plotShape=False) -> Sequence[Sequence[int]]:
     if img is None:
         img = create_blank()
     for dir in pose_directions:
-        img = pose_direction(dir, img)
+        img = pose_direction(dir, img, color, plotShape)
     return img
 
-def pose_direction(dir: PoseDirection, img=None, color=(0,255,255)) -> Sequence[Sequence[int]]:
+def pose_direction(dir: PoseDirection, img=None, color=(0,255,255), plotShape=False) -> Sequence[Sequence[int]]:
     if img is None:
         img = create_blank()
     cv2.arrowedLine(img, p(dir.start), p(dir.end), color, 5)
+    if plotShape:
+        cv2.polylines(img, [np.array(dir.cone.exterior.coords[:-1], np.int)], True, (255,0,255), 2)
     return img
 
 def pose_cluster_hull(cluster_hull: Polygon, img=None, color=(0,255,255)) -> Sequence[Sequence[int]]:

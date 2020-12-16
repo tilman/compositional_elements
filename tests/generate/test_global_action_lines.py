@@ -3,7 +3,7 @@ import pickle
 
 import cv2
 from compositional_elements.detect import converter
-from compositional_elements.generate import pose_direction
+from compositional_elements.generate import global_action
 from compositional_elements.visualize import visualize
 
 def run_before():
@@ -14,9 +14,10 @@ def run_before():
     poses = converter.hrnet_to_icc_poses(pose_data)
     return script_dir, img, poses
 
-def test_get_pose_directions():
+def test_get_global_action_lines():
     script_dir, img, poses = run_before()
-    pose_directions = pose_direction.get_pose_directions(poses)
+    global_action_lines = global_action.get_global_action_lines(poses)
+    print(global_action_lines)
     img = visualize.poses(poses, img)
-    img = visualize.pose_directions(pose_directions, img, (0, 255, 255), True)
-    visualize.safe(os.path.join(script_dir, "output_test_get_pose_directions.jpg"), img)
+    # img = visualize.global_action_lines(global_action_lines, img, (0, 255, 255), True)
+    visualize.safe(os.path.join(script_dir, "output_test_get_global_action_lines.jpg"), img)

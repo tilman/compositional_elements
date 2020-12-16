@@ -13,7 +13,7 @@ CORRECTION_ANGLE=config["bisection"]["correction_angle"]
 CONE_OPENING_ANGLE=config["bisection"]["cone_opening_angle"]
 CONE_SHAPE_LENGTH=int(config["bisection"]["cone_shape_length"])
 
-def get_centroids_for_bisection(keypoints: Pose.keypoints) -> Tuple[Keypoint, Keypoint, Keypoint]:
+def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint, Keypoint, Keypoint]:
     """Helper method for transforming HRNet input in a way that we can calculate the bisection vector of upper,
     middle and lower keypoints. Therefore we calculate the centroid of theses pairs: (4,3) (6,10) (12,11)
 
@@ -115,15 +115,3 @@ def poseToBisectVector(pose):
     a,b,c = points[:,:2] # cut of confidence score so we have normal coordinate points
     bisecPoint = getBisecPoint(a,b,c)
     return np.array([bisecPoint,b])
-
-def coneIntersections(bisecCones):
-    out = {}
-    for r in range(1,len(bisecCones)+1):
-        pc = list(itertools.combinations(range(0,len(bisecCones)),r))
-        for combi in pc:
-            intersect = bisecCones[combi[0]]
-            for i in combi[1:]:
-                intersect = intersect.intersection(bisecCones[i])
-            if not intersect.is_empty:
-                out[combi] = intersect
-    return out
