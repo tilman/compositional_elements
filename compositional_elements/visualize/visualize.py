@@ -2,7 +2,6 @@ from typing import Sequence, Tuple
 
 import cv2
 import numpy as np
-from numpy.core import numeric
 
 from compositional_elements.config import config
 from compositional_elements.detect.converter import k, p
@@ -18,6 +17,14 @@ def pose_lines(pose_lines: Sequence[PoseLine], img=None) -> Sequence[Sequence[in
         img = create_blank()
     for pose_line in pose_lines:
         cv2.line(img, p(pose_line.top), p(pose_line.bottom), (0,255,0), 5)
+    return img
+
+def global_action_lines(global_action_lines: Sequence[GlobalActionLine], img=None) -> Sequence[Sequence[int]]:
+    if img is None:
+        img = create_blank()
+    for ga_line in global_action_lines:
+        cv2.line(img, p(ga_line.start), p(ga_line.end), (0,255,255), 5)
+        cv2.circle(img, p(ga_line.center), 3, (255,255,0), -1)
     return img
 
 def pose_triangles(pose_lines: Sequence[PoseTriangle], img=None) -> Sequence[Sequence[int]]:

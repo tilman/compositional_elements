@@ -17,7 +17,7 @@ def run_before():
 def test_get_global_action_lines():
     script_dir, img, poses = run_before()
     global_action_lines = global_action.get_global_action_lines(poses)
-    print(global_action_lines)
-    img = visualize.poses(poses, img)
-    # img = visualize.global_action_lines(global_action_lines, img, (0, 255, 255), True)
+    #print(global_action_lines)
+    #img = visualize.poses(poses, img)
+    img = visualize.global_action_lines(global_action_lines, img)
     visualize.safe(os.path.join(script_dir, "output_test_get_global_action_lines.jpg"), img)

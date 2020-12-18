@@ -88,6 +88,21 @@ def getAngleGroundNormed(a,b,c):
     else:
         return (np.deg2rad(360+CORRECTION_ANGLE)-normed_angle)
 
+
+#previuosly angleMapper
+def get_mapped_angle(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) -> float:
+    a = np.array([top_kp.x, top_kp.y])
+    b = np.array([middle_kp.x, middle_kp.y])
+    c = np.array([bottom_kp.x, bottom_kp.y])
+    angle = getAngleGroundNormed(a,b,c)
+     #map all angles to one direction, so the mean does not get influences by left/right direction
+    if(angle > np.deg2rad(180)):
+        mapped = angle - np.deg2rad(180)
+        return mapped - np.deg2rad(180) if mapped > np.deg2rad(90) else mapped
+    else:
+        mapped = angle
+        return mapped - np.deg2rad(180) if mapped > np.deg2rad(90) else mapped
+
 def angleMapper(pose):
     angle = getAngleGroundNormed(*pose[[0,1,8]][:,:2])
      #map all angles to one direction, so the mean does not get influences by left/right direction

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import Sequence
+from typing import Sequence, Tuple
+import numpy as np
 
 from shapely.geometry import LineString, Point, Polygon
 
@@ -46,6 +47,36 @@ class PoseLine:
         self.top = top
         self.bottom = bottom
         self.line = LineString([[top.x, top.y], [bottom.x, bottom.y]])
+
+ConeCombination = Tuple[int, ...]
+
+class ConeIntersection:
+    shape: Polygon
+    cone_combination: ConeCombination
+    cone_combination_length: int
+    def __init__(self, shape: Polygon, cone_combination: ConeCombination): 
+        self.shape = shape
+        self.cone_combination = cone_combination
+        self.cone_combination_length = len(cone_combination)
+
+class GlobalActionLine:
+    line: LineString
+    start: Point
+    end: Point
+    center: Point
+    area: float
+    angle: float
+    def __init__(self, center: Point, angle:float, area: float):
+        self.angle = angle
+        self.area = area
+        self.center = center
+
+        dist = 2000 # FIXME: move hardcoded value to config, or maybe calculate dist based on area
+        x_offset = int(dist * np.cos(angle))
+        y_offset = int(dist * np.sin(angle))
+        self.start = Point(center.x - x_offset, center.y - y_offset)
+        self.end = Point(center.x + x_offset, center.y + y_offset)
+
 
 class PoseDirection:
     line: LineString
