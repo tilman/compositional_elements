@@ -3,7 +3,7 @@ import pickle
 
 import cv2
 from compositional_elements.detect import converter
-from compositional_elements.generate import global_action
+from compositional_elements.generate import global_action, pose_direction
 from compositional_elements.visualize import visualize
 
 def run_before():
@@ -19,5 +19,7 @@ def test_get_global_action_lines():
     global_action_lines = global_action.get_global_action_lines(poses)
     #print(global_action_lines)
     #img = visualize.poses(poses, img)
+    #pose_directions = pose_direction.get_pose_directions(poses)
+    #img = visualize.pose_directions(pose_directions, img, (0,255,255), True)
     img = visualize.global_action_lines(global_action_lines, img)
     visualize.safe(os.path.join(script_dir, "output_test_get_global_action_lines.jpg"), img)

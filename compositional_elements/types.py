@@ -66,10 +66,15 @@ class GlobalActionLine:
     center: Point
     area: float
     angle: float
-    def __init__(self, center: Point, angle:float, area: float):
+    intersection_shape: Polygon
+    def __init__(self, center: Point, angle:float, area: float, intersection_shape: Polygon = None):
         self.angle = angle
         self.area = area
         self.center = center
+        if intersection_shape:
+            self.intersection_shape = intersection_shape
+        else:
+            self.intersection_shape = Polygon()
 
         dist = 2000 # FIXME: move hardcoded value to config, or maybe calculate dist based on area
         x_offset = int(dist * np.cos(angle))
