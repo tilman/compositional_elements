@@ -23,11 +23,11 @@ def global_action_lines(global_action_lines: Sequence[GlobalActionLine], img=Non
     if img is None:
         img = create_blank()
     for ga_line in global_action_lines:
-        if not ga_line.intersection_shape == None:
-            visible_area = Polygon([(0,0),(len(img[0]), 0), (len(img[0]),len(img)), (0,len(img))])
-            visible_intersection = cast(Polygon, visible_area.intersection(ga_line.intersection_shape))
-            cv2.drawContours(img, [np.array(visible_intersection.exterior.coords[:], np.int)], 0, (150,100,100), -1)
-            # cv2.drawContours(img, [np.array(ga_line.intersection_shape.exterior.coords[:], np.int)], 0, (150,100,100), -1)
+        # if not ga_line.intersection_shape == None:
+        #     visible_area = Polygon([(0,0),(len(img[0]), 0), (len(img[0]),len(img)), (0,len(img))])
+        #     visible_intersection = cast(Polygon, visible_area.intersection(ga_line.intersection_shape))
+        #     cv2.drawContours(img, [np.array(visible_intersection.exterior.coords[:], np.int)], 0, (150,100,100), -1)
+        #     # cv2.drawContours(img, [np.array(ga_line.intersection_shape.exterior.coords[:], np.int)], 0, (150,100,100), -1)
         cv2.line(img, p(ga_line.start), p(ga_line.end), (0,255,255), 5)
         cv2.circle(img, p(ga_line.center), 10, (255,255,0), -1)
     return img
