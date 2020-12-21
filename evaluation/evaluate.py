@@ -31,7 +31,7 @@ def get_icc(output_dir, img_path):
 images = [os.path.join(os.getcwd(), INPUT_DIR, f) for f in os.listdir(INPUT_DIR) if f[0] != '.'][:]
 images.sort()
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.chdir(OUTPUT_DIR)
+# os.chdir(OUTPUT_DIR)
 print(len(images))
 for img_path in tqdm(images, total=len(images)):
     get_icc(OUTPUT_DIR, img_path)
