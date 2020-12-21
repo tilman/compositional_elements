@@ -3,9 +3,9 @@ import pickle
 import tqdm
 
 import cv2
-from compositional_elements.generate import global_action, pose_abstraction
-from compositional_elements.visualize import visualize
-from compositional_elements.detect import person_detection, pose_estimation, converter
+from ..compositional_elements.generate import global_action, pose_abstraction
+from ..compositional_elements.visualize import visualize
+from ..compositional_elements.detect import person_detection, pose_estimation, converter
 
 INPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/old_icc/icc_images_imdahl/"
 OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compositional_elements/v0.0.1_21.12.20/icc_images_imdahl"
@@ -25,7 +25,7 @@ def get_icc(output_dir, img_path):
     img = visualize.pose_lines(pose_lines, img)
     visualize.safe(os.path.join(output_dir, "output_e2e.jpg"), img)
 
-images = [os.path.join(os.getcwd(), INPUT_DIR, f) for f in os.listdir(INPUT_DIR) if f[0] != '.'][START_INDEX:]
+images = [os.path.join(os.getcwd(), INPUT_DIR, f) for f in os.listdir(INPUT_DIR) if f[0] != '.'][:]
 images.sort()
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.chdir(OUTPUT_DIR)
