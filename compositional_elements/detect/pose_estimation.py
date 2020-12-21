@@ -13,27 +13,33 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 from torch.nn import DataParallel
 
-from lib.logger import log_function, print_
-from lib.neural_nets.HRNet import PoseHighResolutionNet
-from lib.pose_parsing import (create_pose_entries, get_final_preds_hrnet,
+from compositional_elements.detect.lib.neural_nets.HRNet import PoseHighResolutionNet
+from compositional_elements.detect.lib.pose_parsing import (create_pose_entries, get_final_preds_hrnet,
                               get_max_preds_hrnet)
-from lib.utils import create_directory
-from lib.visualizations import draw_pose
 
 ESTIMATOR_NAME = None
 KEYPOINT_ESTIMATOR = None
 NORMALIZER = None
 
-@log_function
+def create_directory(path):
+    """
+    Checking if a directory exists, and creating it if it doesnt
+    """
+
+    if(not os.path.exists(path)):
+        os.makedirs(path)
+
+    return
+
 def setup_pose_estimator(estimator_name):
     """
     Initializing the pretrained pose estimation model
     """
 
-    print_("Initializing Pose Estimation model...")
+    print("Initializing Pose Estimation model...")
     model = PoseHighResolutionNet(is_train=False)
 
-    print_("Loading pretrained model parameters...")
+    print("Loading pretrained model parameters...")
     if(estimator_name == "Baseline HRNet"):
         pretrained_path = os.path.join(os.getcwd(), "resources", "coco_hrnet_w32_256x192.pth")
         checkpoint = torch.load(pretrained_path, map_location='cpu')
@@ -61,7 +67,6 @@ def setup_pose_estimator(estimator_name):
     return model
 
 
-@log_function
 def pose_estimation(detections, centers, scales, img_path, keypoint_detector):
     """
     Detecting the keypoints for the input images and parsing the human poses
@@ -106,24 +111,24 @@ def pose_estimation(detections, centers, scales, img_path, keypoint_detector):
         KEYPOINT_ESTIMATOR = setup_pose_estimator(keypoint_detector)
 
     # preprocessing the detections
-    print_("Preprocessing person detections...")
+    print("Preprocessing person detections...")
     norm_detections = [NORMALIZER(torch.Tensor(det)).numpy() for det in detections]
 
     # forward pass through the keypoint detector model
-    print_("Computing forward pass through the keypoint detector model...")
+    print("Computing forward pass through the keypoint detector model...")
     keypoint_dets = KEYPOINT_ESTIMATOR(torch.Tensor(norm_detections).float())
     scaled_dets = F.interpolate(keypoint_dets.clone(), (256, 192),
                                 mode="bilinear", align_corners=True)
 
     # extracting keypoint coordinates and confidence values from heatmaps
-    print_("Extracting keypoints from heatmaps...")
+    print("Extracting keypoints from heatmaps...")
     keypoint_coords,\
         max_vals_coords = get_max_preds_hrnet(scaled_heats=scaled_dets.detach().numpy())
     keypoints, max_vals, _ = get_final_preds_hrnet(heatmaps=keypoint_dets.detach().numpy(),
                                                   center=centers, scale=scales)
 
     # parsing poses by combining and joining keypoits
-    print_("Parsing human poses...")
+    print("Parsing human poses...")
     indep_pose_entries, indep_all_keypoints = create_pose_entries(keypoints=keypoint_coords,
                                                                   max_vals=max_vals_coords,
                                                                   thr=0.1)
@@ -150,8 +155,6 @@ def pose_estimation(detections, centers, scales, img_path, keypoint_detector):
         savepath = os.path.join(os.getcwd(), "data", "final_results",
                                 "pose_estimation", det_name)
         pose_paths.append(savepath)
-        draw_pose(norm_detections[i], [indep_pose_entries[i]], indep_all_keypoints,
-                  preprocess=True, savefig=True, savepath=savepath)
 
     # returning pose data in correct format
     pose_data = {
@@ -163,6 +166,3 @@ def pose_estimation(detections, centers, scales, img_path, keypoint_detector):
     }
 
     return pose_data
-
-
-#
