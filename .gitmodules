@@ -1,3 +1,6 @@
 [submodule "compositional_elements/detect/lib/EnhancePoseEstimation"]
 	path = compositional_elements/detect/lib/EnhancePoseEstimation
 	url = https://github.com/angelvillar96/EnhancePoseEstimation
+[submodule "compositional_elements/detect/lib/PoseBasedRetrievalDemo"]
+	path = compositional_elements/detect/lib/PoseBasedRetrievalDemo
+	url = https://github.com/angelvillar96/PoseBasedRetrievalDemo
