@@ -1,5 +1,0 @@
-{
-    "python.languageServer": "Pylance",
-    "python.linting.enabled": true,
-    "python.analysis.typeCheckingMode": "basic"
-}
