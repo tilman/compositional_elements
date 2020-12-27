@@ -7,8 +7,9 @@ import cv2
 from tqdm import tqdm
 from compositional_elements.generate import global_action, pose_abstraction, pose_direction
 from compositional_elements.visualize import visualize
-from compositional_elements.detect import person_detection, pose_estimation, converter
-
+from compositional_elements.detect import converter
+# from compositional_elements.detect.lib.EnhancePoseEstimation.src.lib import person_detection, pose_estimation
+from compositional_elements.detect.lib.PoseBasedRetrievalDemo.src.API.lib import person_detection, pose_estimation
 INPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/old_icc/icc_images_imdahl/"
 OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compositional_elements/v0.0.1_22.12.20/icc_images_imdahl"
 

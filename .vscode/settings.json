@@ -1,0 +1,9 @@
+{
+    "python.languageServer": "Pylance",
+    "python.linting.enabled": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": [
+        "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compositional_elements"
+    ],
+    "python.pythonPath": "/opt/anaconda3/envs/compositional_elements/bin/python"
+}
