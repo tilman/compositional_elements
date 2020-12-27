@@ -1,3 +1,7 @@
+import numpy as np
+import torch
+import torchvision
+
 def bbox_filtering(predictions, label_filter=1, score_threshold=0.6):
     """
     Filtering predicitions in order to keep only the relevant bounding boxes #
