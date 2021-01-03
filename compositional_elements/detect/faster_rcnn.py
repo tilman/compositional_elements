@@ -47,7 +47,7 @@ def get_person_boundingboxes(img_path: str):
     print("pass image to Faster-RCNN")
     outputs = model(img / 255)
     boxes, labels, scores = bbox_filtering(outputs, label_filter=1, score_threshold=0.4)
-    boxes, labels, scores = bbox_nms(boxes, labels, scores, nms_thr=0.9)
+    boxes, labels, scores = bbox_nms(boxes, labels, scores, nms_thr=0.5)
     # saving image with bounding boxes as intermediate results and for displaying
     # on the client side
     print("Obtaining intermediate detector visualization...")

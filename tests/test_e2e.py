@@ -27,6 +27,6 @@ def test_e2e():
     global_action_lines = global_action.get_global_action_lines(poses)
     pose_lines = pose_abstraction.get_pose_lines(poses)
     img = visualize.global_action_lines(global_action_lines, img)
-    img = visualize.boundingboxes(person_boundingboxes["boxes"][0], person_boundingboxes["scores"][0], img) #TODO: visualize bounding boxes to find out if 
+    img = visualize.boundingboxes(person_boundingboxes["boxes"][0], person_boundingboxes["scores"][0], img)
     img = visualize.pose_lines(pose_lines, img)
     visualize.safe(os.path.join(script_dir, "output_e2e.jpg"), img)
