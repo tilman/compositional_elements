@@ -41,6 +41,20 @@ def pose_triangles(pose_lines: Sequence[PoseTriangle], img=None) -> Sequence[Seq
         cv2.line(img, k(pose_triangle.left), k(pose_triangle.right), (0,255,255), 5)
     return img
 
+def boundingboxes(boxes, scores, img=None) -> Sequence[Sequence[int]]:
+    if img is None:
+        img = create_blank()
+    for box, score in zip(boxes, scores):
+        boundingbox(box, score, img)
+    return img
+
+def boundingbox(box, score, img) -> Sequence[Sequence[int]]:
+    if img is None:
+        img = create_blank()
+    cv2.rectangle(img, tuple(np.array(box[0:2], int)), tuple(np.array(box[2:4], int)), (20,120,200), 2)
+    # cv2.putText(img, str(i)+suffix, k(kp), cv2.FONT_HERSHEY_SIMPLEX, 0.3, color)
+    return img
+
 def poses(poses: Poses, img=None, keypoint_filter=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]) -> Sequence[Sequence[int]]:
     if img is None:
         img = create_blank()

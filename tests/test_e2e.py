@@ -17,8 +17,6 @@ def run_before():
 def test_e2e():
     script_dir, img, img_path = run_before()
     person_boundingboxes = get_person_boundingboxes(img_path)
-    # debug test: is person_boundingboxes["detections"] already an image
-
     # _, _, det_data = person_detection.person_detection(img_path=img_path, person_detector="Faster R-CNN")
     hrnet_output = get_pose_keypoints(detections=person_boundingboxes["detections"],
                                 centers=person_boundingboxes["centers"],
@@ -29,6 +27,6 @@ def test_e2e():
     global_action_lines = global_action.get_global_action_lines(poses)
     pose_lines = pose_abstraction.get_pose_lines(poses)
     img = visualize.global_action_lines(global_action_lines, img)
-    # img = visualize.boundingboxes(pose_lines, img) #TODO: visualize bounding boxes to find out if 
+    img = visualize.boundingboxes(person_boundingboxes["boxes"][0], person_boundingboxes["scores"][0], img) #TODO: visualize bounding boxes to find out if 
     img = visualize.pose_lines(pose_lines, img)
     visualize.safe(os.path.join(script_dir, "output_e2e.jpg"), img)
