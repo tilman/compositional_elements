@@ -2,11 +2,11 @@ import os
 import pickle
 
 import cv2
-from compositional_elements.generate import global_action, pose_abstraction
-from compositional_elements.visualize import visualize
-from compositional_elements.detect import converter
-from compositional_elements.detect.faster_rcnn import get_person_boundingboxes
-from compositional_elements.detect.hrnet import get_pose_keypoints
+from compoelem.generate import global_action, pose_abstraction
+from compoelem.visualize import visualize
+from compoelem.detect import converter
+from compoelem.detect.faster_rcnn import get_person_boundingboxes
+from compoelem.detect.hrnet import get_pose_keypoints
 
 def run_before():
     script_dir = os.path.dirname(__file__)

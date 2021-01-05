@@ -13,12 +13,12 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 from torch.nn import DataParallel
 
-sys.path.append("./compositional_elements/detect/lib/PoseBasedRetrievalDemo/src/API")
-from compositional_elements.detect.lib.PoseBasedRetrievalDemo.src.API.lib.neural_nets.HRNet import PoseHighResolutionNet
-# from compositional_elements.detect.lib.EnhancePoseEstimation.src.models.HRNet import PoseHighResolutionNet
-from compositional_elements.detect.lib.PoseBasedRetrievalDemo.src.API.lib.pose_parsing import (create_pose_entries, get_final_preds_hrnet,
+sys.path.append("./compoelem/detect/lib/PoseBasedRetrievalDemo/src/API")
+from compoelem.detect.lib.PoseBasedRetrievalDemo.src.API.lib.neural_nets.HRNet import PoseHighResolutionNet
+# from compoelem.detect.lib.EnhancePoseEstimation.src.models.HRNet import PoseHighResolutionNet
+from compoelem.detect.lib.PoseBasedRetrievalDemo.src.API.lib.pose_parsing import (create_pose_entries, get_final_preds_hrnet,
                               get_max_preds_hrnet)
-# from compositional_elements.detect.lib.EnhancePoseEstimation.src.lib.pose_parsing import (create_pose_entries, get_final_preds_hrnet,
+# from compoelem.detect.lib.EnhancePoseEstimation.src.lib.pose_parsing import (create_pose_entries, get_final_preds_hrnet,
 #                               get_max_preds_hrnet)
 
 model = None

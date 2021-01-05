@@ -6,10 +6,10 @@ import torch
 from torch.nn import DataParallel
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from compositional_elements.detect.transforms import TransformDetection
-from compositional_elements.detect.bbox_utils import bbox_filtering, bbox_nms
+from compoelem.detect.transforms import TransformDetection
+from compoelem.detect.bbox_utils import bbox_filtering, bbox_nms
 
-# from compositional_elements.detect.lib.transforms import TransformDetection
+# from compoelem.detect.lib.transforms import TransformDetection
 # class FasterRCNN:
 model = None
 extractor = None

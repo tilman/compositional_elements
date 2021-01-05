@@ -1,7 +1,7 @@
 import cv2
 import os
 import pickle
-from compositional_elements.detect import converter
+from compoelem.detect import converter
 
 def run_before():
     script_dir = os.path.dirname(__file__)

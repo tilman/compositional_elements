@@ -2,9 +2,9 @@ import itertools
 from typing import cast
 
 import numpy as np
-from compositional_elements.generate.bisection import get_centroids_for_bisection, get_mapped_angle
-from compositional_elements.generate.pose_direction import get_pose_directions
-from compositional_elements.types import *
+from compoelem.generate.bisection import get_centroids_for_bisection, get_mapped_angle
+from compoelem.generate.pose_direction import get_pose_directions
+from compoelem.types import *
 from shapely.geometry.polygon import Polygon
 
 

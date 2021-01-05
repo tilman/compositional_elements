@@ -3,9 +3,9 @@ from typing import Sequence, Tuple, cast
 import cv2
 import numpy as np
 
-from compositional_elements.config import config
-from compositional_elements.detect.converter import k, p
-from compositional_elements.types import *
+from compoelem.config import config
+from compoelem.detect.converter import k, p
+from compoelem.types import *
 
 
 def create_blank() -> Sequence[Sequence[int]]:

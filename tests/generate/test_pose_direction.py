@@ -2,9 +2,9 @@ import os
 import pickle
 
 import cv2
-from compositional_elements.detect import converter
-from compositional_elements.generate import pose_direction
-from compositional_elements.visualize import visualize
+from compoelem.detect import converter
+from compoelem.generate import pose_direction
+from compoelem.visualize import visualize
 
 def run_before():
     script_dir = os.path.dirname(__file__)

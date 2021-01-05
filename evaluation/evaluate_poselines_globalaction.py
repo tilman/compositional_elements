@@ -5,16 +5,16 @@ import sys
 
 import cv2
 from tqdm import tqdm
-from compositional_elements.generate import global_action, pose_abstraction, pose_direction
-from compositional_elements.visualize import visualize
-from compositional_elements.detect import converter
-from compositional_elements.detect.faster_rcnn import get_person_boundingboxes
-from compositional_elements.detect.hrnet import get_pose_keypoints
-# from compositional_elements.detect.lib.EnhancePoseEstimation.src.lib import person_detection, pose_estimation
-# sys.path.append("./compositional_elements/detect/lib/PoseBasedRetrievalDemo/src/API")
-# from compositional_elements.detect.lib.PoseBasedRetrievalDemo.src.API.lib import person_detection, pose_estimation
+from compoelem.generate import global_action, pose_abstraction, pose_direction
+from compoelem.visualize import visualize
+from compoelem.detect import converter
+from compoelem.detect.faster_rcnn import get_person_boundingboxes
+from compoelem.detect.hrnet import get_pose_keypoints
+# from compoelem.detect.lib.EnhancePoseEstimation.src.lib import person_detection, pose_estimation
+# sys.path.append("./compoelem/detect/lib/PoseBasedRetrievalDemo/src/API")
+# from compoelem.detect.lib.PoseBasedRetrievalDemo.src.API.lib import person_detection, pose_estimation
 INPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/old_icc/icc_images_imdahl/"
-OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compositional_elements/v0.0.3_NMS05_SCR05_pEFI_03.01.21/icc_images_imdahl"
+OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compoelem/v0.0.3_NMS05_SCR05_pEFI_03.01.21/icc_images_imdahl"
 
 def get_icc(output_dir, img_path):
     basename = os.path.basename(img_path)
