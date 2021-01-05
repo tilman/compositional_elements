@@ -24,7 +24,9 @@ def setup():
         model.eval()
         # loading pretrained weights
         model = DataParallel(model)
-        pretrained_path = os.path.join(os.getcwd(), "resources", "coco_faster_rcnn.pth")
+        # pretrained_path = os.path.join(os.getcwd(), "resources", "coco_faster_rcnn.pth")
+        # pretrained_path = os.path.join(os.getcwd(), "resources", "peopleart_checkpoint_epoch_3.pth")
+        pretrained_path = os.path.join(os.getcwd(), "resources", "peopleefi_checkpoint_epoch_10.pth")
         print(f"    Loading: {pretrained_path}")
         checkpoint = torch.load(pretrained_path, map_location='cpu')['model_state_dict']
         model.load_state_dict(checkpoint)
@@ -46,8 +48,8 @@ def get_person_boundingboxes(img_path: str):
     # forward pass through person detector
     print("pass image to Faster-RCNN")
     outputs = model(img / 255)
-    boxes, labels, scores = bbox_filtering(outputs, label_filter=1, score_threshold=0.4)
-    boxes, labels, scores = bbox_nms(boxes, labels, scores, nms_thr=0.5)
+    boxes, labels, scores = bbox_filtering(outputs, label_filter=1, score_threshold=0.5)
+    boxes, labels, scores = bbox_nms(boxes, labels, scores, 0.5)
     # saving image with bounding boxes as intermediate results and for displaying
     # on the client side
     print("Obtaining intermediate detector visualization...")

@@ -46,7 +46,7 @@ def bbox_filtering(predictions, label_filter=1, score_threshold=0.6):
     return filtered_bbox, filtered_labels, filtered_scores
 
 
-def bbox_nms(boxes, labels, scores, nms_thr=0.5):
+def bbox_nms(boxes, labels, scores, nms_thr):
     """
     Applying Non-maximum suppresion to remove redundant bounding boxes
     Args:
