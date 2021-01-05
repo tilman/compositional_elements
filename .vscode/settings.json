@@ -3,7 +3,8 @@
     "python.linting.enabled": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.extraPaths": [
-        "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem"
+        "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem",
+        "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/libs/pytorch-openpose"
     ],
-    "python.pythonPath": "/opt/anaconda3/envs/compoelem/bin/python"
+    "python.pythonPath": "/opt/anaconda3/envs/compositional_elements/bin/python"
 }
