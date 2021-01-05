@@ -14,7 +14,7 @@ from compoelem.detect.hrnet import get_pose_keypoints
 # sys.path.append("./compoelem/detect/lib/PoseBasedRetrievalDemo/src/API")
 # from compoelem.detect.lib.PoseBasedRetrievalDemo.src.API.lib import person_detection, pose_estimation
 INPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/old_icc/icc_images_imdahl/"
-OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compoelem/v0.0.3_NMS05_SCR05_pEFI_03.01.21/icc_images_imdahl"
+OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compoelem/v0.0.3_NMS09_SCR05_pEFI_03.01.21/icc_images_imdahl"
 
 def get_icc(output_dir, img_path):
     basename = os.path.basename(img_path)
