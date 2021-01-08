@@ -1,0 +1,3 @@
+[submodule "compoelem/detect/openpose"]
+	path = compoelem/detect/openpose
+	url = https://github.com/tensorboy/pytorch_Realtime_Multi-Person_Pose_Estimation

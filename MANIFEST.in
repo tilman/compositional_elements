@@ -1,1 +1,2 @@
 include compoelem/config.yaml
+recursive-include compoelem/compoelem/detect/openpose
