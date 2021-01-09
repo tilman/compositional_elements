@@ -7,13 +7,21 @@ from compoelem.types import *
 def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
     pose_lines: Sequence[PoseLine] = [];
     for pose in poses:
-        pose_lines.append(get_pose_abstraction(pose))
+        try:
+            pose_abstraction = get_pose_abstraction(pose)
+            pose_lines.append(pose_abstraction)
+        except ValueError as e:
+            print(e)
     return pose_lines
 
 def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
     pose_triangles: Sequence[PoseTriangle] = [];
     for pose in poses:
-        pose_triangles.append(get_pose_triangle(pose))
+        try:
+            triangle = get_pose_triangle(pose)
+            pose_triangles.append(triangle)
+        except ValueError as e:
+            print(e)
     return pose_triangles
 
 def get_pose_abstraction(pose: Pose) -> PoseLine:
@@ -30,11 +38,17 @@ def get_pose_triangle(pose: Pose) -> PoseTriangle:
     top_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config["pose_abstraction"]["keypoint_list"]["top"]].tolist()
 
     # Select first keypoint of each partition witch is not None
-    left_keypoint = list(filter(lambda kp: not kp.isNone, left_keypoint_selection))[0]
-    right_keypoint = list(filter(lambda kp: not kp.isNone, right_keypoint_selection))[0]
-    top_keypoint = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))[0]
+    left_keypoints = list(filter(lambda kp: not kp.isNone, left_keypoint_selection))
+    right_keypoints = list(filter(lambda kp: not kp.isNone, right_keypoint_selection))
+    top_keypoints = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))
+    if(len(left_keypoints) == 0):
+        raise ValueError('missing valid left keypoints for triangle calculation!')
+    if(len(right_keypoints) == 0):
+        raise ValueError('missing valid left keypoints for triangle calculation!')
+    if(len(top_keypoints) == 0):
+        raise ValueError('missing valid left keypoints for triangle calculation!')
 
-    return PoseTriangle(top_keypoint, right_keypoint, left_keypoint)
+    return PoseTriangle(top_keypoints[0], right_keypoints[0], left_keypoints[0])
 
 def get_pose_line(triangle: PoseTriangle) -> PoseLine:
     bottom_line = LineString([[triangle.left.x, triangle.left.y], [triangle.right.x, triangle.right.y]])

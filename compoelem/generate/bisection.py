@@ -27,10 +27,13 @@ def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint
         Tuple[Keypoint, Keypoint, Keypoint]: top_kp, middle_kp, bottom_kp
     """
     # TODO add config cor 4,6,12 keypoint list
-    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(zip(np.array(keypoints)[[4,6,12]], np.array(keypoints)[[3,10,11]]))
+    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(zip(
+        np.array(keypoints)[config["bisection"]["left_pose_points"]], 
+        np.array(keypoints)[config["bisection"]["right_pose_points"]]
+    ))
     if len(bisection_keypoint_pairs) != 3:
         raise ValueError('missing some points for pose calculation!')
-    keypoint_pairs = [Keypoint(*p(cast(Point, LineString([k(a),k(b)]).centroid))) for a,b in bisection_keypoint_pairs]
+    keypoint_pairs = [Keypoint(*p(cast(Point, LineString([k(a),k(b)]).centroid)), np.mean([a.score, b.score])) for a,b in bisection_keypoint_pairs]
     top_kp, middle_kp, bottom_kp = keypoint_pairs
     return top_kp, middle_kp, bottom_kp
 

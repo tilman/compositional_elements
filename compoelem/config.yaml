@@ -1,15 +1,16 @@
+keypoint_names: ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LKnee', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 dim: [1878, 2024]
 bisection:
   correction_angle: 0
   cone_opening_angle: 30
   cone_shape_length: 450
-  left_pose_points: [4,6,12]
-  right_pose_points: [3,10,11]
+  left_pose_points: [0,1,8]
+  right_pose_points: [0,1,11]
 pose_abstraction:
   keypoint_list:
-    top: [1,4,5,2,3]
-    right: [15,13,11]
-    left: [16,14,12]
+    top: [0,1,14,15,16,17]
+    right: [10,9,8]
+    left: [13,12,11]
 keypoint_colors:
   - [0,120,40]
   - [105,160,50]

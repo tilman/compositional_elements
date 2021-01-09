@@ -1,8 +1,10 @@
 import argparse
+from compoelem.detect.openpose.lib.utils.common import Human
 from typing import Sequence
 import torch
 import torch.nn as nn
 
+from . import converter
 from .openpose.lib.network.rtpose_vgg import get_model
 from .openpose.evaluate.coco_eval import get_outputs
 from .openpose.lib.utils.paf_to_pose import paf_to_pose_cpp
@@ -29,10 +31,9 @@ model = nn.DataParallel(model)
 model.float()
 model.eval()
 
-def get_poses(img: Sequence[Sequence[float]]):
+def get_poses(img: Sequence[Sequence[float]]) -> Sequence[Human]:
     with torch.no_grad():
         paf, heatmap, im_scale = get_outputs(img, model,  'rtpose')
     print(im_scale)
     humans = paf_to_pose_cpp(heatmap, paf, cfg)
-    # poses = converter.openpose_to_compoelem_poses(humans)
     return humans

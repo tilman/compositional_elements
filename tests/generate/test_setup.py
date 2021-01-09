@@ -8,5 +8,5 @@ def run_before():
     img_path=os.path.join(script_dir, "../test.jpg")
     img = cv2.imread(img_path)
     pose_data = pickle.load(open(os.path.join(script_dir, "../test_pose_data.p"), "rb"))
-    poses = converter.hrnet_to_icc_poses(pose_data)
+    poses = converter.openpose_to_compoelem_poses(pose_data, *img.shape[:2])
     return script_dir, img, poses

@@ -7,19 +7,23 @@ from shapely.geometry import LineString, Point, Polygon
 class Keypoint:
     x: int
     y: int
+    score: int
     isNone: bool
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: int, y: int, score: int = 0):
         self.x = x
         self.y = y
+        self.score = score
         self.isNone = False
 
 class NoneKeypoint(Keypoint):
     x: int
     y: int
     isNone: bool
+    score: int
     def __init__(self):
         self.x = -1
         self.y = -1
+        self.score = 0
         self.isNone = True
 
 @dataclass
@@ -67,7 +71,7 @@ class GlobalActionLine:
     area: float
     angle: float
     intersection_shape: Polygon
-    def __init__(self, center: Point, angle:float, area: float, intersection_shape: Polygon = None):
+    def __init__(self, center: Point, angle: float, area: float, intersection_shape: Polygon = None):
         self.angle = angle
         self.area = area
         self.center = center
@@ -77,8 +81,13 @@ class GlobalActionLine:
             self.intersection_shape = Polygon()
 
         dist = 2000 # FIXME: move hardcoded value to config, or maybe calculate dist based on area
-        x_offset = int(dist * np.cos(angle))
-        y_offset = int(dist * np.sin(angle))
+        if np.isnan(angle):
+            x_offset = 0
+            y_offset = 0
+            print("Warning: GlobalActionLine angle is NaN")
+        else:
+            x_offset = int(dist * np.cos(angle))
+            y_offset = int(dist * np.sin(angle))
         self.start = Point(center.x - x_offset, center.y - y_offset)
         self.end = Point(center.x + x_offset, center.y + y_offset)
 
