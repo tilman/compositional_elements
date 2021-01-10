@@ -26,13 +26,16 @@ def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint
     Returns:
         Tuple[Keypoint, Keypoint, Keypoint]: top_kp, middle_kp, bottom_kp
     """
-    # TODO add config cor 4,6,12 keypoint list
-    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(zip(
-        np.array(keypoints)[config["bisection"]["left_pose_points"]], 
-        np.array(keypoints)[config["bisection"]["right_pose_points"]]
-    ))
+    bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(
+        filter(lambda x: not x[0].isNone or not x[1].isNone,
+            zip(
+                np.array(keypoints)[config["bisection"]["left_pose_points"]], 
+                np.array(keypoints)[config["bisection"]["right_pose_points"]]
+            )
+        )
+    )
     if len(bisection_keypoint_pairs) != 3:
-        raise ValueError('missing some points for pose calculation!')
+        raise ValueError('some keypoints for bisection calculation are missing!')
     keypoint_pairs = [Keypoint(*p(cast(Point, LineString([k(a),k(b)]).centroid)), np.mean([a.score, b.score])) for a,b in bisection_keypoint_pairs]
     top_kp, middle_kp, bottom_kp = keypoint_pairs
     return top_kp, middle_kp, bottom_kp
@@ -79,6 +82,7 @@ def getAngle(a,b,c):
 
 # make it more simple by calculating getAngle for both directions (a,b,c and c,b,a and take the smaller result)
 def getAngleGroundNormed(a,b,c):
+    # check if the angle is to the left or the right side
     if(a[0]-b[0]<0):
         b_plane_point = np.array([b[0]-50,b[1]])
     else:

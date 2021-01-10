@@ -62,7 +62,13 @@ def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
     cone_intersections = get_filtered_cone_intersections(poses)
     # TODO get angle by mean of only the participating combinations, 
     # we could therefore filter the poses in the nextline with an if condition
-    global_angle = np.mean([get_mapped_angle(*get_centroids_for_bisection(pose.keypoints)) for pose in poses])
+    angles: Sequence[float] = []
+    for pose in poses:
+        try:
+            angles.append(get_mapped_angle(*get_centroids_for_bisection(pose.keypoints)))
+        except ValueError as e:
+            print(e)
+    global_angle = np.mean(angles)
     # GlobalActionLine(start, end, center, area)
     global_action_lines = [GlobalActionLine(cast(Point, v.shape.centroid), global_angle, v.shape.area, v.shape) for v in cone_intersections]
     return global_action_lines

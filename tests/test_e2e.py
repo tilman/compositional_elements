@@ -1,7 +1,7 @@
 import os
 import cv2
 
-from compoelem.generate import global_action, pose_abstraction
+from compoelem.generate import global_action, pose_abstraction, pose_direction
 from compoelem.visualize import visualize
 from compoelem.detect import converter
 from compoelem.detect.openpose_wrapper import get_poses
@@ -19,9 +19,10 @@ def test_e2e():
     poses = converter.openpose_to_compoelem_poses(humans, *img.shape[:2])
     img = draw_humans(img, humans)
     print(poses)
-    # global_action_lines = global_action.get_global_action_lines(poses)
+    pose_directions = pose_direction.get_pose_directions(poses)
+    global_action_lines = global_action.get_global_action_lines(poses)
     pose_lines = pose_abstraction.get_pose_lines(poses)
-    # img = visualize.global_action_lines(global_action_lines, img)
-    # img = visualize.boundingboxes(person_boundingboxes["boxes"][0], person_boundingboxes["scores"][0], img)
+    img = visualize.pose_directions(pose_directions, img, (255,255,100), True)
+    img = visualize.global_action_lines(global_action_lines, img)
     img = visualize.pose_lines(pose_lines, img)
     visualize.safe(os.path.join(script_dir, "output_e2e.jpg"), img)

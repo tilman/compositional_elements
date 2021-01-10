@@ -14,6 +14,10 @@ class Keypoint:
         self.y = y
         self.score = score
         self.isNone = False
+    def __str__(self) -> str:
+        return "Kp ({},{})".format(self.x, self.y)
+    def __repr__(self) -> str:
+        return "Kp ({},{})".format(self.x, self.y)
 
 class NoneKeypoint(Keypoint):
     x: int
@@ -25,6 +29,10 @@ class NoneKeypoint(Keypoint):
         self.y = -1
         self.score = 0
         self.isNone = True
+    def __str__(self) -> str:
+        return "N Kp"
+    def __repr__(self) -> str:
+        return "N Kp"
 
 @dataclass
 class Pose:
