@@ -4,11 +4,11 @@ from typing import Sequence
 import torch
 import torch.nn as nn
 
-from . import converter
-from .openpose.lib.network.rtpose_vgg import get_model
-from .openpose.evaluate.coco_eval import get_outputs
-from .openpose.lib.utils.paf_to_pose import paf_to_pose_cpp
-from .openpose.lib.config import cfg, update_config
+from compoelem.detect import converter
+from compoelem.detect.openpose.lib.network.rtpose_vgg import get_model
+from compoelem.detect.openpose.evaluate.coco_eval import get_outputs
+from compoelem.detect.openpose.lib.utils.paf_to_pose import paf_to_pose_cpp
+from compoelem.detect.openpose.lib.config import cfg, update_config
 
 
 parser = argparse.ArgumentParser()

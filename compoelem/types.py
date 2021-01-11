@@ -9,11 +9,11 @@ Img = Sequence[Sequence[int]]
 class Keypoint:
     x: int
     y: int
-    score: int
+    score: float
     isNone: bool
-    def __init__(self, x: int, y: int, score: int = 0):
-        self.x = x
-        self.y = y
+    def __init__(self, x: int, y: int, score: float = 0):
+        self.x = int(x)
+        self.y = int(y)
         self.score = score
         self.isNone = False
     def __str__(self) -> str:

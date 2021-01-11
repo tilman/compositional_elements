@@ -2,7 +2,7 @@ import itertools
 from typing import cast
 
 import numpy as np
-from compoelem.generate.bisection import get_centroids_for_bisection, get_mapped_angle
+from compoelem.generate.bisection import get_centroids_for_bisection, get_angle_in_respect_to_x
 from compoelem.generate.pose_direction import get_pose_directions
 from compoelem.types import *
 from shapely.geometry.polygon import Polygon
@@ -65,7 +65,7 @@ def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
     angles: Sequence[float] = []
     for pose in poses:
         try:
-            angles.append(get_mapped_angle(*get_centroids_for_bisection(pose.keypoints)))
+            angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints)))
         except ValueError as e:
             print(e)
     global_angle = np.mean(angles)

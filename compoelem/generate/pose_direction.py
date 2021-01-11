@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from compoelem import visualize
-from compoelem.generate.bisection import get_bisect_cone, get_bisection_point, get_centroids_for_bisection
+from compoelem.generate.bisection import get_angle, get_bisection_cone, get_bisection_point, get_centroids_for_bisection, keypoint_to_point
 from compoelem.config import config
 from compoelem.detect.converter import k, p
 from compoelem.types import *
@@ -29,34 +29,8 @@ def get_pose_directions(poses: Poses) -> Sequence[PoseDirection]:
     return pose_directions
 
 def get_pose_direction(pose: Pose) -> PoseDirection:
-    # type 1
-    # left_bisection_keypoints: Sequence[Keypoint] = np.array(pose.keypoints)[[4,6,12]]
-    # left_base_point: Keypoint = pose.keypoints[6]
-    # right_bisection_keypoints: Sequence[Keypoint] = np.array(pose.keypoints)[[3,10,11]]
-    # right_base_point: Keypoint = pose.keypoints[10]
-    # if len(left_bisection_keypoints) == 3:
-    #     left_bisection = get_bisection_point(*left_bisection_keypoints)
-    # else:
-    #     raise ValueError('Left pose part is missing some points for pose calculation!')
-    # if len(right_bisection_keypoints) == 3:
-    #     right_bisection = get_bisection_point(*right_bisection_keypoints)
-    # else:
-    #     raise ValueError('Right pose part is missing some points for pose calculation!')
-
-    # left_pose_direction = PoseDirection(Point(k(left_base_point)), left_bisection)
-    # right_pose_direction = PoseDirection(Point(k(right_base_point)), right_bisection)
-
-    # type 2
     top_kp, middle_kp, bottom_kp = get_centroids_for_bisection(pose.keypoints)
-    middle_bisection = get_bisection_point(top_kp, middle_kp, bottom_kp)
-    cone = get_bisect_cone(top_kp, middle_kp, bottom_kp)
-    middle_pose_direction = PoseDirection(Point(k(middle_kp)), middle_bisection, cone)
-
-    # img = cv2.imread('/Users/Tilman/Documents/Programme/Python/forschungspraktikum/PoseBasedRetrievalDemo/src/API/data/intermediate_results/test.jpg')
-    # img = visualize.pose(pose, img)
-    # img = visualize.pose(Pose(keypoint_pairs), img, [0, 1, 2], "_m")
-    # #img = visualize.pose_direction(left_pose_direction, img, (255, 0, 0)) # blue
-    # #img = visualize.pose_direction(middle_pose_direction, img, (0, 255, 0)) # green
-    # #img = visualize.pose_direction(right_pose_direction, img, (0, 0, 255)) # red
-    # visualize.draw_window('pose_lines', img)
+    bisection_point = get_bisection_point(top_kp, middle_kp, bottom_kp)
+    bisection_cone = get_bisection_cone(top_kp, middle_kp, bottom_kp)
+    middle_pose_direction = PoseDirection(keypoint_to_point(middle_kp), keypoint_to_point(bisection_point), bisection_cone)
     return middle_pose_direction
