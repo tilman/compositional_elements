@@ -96,6 +96,8 @@ def getAngleGroundNormed(a,b,c):
     else:
         return (np.deg2rad(360+CORRECTION_ANGLE)-normed_angle)
 
+def keypoint_to_np(keypoint: Keypoint) -> np.ndarray:
+    return np.array([keypoint.x, keypoint.y])
 
 #previuosly angleMapper
 def get_mapped_angle(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) -> float:

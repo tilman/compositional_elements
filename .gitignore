@@ -1,4 +1,5 @@
 resources
+playground
 resources/*
 build
 # Byte-compiled / optimized / DLL files
