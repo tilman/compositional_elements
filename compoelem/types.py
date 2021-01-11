@@ -4,6 +4,8 @@ import numpy as np
 
 from shapely.geometry import LineString, Point, Polygon
 
+Img = Sequence[Sequence[int]]
+
 class Keypoint:
     x: int
     y: int

@@ -3,8 +3,7 @@ import cv2
 
 from compoelem.generate import global_action, pose_abstraction, pose_direction
 from compoelem.visualize import visualize
-from compoelem.detect import converter
-from compoelem.detect.openpose_wrapper import get_poses
+from compoelem.detect import converter, openpose_wrapper
 from compoelem.detect.openpose.lib.utils.common import draw_humans
 
 def run_before():
@@ -15,7 +14,8 @@ def run_before():
 
 def test_e2e():
     script_dir, img, img_path = run_before()
-    humans = get_poses(img)
+    img = converter.resize(img)
+    humans = openpose_wrapper.get_poses(img)
     poses = converter.openpose_to_compoelem_poses(humans, *img.shape[:2])
     img = draw_humans(img, humans)
     print(poses)

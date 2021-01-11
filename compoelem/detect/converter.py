@@ -1,8 +1,17 @@
+import cv2
+from numpy.lib.arraypad import _set_wrap_both
 from compoelem.detect.openpose.lib.utils.common import BodyPart, Human
 from typing import Tuple
+from compoelem.config import config
 
 from compoelem.types import *
 
+def resize(img: Img) -> Img:
+    new_width = config["new_fixed_width"]
+    height, width = img.shape[:2]
+    scale = new_width / width
+    dsize = (new_width, int(height * scale))
+    return cv2.resize(img, dsize)
 
 def hrnet_to_compoelem_poses(pose_data) -> Poses:
     poses: Poses = []

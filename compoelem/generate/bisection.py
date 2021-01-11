@@ -74,10 +74,11 @@ def get_bisect_cone(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) 
     return cone
 
 def getAngle(a,b,c):
-    ba = a - b
-    bc = c - b
-    cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
-    angle = np.arccos(cosine_angle)
+    # get a vektor with origin in (0,0) from points a and b by substracting Point a from Point b
+    ba = a - b # Vektor 1
+    bc = c - b # Vektor 2
+    # https://de.wikipedia.org/wiki/Skalarprodukt => winkel phi = arccos(...)
+    angle = np.arccos(np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc)))
     return angle
 
 # make it more simple by calculating getAngle for both directions (a,b,c and c,b,a and take the smaller result)
