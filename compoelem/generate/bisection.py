@@ -24,7 +24,7 @@ def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint
         Tuple[Keypoint, Keypoint, Keypoint]: top_kp, middle_kp, bottom_kp
     """
     bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(
-        filter(lambda x: not x[0].isNone or not x[1].isNone,
+        filter(lambda x: not (x[0].isNone or x[1].isNone),
             zip(
                 np.array(keypoints)[config["bisection"]["left_pose_points"]], 
                 np.array(keypoints)[config["bisection"]["right_pose_points"]]

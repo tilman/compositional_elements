@@ -1,5 +1,5 @@
 from .types import *
-from .generate.bisection import get_angle, get_bisection_point, get_angle_in_respect_to_x, get_bisection_point_from_angle
+from .generate.bisection import get_angle, get_bisection_cone, get_bisection_point, get_angle_in_respect_to_x, get_bisection_point_from_angle
 import cv2
 import numpy as np
 # import numpy.typing as npt
@@ -76,12 +76,10 @@ def update():
     img = pp(img, bisect_point, purple)
     img = pl(img, bisect_point, b, purple)
 
-    cone1 = get_bisection_point_from_angle(a,b, phi + np.deg2rad(20), 2)
-    img = pp(img, cone1, yellow)
-    img = pl(img, cone1, b, yellow)
-    cone2 = get_bisection_point_from_angle(a,b, phi - np.deg2rad(20), 2)
-    img = pp(img, cone2, yellow)
-    img = pl(img, cone2, b, yellow)
+    cone = get_bisection_cone(a,b,c)
+    # img = pp(img, cone2, yellow)
+    # img = pl(img, cone2, b, yellow)
+    cv2.polylines(img, [np.array(cone.exterior.coords[:-1], np.int)], True, yellow, 1)
 
     # done => get_angle_ground_normed
     # b_horizontal_reference = get_horizantal_b_reference(a,b,c)

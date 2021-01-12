@@ -4,11 +4,11 @@ from typing import Sequence
 import torch
 import torch.nn as nn
 
-from compoelem.detect import converter
-from compoelem.detect.openpose.lib.network.rtpose_vgg import get_model
-from compoelem.detect.openpose.evaluate.coco_eval import get_outputs
-from compoelem.detect.openpose.lib.utils.paf_to_pose import paf_to_pose_cpp
-from compoelem.detect.openpose.lib.config import cfg, update_config
+from . import converter
+from .openpose.lib.network.rtpose_vgg import get_model
+from .openpose.evaluate.coco_eval import get_outputs
+from .openpose.lib.utils.paf_to_pose import paf_to_pose_cpp
+from .openpose.lib.config import cfg, update_config
 
 
 parser = argparse.ArgumentParser()
@@ -22,6 +22,12 @@ parser.add_argument('opts',
                     nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
+
+# args = {
+#     "cfg":'./compoelem/detect/openpose/experiments/vgg19_368x368_sgd.yaml',
+#     "opts":[],
+#     "weight":'./compoelem/detect/openpose/pose_model.pth',
+# }
 # update config file
 update_config(cfg, args)
 

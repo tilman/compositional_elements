@@ -16,7 +16,7 @@ def pose_lines(pose_lines: Sequence[PoseLine], img=None) -> Img:
     if img is None:
         img = create_blank()
     for pose_line in pose_lines:
-        cv2.line(img, p(pose_line.top), p(pose_line.bottom), (0,255,0), 5)
+        cv2.line(img, p(pose_line.top), p(pose_line.bottom), (0,255,0), 4)
     return img
 
 def global_action_lines(global_action_lines: Sequence[GlobalActionLine], img=None) -> Img:
@@ -28,7 +28,7 @@ def global_action_lines(global_action_lines: Sequence[GlobalActionLine], img=Non
         #     visible_intersection = cast(Polygon, visible_area.intersection(ga_line.intersection_shape))
         #     cv2.drawContours(img, [np.array(visible_intersection.exterior.coords[:], np.int)], 0, (150,100,100), -1)
         #     # cv2.drawContours(img, [np.array(ga_line.intersection_shape.exterior.coords[:], np.int)], 0, (150,100,100), -1)
-        cv2.line(img, p(ga_line.start), p(ga_line.end), (0,255,255), 5)
+        cv2.line(img, p(ga_line.start), p(ga_line.end), (0,255,255), 4)
         cv2.circle(img, p(ga_line.center), 10, (255,255,0), -1)
     return img
 
@@ -36,9 +36,9 @@ def pose_triangles(pose_lines: Sequence[PoseTriangle], img=None) -> Img:
     if img is None:
         img = create_blank()
     for pose_triangle in pose_lines:
-        cv2.line(img, k(pose_triangle.top), k(pose_triangle.left), (0,255,255), 5)
-        cv2.line(img, k(pose_triangle.top), k(pose_triangle.right), (0,255,255), 5)
-        cv2.line(img, k(pose_triangle.left), k(pose_triangle.right), (0,255,255), 5)
+        cv2.line(img, k(pose_triangle.top), k(pose_triangle.left), (0,255,255), 3)
+        cv2.line(img, k(pose_triangle.top), k(pose_triangle.right), (0,255,255), 3)
+        cv2.line(img, k(pose_triangle.left), k(pose_triangle.right), (0,255,255), 3)
     return img
 
 def boundingboxes(boxes, scores, img=None) -> Img:
@@ -75,7 +75,7 @@ def pose(pose: Pose, img=None, keypoint_filter=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,
 def point_tuple_line(tuple: Tuple[Point, Point], img=None) -> Img:
     if img is None:
         img = create_blank()
-    cv2.line(img, p(tuple[0]), p(tuple[1]), (0,255,255), 5)
+    cv2.line(img, p(tuple[0]), p(tuple[1]), (0,255,255), 4)
     return img
 
 def pose_directions(pose_directions: Sequence[PoseDirection], img=None, color=(0,255,255), plotShape=False) -> Img:
@@ -88,15 +88,15 @@ def pose_directions(pose_directions: Sequence[PoseDirection], img=None, color=(0
 def pose_direction(dir: PoseDirection, img=None, color=(0,255,255), plotShape=False) -> Img:
     if img is None:
         img = create_blank()
-    cv2.arrowedLine(img, p(dir.start), p(dir.end), color, 5)
+    cv2.arrowedLine(img, p(dir.start), p(dir.end), color, 2)
     if plotShape:
-        cv2.polylines(img, [np.array(dir.cone.exterior.coords[:-1], np.int)], True, (255,0,255), 2)
+        cv2.polylines(img, [np.array(dir.cone.exterior.coords[:-1], np.int)], True, (255,0,255), 1)
     return img
 
 def pose_cluster_hull(cluster_hull: Polygon, img=None, color=(0,255,255)) -> Img:
     if img is None:
         img = create_blank()
-    cv2.polylines(img, [np.array(cluster_hull.exterior.coords[:-1], np.int)], False, color, 3)
+    cv2.polylines(img, [np.array(cluster_hull.exterior.coords[:-1], np.int)], False, color, 2)
     return img
 
 def draw_window(name: str, img: Img):

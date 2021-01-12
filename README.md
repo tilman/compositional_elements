@@ -37,4 +37,4 @@ See [docs](https://tilman.github.io/compoelem/compoelem/) and [tests](tests/test
 
 ## Build the documentation:
 `pip install pdoc3`
-`rm -rf docs && pdoc --html --output-dir docs --config show_source_code=False compoelem`
+`rm -rf docs && pdoc3 --html --output-dir docs --config show_source_code=False compoelem`
