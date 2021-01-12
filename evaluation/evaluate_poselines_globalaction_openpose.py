@@ -10,7 +10,7 @@ from compoelem.detect.openpose_wrapper import get_poses
 from compoelem.detect.openpose.lib.utils.common import draw_humans
 
 INPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/old_icc/icc_images_imdahl/"
-OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compoelem/v0.0.5_resized_10.01.21/icc_images_imdahl"
+OUTPUT_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/evaluation/compoelem/v0.0.6_v0.0.6_conesc30_coneop80_negGlobalAngle_12.01.21/icc_images_imdahl"
 
 def get_icc(output_dir, img_path):
     basename = os.path.basename(img_path)

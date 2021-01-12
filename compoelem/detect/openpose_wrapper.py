@@ -40,6 +40,6 @@ model.eval()
 def get_poses(img: Sequence[Sequence[float]]) -> Sequence[Human]:
     with torch.no_grad():
         paf, heatmap, im_scale = get_outputs(img, model,  'rtpose')
-    print(im_scale)
+    # print(im_scale)
     humans = paf_to_pose_cpp(heatmap, paf, cfg)
     return humans

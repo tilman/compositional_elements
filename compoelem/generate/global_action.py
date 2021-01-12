@@ -68,7 +68,7 @@ def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
             angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints)))
         except ValueError as e:
             print(e)
-    global_angle = np.mean(angles)
+    global_angle = np.mean(angles) * -1
     # GlobalActionLine(start, end, center, area)
     global_action_lines = [GlobalActionLine(cast(Point, v.shape.centroid), global_angle, v.shape.area, v.shape) for v in cone_intersections]
     return global_action_lines

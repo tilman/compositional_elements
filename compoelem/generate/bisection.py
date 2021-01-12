@@ -115,7 +115,7 @@ def get_horizantal_b_reference(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp:
 def get_bisection_cone(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) -> Polygon:
     cone_offset_angle = np.deg2rad(int(config["bisection"]["cone_opening_angle"])/2)
     cone_scale_factor = float(config["bisection"]["cone_scale_factor"])
-    print(cone_offset_angle, cone_scale_factor)
+    # print(cone_offset_angle, cone_scale_factor)
     phi = get_angle(top_kp, middle_kp, bottom_kp) - np.deg2rad(int(config["bisection"]["correction_angle"]))
     cone1 = get_bisection_point_from_angle(top_kp, middle_kp, phi + cone_offset_angle, cone_scale_factor)
     cone2 = get_bisection_point_from_angle(top_kp, middle_kp, phi - cone_offset_angle, cone_scale_factor)
