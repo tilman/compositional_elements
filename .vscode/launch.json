@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "evaluation script",
+            "type": "python",
+            "request": "launch",
+            "module": "evaluation.evaluate_poselines_globalaction_openpose"
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",

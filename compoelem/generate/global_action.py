@@ -53,6 +53,8 @@ def get_filtered_cone_intersections(poses) -> Sequence[ConeIntersection]:
     """
     pose_directions = get_pose_directions(poses)
     combination_intersections = get_cone_combination_intersections(pose_directions)
+    if len(combination_intersections) == 0:
+        return []
     # since combination_intersections is ordered. The combi_length of the last entry will always be the highest combi_length
     filtered_combi_length = combination_intersections[-1].cone_combination_length
     filtered_cone_intersections = [v for v in combination_intersections if v.cone_combination_length == filtered_combi_length]

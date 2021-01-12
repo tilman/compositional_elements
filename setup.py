@@ -1,9 +1,9 @@
 from setuptools import find_packages, setup
 NAME = 'compoelem'
-VERSION = '0.0.3'
+VERSION = "0.0.9"
 setup(
     name=NAME,
-    packages=['compoelem', 'compoelem.generate', 'compoelem.visualize', 'compoelem.detect', 'compoelem.detect.openpose', 'compoelem.detect.openpose.lib'],#'compoelem.compare'],
+    packages=['compoelem', 'compoelem.generate', 'compoelem.visualize', 'compoelem.detect', 'compoelem.detect.openpose', 'compoelem.detect.openpose.lib'],
     include_package_data=True,
     version=VERSION,
     description='Library for generating and comparing compositional elements from art historic images.',
