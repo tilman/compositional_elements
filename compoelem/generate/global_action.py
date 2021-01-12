@@ -58,17 +58,27 @@ def get_filtered_cone_intersections(poses) -> Sequence[ConeIntersection]:
     filtered_cone_intersections = [v for v in combination_intersections if v.cone_combination_length == filtered_combi_length]
     return filtered_cone_intersections
 
-def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
-    cone_intersections = get_filtered_cone_intersections(poses)
-    # TODO get angle by mean of only the participating combinations, 
-    # we could therefore filter the poses in the nextline with an if condition
+def get_combined_angle(poses) -> float:
     angles: Sequence[float] = []
     for pose in poses:
         try:
             angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints)))
         except ValueError as e:
             print(e)
-    global_angle = np.mean(angles) * -1
-    # GlobalActionLine(start, end, center, area)
-    global_action_lines = [GlobalActionLine(cast(Point, v.shape.centroid), global_angle, v.shape.area, v.shape) for v in cone_intersections]
+    return np.mean(angles) * -1
+
+def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
+    cone_intersections = get_filtered_cone_intersections(poses)
+    global_action_lines = []
+    for cone_intersection in cone_intersections:
+        filtered_participating_poses = np.array(poses)[np.array(cone_intersection.cone_combination)]
+        combined_angle = get_combined_angle(filtered_participating_poses)
+        global_action_lines.append(
+            GlobalActionLine(
+                cast(Point, cone_intersection.shape.centroid),
+                combined_angle,
+                cone_intersection.shape.area,
+                cone_intersection.shape
+            )
+        )
     return global_action_lines
