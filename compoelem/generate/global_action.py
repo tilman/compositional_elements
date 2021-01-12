@@ -59,6 +59,14 @@ def get_filtered_cone_intersections(poses) -> Sequence[ConeIntersection]:
     return filtered_cone_intersections
 
 def get_combined_angle(poses) -> float:
+    """calculates and combines the bisection angle of all input poses.
+
+    Args:
+        poses ([type]): Openpose transformed output poses
+
+    Returns:
+        float: angle in radians
+    """
     angles: Sequence[float] = []
     for pose in poses:
         try:
@@ -68,6 +76,18 @@ def get_combined_angle(poses) -> float:
     return np.mean(angles) * -1
 
 def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
+    """calculate global action lines. Therefore we calculate the intersecting pose direction cones and take the centroid of
+    the intersection with the most cones participating. From these participating cones we also calculate the angle from the
+    bisection vector and average it together to calculate the angle for the global action line. The line is then drawn trough
+    the intersection area centroid with this newly calculated centroid.
+
+    Args:
+        poses ([type]): Openpose transformed output poses
+
+    Returns:
+        Sequence[GlobalActionLine]: a single or multiple global action lines. Mostly a single line but if there are multiple 
+        different intersection areas with the same amount of cones participating we take all of them.
+    """
     cone_intersections = get_filtered_cone_intersections(poses)
     global_action_lines = []
     for cone_intersection in cone_intersections:
