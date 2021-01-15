@@ -1,5 +1,7 @@
 keypoint_names: ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LKnee', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 new_fixed_width: 1000
+compare:
+  no_pose_line_penalty: 800
 bisection:
   correction_angle: 20
   cone_opening_angle: 80
