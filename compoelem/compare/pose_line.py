@@ -41,3 +41,30 @@ def compare_pose_lines(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> float:
         return nearest_pose_line_sum + penalty_sum
     else:
         return nearest_pose_line_sum
+
+# second approach to compare the poselines. 
+# Idea is to get an approaximation of the bipartite minimum graph of pose combinations weighted by distance
+# => then filter out all poses above a threshold and result will be: (pose count matched)/max(pose count query img, pose count target img)
+def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[float, float, float]:
+    if(len(b) == 0 or len(a) == 0):
+        return (0, 10000) # since there are 0 poses to match
+    pose_dist_tuple: Sequence[Tuple[float, int, int]] = [] # dist, query_idx, target_idx
+    for query_idx, query_pose_line in enumerate(a):
+        for target_idx, target_pose_line in enumerate(b):
+            pose_dist_tuple.append((compare_pose_line(query_pose_line, target_pose_line), query_idx, target_idx))
+    pose_dist_tuple_np = np.array(pose_dist_tuple)
+    pose_dist_tuple_sorted = pose_dist_tuple_np[np.argsort(pose_dist_tuple_np[:,0], axis=0)]
+    used_query_pose_idx = []
+    used_target_pose_idx = []
+    res = []
+    for t in pose_dist_tuple_sorted:
+        if t[1] not in used_query_pose_idx and t[2] not in used_target_pose_idx:
+            res.append(t)
+            used_query_pose_idx.append(t[1])
+            used_target_pose_idx.append(t[2])
+    res_np = np.array(res)
+    res_filtered = res_np[res_np[:,0] < 100] #TODO add 1 to config params
+    mean_distance_hits = np.sum(res_filtered[:,0])/len(res_filtered) if len(res_filtered) > 0 else 10000
+    hit_ratio = len(res_filtered) / max(len(a), len(b))
+    print(len(res_filtered), len(a), len(b), hit_ratio, mean_distance_hits)
+    return (1-hit_ratio)*mean_distance_hits, hit_ratio, mean_distance_hits
