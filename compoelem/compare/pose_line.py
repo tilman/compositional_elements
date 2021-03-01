@@ -47,7 +47,7 @@ def compare_pose_lines(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> float:
 # => then filter out all poses above a threshold and result will be: (pose count matched)/max(pose count query img, pose count target img)
 def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[float, float, float]:
     if(len(b) == 0 or len(a) == 0):
-        return (0, 10000) # since there are 0 poses to match
+        return (10000, 0, 10000) # since there are 0 poses to match
     pose_dist_tuple: Sequence[Tuple[float, int, int]] = [] # dist, query_idx, target_idx
     for query_idx, query_pose_line in enumerate(a):
         for target_idx, target_pose_line in enumerate(b):
