@@ -63,7 +63,8 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
             used_query_pose_idx.append(t[1])
             used_target_pose_idx.append(t[2])
     res_np = np.array(res)
-    res_filtered = res_np[res_np[:,0] < 100] #TODO add 1 to config params
+    res_filtered = res_np[res_np[:,0] < 0.1] #TODO add 100 to config params
+    # res_filtered = res_np[res_np[:,0] < 100] #TODO add 100 to config params
     mean_distance_hits = np.sum(res_filtered[:,0])/len(res_filtered) if len(res_filtered) > 0 else 10000
     hit_ratio = len(res_filtered) / max(len(a), len(b))
     print(len(res_filtered), len(a), len(b), hit_ratio, mean_distance_hits)

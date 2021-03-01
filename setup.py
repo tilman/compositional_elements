@@ -3,7 +3,7 @@ NAME = 'compoelem'
 VERSION = "0.0.9"
 setup(
     name=NAME,
-    packages=['compoelem', 'compoelem.generate', 'compoelem.visualize', 'compoelem.detect', 'compoelem.detect.openpose', 'compoelem.detect.openpose.lib'],
+    packages=['compoelem', 'compoelem.generate', 'compoelem.compare', 'compoelem.visualize', 'compoelem.detect', 'compoelem.detect.openpose', 'compoelem.detect.openpose.lib'],
     include_package_data=True,
     version=VERSION,
     description='Library for generating and comparing compositional elements from art historic images.',
