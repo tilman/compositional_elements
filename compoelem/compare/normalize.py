@@ -17,10 +17,8 @@ def minmax_norm(lines: Sequence[PoseLine], x_min:float, x_base:float, y_min:floa
         res_lines.append(PoseLine(top_new, bottom_new))
     return res_lines
 
-def minmax_norm_by_imgrect(lines: Sequence[PoseLine], file_path: str) -> Sequence[PoseLine]:
-    img = cv2.imread(file_path)
-    img = converter.resize(img)
-    y_base, x_base, _ = img.shape #type: ignore
+def minmax_norm_by_imgrect(lines: Sequence[PoseLine], width, height) -> Sequence[PoseLine]:
+    y_base, x_base, = height, width
     return minmax_norm(lines, 0, x_base, 0, y_base)
 
 def minmax_norm_by_bbox(lines: Sequence[PoseLine]) -> Sequence[PoseLine]:
