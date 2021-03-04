@@ -10,11 +10,12 @@ git submodule update --recursive
 ```
 ### Build and Setup Openpose
 Installation routine could change with an update of the git submodule. Tested with git commit b3e8abf from 20 Dec 2019. For an up to date installation procedure visit: https://github.com/tensorboy/pytorch_Realtime_Multi-Person_Pose_Estimation
-Depends on swig therfore run `apt install swig` for ubuntu or `brew install swig` for Mac OSX.
+Depends on swig therfore run `apt install swig` or `conda install swig` for ubuntu or `brew install swig` for Mac OSX.
 Also make sure to download the model and place it under `compoelem/compoelem/detect/openpose/pose_model.pth`
 ```bash
-pip install -r requirements.txt
+conda install swig
 cd compoelem/detect/openpose
+pip install -r requirements.txt
 cd lib/pafprocess; sh make.sh
 ```
 ## Installation of the library:
