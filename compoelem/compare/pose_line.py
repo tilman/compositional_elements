@@ -65,11 +65,16 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
     res_np =  np.array(res)
     max_pose_count = max(len(a), len(b))
     threshold = 1/(max_pose_count * 2)+0.05
-    res_filtered = res_np[res_np[:,0] < 0.15] #TODO add 0.15 to config params
+    res_filtered = res_np[res_np[:,0] < config["compare"]["filter_threshold"]]
     # res_filtered = res_np[res_np[:,0] < 0.1] #TODO add 100 to config params
     # res_filtered = res_np[res_np[:,0] < 100] #TODO add 100 to config params
     # res_filtered = res_np[res_np[:,0] < threshold] #TODO another idea: make threshold dynamic and depend on amount of poses in image => reason: more people in one image means that chances are high for a matching pose. To reduce chance => reduce the threshold
-    mean_distance_hits = np.sum(res_filtered[:,0])/len(res_filtered) if len(res_filtered) > 0 else 10000
+    if len(res_filtered) == 0:
+        mean_distance_hits = 0
+    else:
+        mean_distance_hits = config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)
+        # md ist gering => guter match
+        # md ist hoch => schlechter match
     hit_ratio = len(res_filtered) / max(len(a), len(b))
     print(threshold, len(res_filtered), len(a), len(b), hit_ratio, mean_distance_hits)
-    return (1-hit_ratio)*mean_distance_hits, hit_ratio, mean_distance_hits
+    return (hit_ratio * mean_distance_hits), hit_ratio, mean_distance_hits
