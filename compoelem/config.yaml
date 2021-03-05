@@ -2,7 +2,7 @@ keypoint_names: ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', '
 new_fixed_width: 1000
 compare:
   no_pose_line_penalty: 800
-  filter_threshold: 0.15
+  filter_threshold: 0.35
   mean_dist_hit_penalty: 0.1
 bisection:
   correction_angle: 20

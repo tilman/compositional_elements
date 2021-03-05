@@ -4,6 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "name": "evaluate compare poselines",
+            "type": "python",
+            "request": "launch",
+            "module": "evaluation.evaluate_compare_poselines"
+        },
         {
             "name": "create icontitle datastore",
             "type": "python",
@@ -21,6 +28,12 @@
             "type": "python",
             "request": "launch",
             "module": "playground.similarity_heatmap"
+        },
+        {
+            "name": "play heatmap 2",
+            "type": "python",
+            "request": "launch",
+            "module": "playground.similarity_heatmap_2"
         },
         {
             "name": "evaluation script",

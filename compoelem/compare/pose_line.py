@@ -76,5 +76,5 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
         # md ist gering => guter match
         # md ist hoch => schlechter match
     hit_ratio = len(res_filtered) / max(len(a), len(b))
-    print(threshold, len(res_filtered), len(a), len(b), hit_ratio, mean_distance_hits)
+    # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, mean_distance_hits)
     return (hit_ratio * mean_distance_hits), hit_ratio, mean_distance_hits

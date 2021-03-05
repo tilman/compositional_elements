@@ -22,7 +22,7 @@ from compoelem.detect.openpose.lib.utils.common import draw_humans
 #     # "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/old_icc/icc_images_imdahl/"
 #     "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/til_selection_icon_title_dataset_2"
 # ]
-DATASTORE_FILE = os.path.join(os.path.dirname(__file__), "./datastore_icon_title.pkl")
+DATASTORE_FILE = os.path.join(os.path.dirname(__file__), "./datastore_icon_title_2.pkl")
 try:
     datastore = pickle.load(open(DATASTORE_FILE, "rb"))
 except FileNotFoundError as e:
@@ -45,6 +45,9 @@ def download_img(row):
     img = cv2.imread("tmp.jpg")
     return img
 def compute_non_existent_images(row):
+    if(row["class"] == "still-life"):
+        print("skipping still-life images")
+        return
     img_name = row["image"]
     if(img_name in datastore):
         return
@@ -76,9 +79,9 @@ def compute_non_existent_images(row):
 #     compute_non_existent_images(img_path)
 
 p = Path(__file__).with_name('data_clean.csv')
+fulllist = []
 with p.open('r') as csvfile:
     reader = csv.DictReader(csvfile)
-    fulllist = []
     for row in reader:
         fulllist.append(row)
     for row in tqdm(fulllist, total=len(fulllist)):
