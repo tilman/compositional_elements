@@ -6,6 +6,12 @@
     "configurations": [
 
         {
+            "name": "rebalance datastore",
+            "type": "python",
+            "request": "launch",
+            "module": "evaluation.rebalance_icon_title_datastore"
+        },
+        {
             "name": "evaluate compare poselines",
             "type": "python",
             "request": "launch",
