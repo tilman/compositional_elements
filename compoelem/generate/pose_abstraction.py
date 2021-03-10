@@ -27,13 +27,13 @@ def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
     return pose_triangles
 
 def get_pose_abstraction(pose: Pose) -> PoseLine:
-    try:
-        triangle = get_pose_triangle(pose)
-        poseline = get_pose_line(triangle)
-        return poseline
-    except ValueError:
-        #return PoseLine(top_point, bottom_point)
-        return get_fallback_pose_line(pose)
+    # try:
+    triangle = get_pose_triangle(pose)
+    poseline = get_pose_line(triangle)
+    return poseline
+    # except AssertionError:
+    #     #return PoseLine(top_point, bottom_point)
+    #     return get_fallback_pose_line(pose)
 
 def get_fallback_pose_line(pose: Pose) -> PoseLine:
     pose_keypoints = np.array(pose.keypoints, dtype=Keypoint)
@@ -66,11 +66,13 @@ def get_pose_triangle(pose: Pose) -> PoseTriangle:
     right_keypoints = list(filter(lambda kp: not kp.isNone, right_keypoint_selection))
     top_keypoints = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))
     if(len(top_keypoints) == 0):
-        raise AssertionError('missing valid top keypoints for triangle calculation!')
+        raise ValueError('missing valid top keypoints for triangle calculation!')
     if(len(left_keypoints) == 0):
         raise ValueError('missing valid left keypoints for triangle calculation!')
+        # raise AssertionError('missing valid left keypoints for triangle calculation!')
     if(len(right_keypoints) == 0):
         raise ValueError('missing valid right keypoints for triangle calculation!')
+        # raise AssertionError('missing valid right keypoints for triangle calculation!')
 
     return PoseTriangle(top_keypoints[0], right_keypoints[0], left_keypoints[0])
 
