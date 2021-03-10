@@ -8,7 +8,7 @@ from compoelem.types import *
 
 def resize(img: Img) -> Img:
     new_width = config["new_fixed_width"]
-    height, width = img.shape[:2]
+    height, width = img.shape[:2] #type: ignore
     scale = new_width / width
     dsize = (new_width, int(height * scale))
     return cv2.resize(img, dsize)

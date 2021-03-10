@@ -9,13 +9,14 @@ try:
 except FileNotFoundError as e:
     datastore = {}
 
+SIZE = 100
 classes = {
     #classname: keys[]
     "annunciation":[],
     "nativity":[],
     "adoration":[],
     "baptism":[],
-    "rape":[],
+    #"rape":[],
     "virgin and child":[],
 }
 
@@ -29,8 +30,8 @@ rebalanced_datastore = {}
 
 for c in classes.keys():
     keys = np.array(classes[c])
-    random_keys = keys[np.random.choice(len(keys), size=100, replace=False)]
+    random_keys = keys[np.random.choice(len(keys), size=SIZE, replace=False)]
     for rk in random_keys:
         rebalanced_datastore[rk] = datastore[rk]
-
-pickle.dump(rebalanced_datastore, open("./rebalanced_datastore_icon_title_2_rand2.pkl", "wb"))
+#v3 get rid of rape class
+pickle.dump(rebalanced_datastore, open("./rebalanced_datastore_icon_title_3.pkl", "wb"))

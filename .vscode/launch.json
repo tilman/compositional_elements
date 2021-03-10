@@ -6,6 +6,12 @@
     "configurations": [
 
         {
+            "name": "test pose line",
+            "type": "python",
+            "request": "launch",
+            "module": "playground.test_pose_line"
+        },
+        {
             "name": "rebalance datastore",
             "type": "python",
             "request": "launch",

@@ -1,3 +1,4 @@
+from typing import Any
 from compoelem.types import *
 from compoelem.config import config
 
@@ -23,7 +24,7 @@ def find_nearest_pose_line_distance(target: PoseLine, lines: Sequence[PoseLine])
         mean_distance = compare_pose_line(line, target)
         comparisons.append((mean_distance, idx))
     comparisons = np.array(comparisons)
-    nearest_pose_line = comparisons[np.argmin(comparisons[:,0])]
+    nearest_pose_line = comparisons[np.argmin(comparisons[:,0])] #type: ignore
     return nearest_pose_line
 
 def compare_pose_lines(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> float:
@@ -33,8 +34,8 @@ def compare_pose_lines(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> float:
     for query_pose_line in a:
         nearest_pose_line_distances.append(find_nearest_pose_line_distance(query_pose_line, b))
     nearest_pose_line_distances = np.array(nearest_pose_line_distances)
-    nearest_pose_line_sum = np.sum(nearest_pose_line_distances[:, 0])
-    penalty_pose_line_indices = [idx for idx in range(0,len(b)) if idx not in nearest_pose_line_distances[:,1]]
+    nearest_pose_line_sum = np.sum(nearest_pose_line_distances[:, 0]) #type: ignore
+    penalty_pose_line_indices = [idx for idx in range(0,len(b)) if idx not in nearest_pose_line_distances[:,1]] #type: ignore
     penalty_pose_lines: Sequence[PoseLine] = np.array(b)[penalty_pose_line_indices]
     if len(penalty_pose_lines) > 0:
         penalty_sum = np.sum(np.array([find_nearest_pose_line_distance(line, a) for line in penalty_pose_lines])[:,0]) 
@@ -47,7 +48,7 @@ def compare_pose_lines(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> float:
 # => then filter out all poses above a threshold and result will be: (pose count matched)/max(pose count query img, pose count target img)
 def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[float, float, float]:
     if(len(b) == 0 or len(a) == 0):
-        return (10000, 0, 10000) # since there are 0 poses to match
+        return (0, 0, 0) # since there are 0 poses to match
     pose_dist_tuple: Sequence[Tuple[float, int, int]] = [] # dist, query_idx, target_idx
     for query_idx, query_pose_line in enumerate(a):
         for target_idx, target_pose_line in enumerate(b):
@@ -70,11 +71,20 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
     # res_filtered = res_np[res_np[:,0] < 100] #TODO add 100 to config params
     # res_filtered = res_np[res_np[:,0] < threshold] #TODO another idea: make threshold dynamic and depend on amount of poses in image => reason: more people in one image means that chances are high for a matching pose. To reduce chance => reduce the threshold
     if len(res_filtered) == 0:
-        mean_distance_hits = 0
+        neg_mean_distance_hits = 0
     else:
-        mean_distance_hits = config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)
+        neg_mean_distance_hits = config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)
         # md ist gering => guter match
         # md ist hoch => schlechter match
     hit_ratio = len(res_filtered) / max(len(a), len(b))
-    # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, mean_distance_hits)
-    return (hit_ratio * mean_distance_hits), hit_ratio, mean_distance_hits
+    # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
+    return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits
+
+# if we normalize by action center we are getting more than one normalization results because we can have multiple action centers
+# because we only want one similarity score for each pair of pictures we then filter for the lowest similarity between all combination of normalizations
+def filter_pose_line_ga_result(ga_res: Sequence[Tuple[float, float, float, str, Any]]) -> Tuple[float, float, float, str, Any]:
+    # combined_ratio, hit_ratio, mean_distance_hits, target_key, target_data
+    np_ga_res = np.array(ga_res)
+    ga_res_filtered_by_hit_ratio = np_ga_res[np_ga_res[:,1] == max(np.array(ga_res)[:,1])]
+    ga_res_filtered_by_mean_dist = ga_res_filtered_by_hit_ratio[ga_res_filtered_by_hit_ratio[:,2] == max(np.array(ga_res_filtered_by_hit_ratio)[:,2])]
+    return ga_res_filtered_by_mean_dist[0] # TODO: evaluate if it makes senso to return both at this point here

@@ -13,7 +13,7 @@ bisection:
   right_pose_points: [0,1,11]
 pose_abstraction:
   keypoint_list:
-    top: [0,1,14,15,16,17]
+    top: [0,1,14,15,16,17] #this will also define the selection order/priority
     right: [10,9,8]
     left: [13,12,11]
 keypoint_colors:

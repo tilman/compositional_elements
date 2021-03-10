@@ -3,7 +3,6 @@ from typing import Iterator, Tuple, cast
 import cv2
 import numpy as np
 
-from compoelem import visualize
 from compoelem.generate.bisection import get_angle, get_bisection_cone, get_bisection_point, get_centroids_for_bisection, keypoint_to_point
 from compoelem.config import config
 from compoelem.detect.converter import k, p
@@ -25,7 +24,7 @@ def get_pose_directions(poses: Poses) -> Sequence[PoseDirection]:
         try:
             pose_directions.append(get_pose_direction(pose))
         except ValueError:
-            print('skipping pose because of missing points')
+            print('skipping pose because of missing points') #TODO selbe optimierung wie bei trianlge abstraction
     return pose_directions
 
 def get_pose_direction(pose: Pose) -> PoseDirection:

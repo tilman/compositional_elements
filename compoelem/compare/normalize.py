@@ -34,3 +34,19 @@ def minmax_norm_by_bbox(lines: Sequence[PoseLine]) -> Sequence[PoseLine]:
     x_base = np.max(point_cloud[:,0]) - x_min
     y_base = np.max(point_cloud[:,1]) - y_min
     return minmax_norm(lines, x_min, x_base, y_min, y_base)
+
+def norm_by_global_action(pose_lines: Sequence[PoseLine], global_action_lines: Sequence[GlobalActionLine]) -> Sequence[Sequence[PoseLine]]:
+    if(len(global_action_lines) == 0):
+        return [[]] # TODO: evaluate if maybe "return [pose_lines]" is better
+    normed_poses_seq = []
+    for ga_line in global_action_lines:
+        if(len(pose_lines) == 0):
+            normed_poses_seq.append([])
+            continue
+        normed_poses = []
+        for pose_line in pose_lines:
+            new_top = np.array(pose_line.top.xy).flatten() - np.array(ga_line.center.xy).flatten()
+            new_bottom = np.array(pose_line.bottom.xy).flatten() - np.array(ga_line.center.xy).flatten()
+            normed_poses.append(PoseLine(Point(new_top), Point(new_bottom)))
+        normed_poses_seq.append(normed_poses)
+    return normed_poses_seq
