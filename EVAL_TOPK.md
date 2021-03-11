@@ -1,7 +1,9 @@
 # rebalanced_datastore_icon_title_2_noRape
+```
 setup: norm_by_global_action (2x loop), compare_pose_lines_2, filter_pose_line_ga_result
 config["compare"]["filter_threshold"] =  100
 time: 16:46
+```
 
 | class | p@1 | p@5 | p@10 | p@rel | mAP | r@1 | r@5 | r@10 | r@rel | mAR |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -14,9 +16,11 @@ time: 16:46
 
 
 # rebalanced_datastore_icon_title_2_noRape
+```
 setup: norm_by_global_action (2x loop), compare_pose_lines_2, filter_pose_line_ga_result
 config["compare"]["filter_threshold"] =  150
 time: 17:09
+```
 
 | class | p@1 | p@5 | p@10 | p@rel | mAP | r@1 | r@5 | r@10 | r@rel | mAR |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -29,9 +33,11 @@ time: 17:09
 
 
 # rebalanced_datastore_icon_title_2_noRape
+```
 setup: norm_by_global_action (2x loop), compare_pose_lines_2, filter_pose_line_ga_result
 config["compare"]["filter_threshold"] =  175
 time: 16:02
+```
 
 | class | p@1 | p@5 | p@10 | p@rel | mAP | r@1 | r@5 | r@10 | r@rel | mAR |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -44,9 +50,11 @@ time: 16:02
 
 
 # rebalanced_datastore_icon_title_2_noRape
+```
 setup: norm_by_global_action (2x loop), compare_pose_lines_2, filter_pose_line_ga_result
 config["compare"]["filter_threshold"] =  200
 time: 15:45
+```
 
 | class | p@1 | p@5 | p@10 | p@rel | mAP | r@1 | r@5 | r@10 | r@rel | mAR |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -59,9 +67,11 @@ time: 15:45
 
 
 # rebalanced_datastore_icon_title_2_noRape
+```
 setup: norm_by_global_action (2x loop), compare_pose_lines_2, filter_pose_line_ga_result
 config["compare"]["filter_threshold"] =  250
 time: 15:46
+```
 
 | class | p@1 | p@5 | p@10 | p@rel | mAP | r@1 | r@5 | r@10 | r@rel | mAR |
 | - | - | - | - | - | - | - | - | - | - | - |
