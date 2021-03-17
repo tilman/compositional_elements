@@ -263,4 +263,4 @@ time: 15:46
 | class | p@1 | p@5 | p@10 | p@50 | p@rel | mAP | r@1 | r@5 | r@10 | r@50 | r@rel | mAR |
 | - | - | - | - | - | - | - | - | - | - | - | - | - |
 | _places365_resnet50_feature_noFC, eucl_dist_flatten | 0.4621 | 0.3834 | 0.3510 | 0.2814 | 0.2533 | 0.2592 | 0.0049 | 0.0204 | 0.0373 | 0.1498 | 0.2533 | 0.5053 |
-| norm_by_global_action, filter_pose_line_ga_result, th150 | 0.3560 | 0.2960 | 0.2701 | 0.2699 | n/a | 0.2938 | 0.0036 | 0.0149 | 0.1364 | n/a | 0.2699 | 0.5051 |
+| norm_by_global_action, filter_pose_line_ga_result, th150 | 0.3560 | 0.2960 | 0.2701 | n/a | 0.2699 | 0.2938 | 0.0036 | 0.0149 | 0.1364 | n/a | 0.2699 | 0.5051 |
