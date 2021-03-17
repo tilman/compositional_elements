@@ -93,7 +93,7 @@ def score_retrievals(label, retrievals):
 
 
 # from compoelem.detect.openpose.lib.utils.common import draw_humans
-DATASTORE_CACHE_DIR = ".cache/"
+DATASTORE_CACHE_DIR = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem/.cache/"
 
 def download_img(row):
     #print(row)
