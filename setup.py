@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 NAME = 'compoelem'
-VERSION = "0.0.9"
+VERSION = "0.1.0"
 setup(
     name=NAME,
     packages=['compoelem', 'compoelem.generate', 'compoelem.compare', 'compoelem.visualize', 'compoelem.detect', 'compoelem.detect.openpose', 'compoelem.detect.openpose.lib'],

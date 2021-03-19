@@ -74,7 +74,8 @@ def get_combined_angle(poses) -> float:
         try:
             angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints)))
         except ValueError as e:
-            print(e)
+            #print(e)
+            pass
     return np.mean(angles) * -1
 
 def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:

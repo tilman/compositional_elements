@@ -1,3 +1,4 @@
+version: '0.1.0'
 keypoint_names: ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LKnee', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 new_fixed_width: 1000
 compare:

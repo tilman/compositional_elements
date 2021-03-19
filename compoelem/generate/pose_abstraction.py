@@ -13,7 +13,8 @@ def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
             pose_abstraction = get_pose_abstraction(pose)
             pose_lines.append(pose_abstraction)
         except ValueError as e:
-            print(e)
+            # print(e)
+            pass
     return pose_lines
 
 def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
@@ -23,7 +24,8 @@ def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
             triangle = get_pose_triangle(pose)
             pose_triangles.append(triangle)
         except ValueError as e:
-            print(e)
+            # print(e)
+            pass
     return pose_triangles
 
 def get_pose_abstraction(pose: Pose) -> PoseLine:

@@ -24,7 +24,8 @@ def get_pose_directions(poses: Poses) -> Sequence[PoseDirection]:
         try:
             pose_directions.append(get_pose_direction(pose))
         except ValueError:
-            print('skipping pose because of missing points') #TODO selbe optimierung wie bei trianlge abstraction
+            # print('skipping pose because of missing points') #TODO selbe optimierung wie bei trianlge abstraction
+            pass
     return pose_directions
 
 def get_pose_direction(pose: Pose) -> PoseDirection:

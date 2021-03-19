@@ -20,7 +20,11 @@ from compoelem.compare.pose_line import compare_pose_lines_2, filter_pose_line_g
 from compoelem.compare.normalize import minmax_norm_by_imgrect, norm_by_global_action
 
 
-
+# eval names:
+# filterGac -> filter_pose_line_ga_result
+# compare_pose_lines_2 -> cp2
+# norm_by_global_action -> gacNorm
+# minmax_norm_by_imgrect -> rectNorm
 
 
 def score_retrievals(label, retrievals):
