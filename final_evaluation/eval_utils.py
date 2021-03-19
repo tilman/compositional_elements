@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 def score_retrievals(label, retrievals):
     """
@@ -65,3 +66,17 @@ def score_retrievals(label, retrievals):
         "mAR": average_recall
     }
     return metrics
+
+def get_eval_dataframe(res_metrics):
+    avgerave_metrics = {}
+    for metricKey in res_metrics.keys():
+        if metricKey != "label":
+            if metricKey not in avgerave_metrics:
+                avgerave_metrics[metricKey] = {}
+            total_list = []
+            for label in res_metrics[metricKey].keys():
+                avgerave_metrics[metricKey][label] = np.mean(res_metrics[metricKey][label]) # mean for each class
+                total_list.append(res_metrics[metricKey][label])
+            avgerave_metrics[metricKey]["total (mean)"] = np.mean(list(avgerave_metrics[metricKey].values())) # mean of all classes means
+            avgerave_metrics[metricKey]["total (w. mean)"] = np.mean(np.array(total_list).flatten()) # mean of all values regardless of class (-> the same as class mean weighted by amount of datapoints in class)
+    return pd.DataFrame(avgerave_metrics)
