@@ -7,7 +7,9 @@ from tqdm import tqdm
 from . import eval_utils
 
 def eucl_dist_flatten(t1, t2):
-    return torch.dist(torch.flatten(t1), torch.flatten(t2))
+    a = t1.detach().numpy().flatten()
+    b = t2.detach().numpy().flatten()
+    return np.linalg.norm(a-b)
 
 def normal_cosine_dist(t1, t2):
     a = t1.detach().numpy().flatten()
