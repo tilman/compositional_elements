@@ -102,8 +102,8 @@ def eval_all_combinations(datastore, datastore_name):
     for sort_method in [lexsort_hr_md, lexsort_cr_hr]:
         for setup in [compare_setupA, compare_setupB]:
             for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
-                #for filter_threshold in [75, 100, 125, 150, 175, 200]:
-                for filter_threshold in [100]:
+                for filter_threshold in [75, 100, 125, 150, 175, 200]:
+                #for filter_threshold in [100]:
                     config["compare"]["filter_threshold"] = filter_threshold
                     start_time = datetime.datetime.now()
                     if setup.__name__ == 'compare_setupA':
