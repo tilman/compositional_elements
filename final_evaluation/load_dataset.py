@@ -19,8 +19,8 @@ except FileNotFoundError as e:
     datastore = {}
 
 dataset = np.array([[(className, img) for img in os.listdir( DATASET_ROOT+'/'+className)] for className in os.listdir( DATASET_ROOT )]).reshape(-1,2)
-
-print("input length", len(dataset))
+classes, counts = np.unique(dataset[:,0], return_counts=True)
+print("total count:",len(dataset)," per class counts",list(zip(classes, counts)))
 
 for className, imgName in tqdm(dataset, total=len(dataset)):
     filename = DATASET_ROOT+'/'+className+'/'+imgName

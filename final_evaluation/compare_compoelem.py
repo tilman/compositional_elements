@@ -64,7 +64,7 @@ def sort_distance_asc(compare_results):
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
     # for compare_method_name in ['eucl_dist_flatten', 'negative_cosine_dist_flatten']:
-    for filter_threshold in [100, 150, 175, 200, 250]:
+    for filter_threshold in [100, 125, 150, 175, 200, 250]:
         config["compare"]["filter_threshold"] = filter_threshold
         start_time = datetime.datetime.now()
         #experiment_id = "datastore: {}, setup: A, filter_threshold: {}, normalisation: norm_by_global_action, compare_method: compare_pose_lines_2, result_filter_method: filter_pose_line_ga_result, sort_method: lexsort[hit_ratio, mean_distance_hits]".format(datastore_name, filter_threshold)

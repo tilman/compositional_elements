@@ -11,15 +11,17 @@ from . import compare_compoelem
 
 #dataset_cleaned_extended_balanced = ceb_dataset -> combination of clean_data (all with _art classes nativity and virgin) dataset and files from prathmesn & ronak from 18.03.
 
+if os.uname().nodename == 'MBP-von-Tilman':
+    COMPOELEM_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem"
+elif os.uname().nodename == 'lme117':
+    COMPOELEM_ROOT = "/home/zi14teho/compositional_elements"
+else:
+    COMPOELEM_ROOT = os.getenv('COMPOELEM_ROOT')
 DATASTORE_NAME = "combined_datastore_ceb_dataset"
-DATASTORE_FILE = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem/final_evaluation/"+DATASTORE_NAME+".pkl" 
-EVAL_RESULTS_FILE = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem/final_evaluation/evaluation_log.pkl"
-DATASET_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/datasets/dataset_cleaned_extended_balanced"
+DATASTORE_FILE = COMPOELEM_ROOT+"/final_evaluation/"+DATASTORE_NAME+".pkl"
+EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log.pkl"
 
 datastore = pickle.load(open(DATASTORE_FILE, "rb"))
-dataset = np.array([[(className, img) for img in os.listdir( DATASET_ROOT+'/'+className)] for className in os.listdir( DATASET_ROOT )]).reshape(-1,2)
-classes, counts = np.unique(dataset[:,0], return_counts=True)
-print("total count:",len(dataset)," per class counts",list(zip(classes, counts)))
 
 try:
     evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
