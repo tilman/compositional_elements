@@ -65,7 +65,7 @@ def compare_by_name(compare_method_name, featuremap_key, query_data, target_data
     raise NameError("provided compare_method_name does not exist")
     
 
-def eval_all_compare_methods(datastore, datastore_name, featuremap_key):
+def eval_all_combinations(datastore, datastore_name, featuremap_key):
     all_res_metrics = []
     for compare_method_name in ['eucl_dist_flatten', 'negative_cosine_dist_flatten']:
         start_time = datetime.datetime.now()

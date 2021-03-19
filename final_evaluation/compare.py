@@ -7,6 +7,7 @@ import datetime
 from tqdm.std import tqdm
 
 from . import compare_deepfeatures
+from . import compare_compoelem
 
 #dataset_cleaned_extended_balanced = ceb_dataset -> combination of clean_data (all with _art classes nativity and virgin) dataset and files from prathmesn & ronak from 18.03.
 
@@ -23,13 +24,16 @@ print("total count:",len(dataset)," per class counts",list(zip(classes, counts))
 try:
     evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
     for log_entry in evaluation_log:
-        log_entry["new"] = False
+        # log_entry["new"] = False
+        pass
     shutil.copyfile(EVAL_RESULTS_FILE, EVAL_RESULTS_FILE+"_"+str(datetime.date.today())+"_backup")
 except FileNotFoundError as e:
     evaluation_log = []
-[evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_compare_methods(datastore, DATASTORE_NAME, "imageNet_vgg19_bn_features")] 
-pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
-[evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_compare_methods(datastore, DATASTORE_NAME, "places365_resnet50_feature_noFC")] 
+# [evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_combinations(datastore, DATASTORE_NAME, "imageNet_vgg19_bn_features")] 
+# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+# [evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_combinations(datastore, DATASTORE_NAME, "places365_resnet50_feature_noFC")] 
+# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+[evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
 pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 
 def get_new_evaluation_log():
