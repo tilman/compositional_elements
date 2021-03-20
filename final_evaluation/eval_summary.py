@@ -33,7 +33,7 @@ def get_short_eval_name(log_entry):
             aliasNames[log_entry["featuremap_key"]], 
             aliasNames[log_entry["compare_method"]],
         )
-    if "setup" in log_entry:
+    elif "setup" in log_entry:
         return "{}|{}|{}|{}|th{}".format(
             aliasNames[log_entry["setup"]], 
             aliasNames[log_entry["datastore_name"]], 
@@ -42,6 +42,8 @@ def get_short_eval_name(log_entry):
             aliasNames[log_entry["sort_method"]],
             " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
         )
+    else:
+        return log_entry["experiment_id"]
 
 #new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log))
 # log = new_log_entries
