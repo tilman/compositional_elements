@@ -74,8 +74,8 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
         neg_mean_distance_hits = 0
     else:
         neg_mean_distance_hits = config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)
-        # md ist gering => guter match
-        # md ist hoch => schlechter match
+        # md ist gering => guter match => neg md hoch
+        # md ist hoch => schlechter match => neg md gering
     hit_ratio = len(res_filtered) / max(len(a), len(b))
     # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
     return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits

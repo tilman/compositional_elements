@@ -119,6 +119,7 @@ def eval_all_combinations(datastore, datastore_name):
                     all_res_metrics.append({
                         "experiment_id": experiment_id,
                         "config": config,
+                        "filter_threshold": filter_threshold,
                         "datetime": start_time,
                         "setup": setup.__name__,
                         "eval_time_s": (datetime.datetime.now() - start_time).seconds,

@@ -40,7 +40,7 @@ def get_short_eval_name(log_entry):
             aliasNames[log_entry["norm_method"]], 
             #aliasNames[log_entry["compare_method"]],
             aliasNames[log_entry["sort_method"]],
-            log_entry["config"]["compare"]["filter_threshold"],
+            " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
         )
 
 #new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log))
