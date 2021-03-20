@@ -49,20 +49,24 @@ def compare_combinedSetupA(data, sort_method):
                 res_metrics[key][label].append(metrics[key])
     return eval_utils.get_eval_dataframe(res_metrics)
 
-
 def lexsort_nccr_nc_hr_asc(compare_results):
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,4], compare_results[:,3], compare_results[:,1]))]
+    return sorted_compare_results
+
+def lexsort_nc_hr_asc(compare_results):
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
+    sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,1]))]
     return sorted_compare_results
 
 def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNccrNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
+    experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_nccr_nc_hr_asc)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_nc_hr_asc)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,
@@ -72,4 +76,17 @@ def eval_all_combinations(datastore, datastore_name):
         "eval_dataframe": eval_dataframe,
         "new": True,
     })
+    # experiment_id = "cA|sortNccrNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
+    # print("EXPERIMENT:", experiment_id)
+    # start_time = datetime.datetime.now()
+    # eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_nccr_nc_hr_asc)
+    # all_res_metrics.append({
+    #     "experiment_id": experiment_id,
+    #     "config": config,
+    #     "datetime": start_time,
+    #     "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+    #     "datastore_name": datastore_name,
+    #     "eval_dataframe": eval_dataframe,
+    #     "new": True,
+    # })
     return all_res_metrics
