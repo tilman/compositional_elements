@@ -68,7 +68,7 @@ def sort_ncos(compare_results): #ncos2
     sorted_compare_results = compare_results[np.argsort(compare_results[:,3])]
     return sorted_compare_results
 
-def sort_nccr(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr   =>   should be cA|nccr
+def sort_nccr1(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr   =>   should be cA|nccr
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 4])]
     return sorted_compare_results
@@ -95,10 +95,9 @@ def lexsort_ncos_cr(compare_results): #sortNcosCr
     # secondary level of sorting: cr
     return sorted_compare_results
 
-#TODO sort ncos buckets -> dann cr
-def lexsort_ncosBuckets2_cr(compare_results): #sortNcosNCr
+def lexsort_ncosBuckets1_cr(compare_results): #sortNcosNCr
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
-    precision = 2 #sortNcosB2Cr
+    precision = 1 #sortNcosB2Cr
     ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
     # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
@@ -108,9 +107,9 @@ def lexsort_ncosBuckets2_cr(compare_results): #sortNcosNCr
     # secondary level of sorting: cr
     return sorted_compare_results
 
-def lexsort_ncosBuckets1_cr(compare_results): #sortNcosNCr
+def lexsort_ncosBuckets2_cr(compare_results): #sortNcosNCr
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
-    precision = 1 #sortNcosB2Cr
+    precision = 2 #sortNcosB2Cr
     ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
     # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
@@ -135,34 +134,24 @@ def lexsort_ncosBuckets3_cr(compare_results): #sortNcosNCr
 def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
-    start_time = datetime.datetime.now()
-    experiment_id = "cA|nccr2Fixed;A|ceb|normGlAC|th150;img_vggBn"
-    print("EXPERIMENT:", experiment_id)
-    start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr2)
-    all_res_metrics.append({
-        "experiment_id": experiment_id,
-        "config": config,
-        "datetime": start_time,
-        "eval_time_s": (datetime.datetime.now() - start_time).seconds,
-        "datastore_name": datastore_name,
-        "eval_dataframe": eval_dataframe,
-        "new": True,
-    })
-    start_time = datetime.datetime.now()
-    experiment_id = "cA|nccr3;A|ceb|normGlAC|th150;img_vggBn"
-    print("EXPERIMENT:", experiment_id)
-    start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr3)
-    all_res_metrics.append({
-        "experiment_id": experiment_id,
-        "config": config,
-        "datetime": start_time,
-        "eval_time_s": (datetime.datetime.now() - start_time).seconds,
-        "datastore_name": datastore_name,
-        "eval_dataframe": eval_dataframe,
-        "new": True,
-    })
+    for sort_method in [sort_nccr1, sort_nccr2, sort_nccr3, lexsort_ncosBuckets1_cr, lexsort_ncosBuckets2_cr]:
+        start_time = datetime.datetime.now()
+        experiment_id = "cA|"+sort_method.__name__+";A|ceb|normGlAC|th150;img_vggBn"
+        print("EXPERIMENT:", experiment_id)
+        start_time = datetime.datetime.now()
+        eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_method)
+        all_res_metrics.append({
+            "combinedSetup": "compare_combinedSetupA",
+            "experiment_id": experiment_id,
+            "sort_method": sort_method.__name__,
+            "config": config,
+            "datetime": start_time,
+            "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+            "datastore_name": datastore_name,
+            "eval_dataframe": eval_dataframe,
+            "combined":True,
+            "new": True,
+        })
     # start_time = datetime.datetime.now()
     # experiment_id = "cA|sortNcosB2Cr;A|ceb|normGlAC|th150;img_vggBn"
     # print("EXPERIMENT:", experiment_id)
