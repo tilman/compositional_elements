@@ -7,37 +7,21 @@ import torch
 from tqdm import tqdm
 from . import eval_utils
 
-def compare_siftFLANN1(sift1, sift2):
-    des1 = sift1["descriptors"]
-    des2 = sift2["descriptors"]
+# def compare_siftFLANN1(sift1, sift2):
+#     des1 = sift1["descriptors"]
+#     des2 = sift2["descriptors"]
 
-    index_params = dict(algorithm = 1, trees = 5)
-    search_params = dict(checks=30)   # or pass empty dictionary
-    flann = cv2.FlannBasedMatcher(index_params,search_params)
-    matches = flann.knnMatch(des1,des2,k=2)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    # return len(good)/max(len(des1, des2))
-    return len(good)/max(len(des1), len(des2))
-
-def compare_siftFLANN2(sift1, sift2):
-    des1 = sift1["descriptors"]
-    des2 = sift2["descriptors"]
-
-    index_params = dict(algorithm = 1, trees = 5)
-    search_params = dict(checks = 30)   # or pass empty dictionary
-    flann = cv2.FlannBasedMatcher(index_params,search_params)
-    matches = flann.knnMatch(des1,des2,k=2)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    # return len(good)/max(len(des1, des2))
-    return len(good)
+#     index_params = dict(algorithm = 1, trees = 5)
+#     search_params = dict(checks=30)   # or pass empty dictionary
+#     flann = cv2.FlannBasedMatcher(index_params,search_params)
+#     matches = flann.knnMatch(des1,des2,k=2)
+#     # Apply ratio test
+#     good = []
+#     for m,n in matches:
+#         if m.distance < 0.75*n.distance:
+#             good.append([m])
+#     # return len(good)/max(len(des1, des2))
+#     return len(good)/max(len(des1), len(des2))
 
 def compare_siftBFMatcher1(sift1, sift2):
     # BFMatcher with default params
@@ -120,7 +104,7 @@ def eval_all_combinations(datastore, datastore_name):
             "eval_time_s": (datetime.datetime.now() - start_time).seconds,
             "datastore_name": datastore_name,
             "compare_method": compare_method.__name__,
-            "sort_method": "sort_distance_asc",
+            "sort_method": sortmethod.__name__,
             "eval_dataframe": eval_dataframe,
             "sift":True,
             "new":True,
