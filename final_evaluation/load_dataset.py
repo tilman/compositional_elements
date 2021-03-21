@@ -5,6 +5,7 @@ import pickle
 from tqdm.std import tqdm
 
 from . import calc_compoelem
+from . import calc_sift
 from . import calc_imageNet_vgg19_bn_features_featuremaps
 from . import calc_places365_resnet50_feature_noFC_featuremaps
 
@@ -36,7 +37,11 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
         datastore[key]["imageNet_vgg19_bn_features"] = calc_imageNet_vgg19_bn_features_featuremaps.precompute(filename)
         changed = True
     if "places365_resnet50_feature_noFC" not in datastore[key]:
+        print("calc resnet")
         datastore[key]["places365_resnet50_feature_noFC"] = calc_places365_resnet50_feature_noFC_featuremaps.precompute(filename)
+        changed = True
+    if "sift" not in datastore[key]:
+        datastore[key]["sift"] = calc_sift.precompute(filename)
         changed = True
     if changed:
         pickle.dump(datastore, open(DATASTORE_FILE, "wb"))

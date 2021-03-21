@@ -11,7 +11,7 @@ from . import eval_utils
 from .compare_deepfeatures import negative_cosine_dist_flatten
 
 from compoelem.config import config
-from compoelem.compare.pose_line import compare_pose_lines_2, filter_pose_line_ga_result
+from compoelem.compare.pose_line import compare_pose_lines_2, compare_pose_lines_3, filter_pose_line_ga_result
 from compoelem.compare.normalize import minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action
 
 def compare_combinedSetupA(data, sort_method):
@@ -29,12 +29,13 @@ def compare_combinedSetupA(data, sort_method):
 
             for query_pose_lines in query_pose_lines_seq:
                 for target_pose_lines in target_pose_lines_seq:
-                    combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_2(query_pose_lines, target_pose_lines)
+                    combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
                     pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
             combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
             nccr = (n_cos/combined_ratio) if combined_ratio > 0 else 1/1000000
-            nccr2 = n_cos*(1-combined_ratio)
-            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, nccr2, target_data))
+            nccr2 = n_cos*(1-combined_ratio) #only works with compare_pose_lines_3
+            nccr3 = n_cos+(1-combined_ratio) #only works with compare_pose_lines_3
+            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
 
@@ -68,13 +69,18 @@ def sort_ncos(compare_results): #ncos2
     return sorted_compare_results
 
 def sort_nccr(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr   =>   should be cA|nccr
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 4])]
     return sorted_compare_results
 
 def sort_nccr2(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr2   =>   should be cA|nccr2
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 5])]
+    return sorted_compare_results
+
+def sort_nccr3(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr2   =>   should be cA|nccr3
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
+    sorted_compare_results = compare_results[np.argsort(compare_results[:, 6])]
     return sorted_compare_results
 
 #TODO
@@ -116,7 +122,7 @@ def lexsort_ncosBuckets1_cr(compare_results): #sortNcosNCr
 
 def lexsort_ncosBuckets3_cr(compare_results): #sortNcosNCr
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
-    precision = 1 #sortNcosB2Cr
+    precision = 3 #sortNcosB2Cr
     ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
     # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
@@ -130,10 +136,10 @@ def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcosB1Cr;A|ceb|normGlAC|th150;img_vggBn"
+    experiment_id = "cA|nccr2Fixed;A|ceb|normGlAC|th150;img_vggBn"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets1_cr)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr2)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,
@@ -144,10 +150,10 @@ def eval_all_combinations(datastore, datastore_name):
         "new": True,
     })
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcosB2Cr;A|ceb|normGlAC|th150;img_vggBn"
+    experiment_id = "cA|nccr3;A|ceb|normGlAC|th150;img_vggBn"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets2_cr)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr3)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,
@@ -157,20 +163,34 @@ def eval_all_combinations(datastore, datastore_name):
         "eval_dataframe": eval_dataframe,
         "new": True,
     })
-    start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcosB3Cr;A|ceb|normGlAC|th150;img_vggBn"
-    print("EXPERIMENT:", experiment_id)
-    start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets3_cr)
-    all_res_metrics.append({
-        "experiment_id": experiment_id,
-        "config": config,
-        "datetime": start_time,
-        "eval_time_s": (datetime.datetime.now() - start_time).seconds,
-        "datastore_name": datastore_name,
-        "eval_dataframe": eval_dataframe,
-        "new": True,
-    })
+    # start_time = datetime.datetime.now()
+    # experiment_id = "cA|sortNcosB2Cr;A|ceb|normGlAC|th150;img_vggBn"
+    # print("EXPERIMENT:", experiment_id)
+    # start_time = datetime.datetime.now()
+    # eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets2_cr)
+    # all_res_metrics.append({
+    #     "experiment_id": experiment_id,
+    #     "config": config,
+    #     "datetime": start_time,
+    #     "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+    #     "datastore_name": datastore_name,
+    #     "eval_dataframe": eval_dataframe,
+    #     "new": True,
+    # })
+    # start_time = datetime.datetime.now()
+    # experiment_id = "cA|sortNcosB3Cr;A|ceb|normGlAC|th150;img_vggBn"
+    # print("EXPERIMENT:", experiment_id)
+    # start_time = datetime.datetime.now()
+    # eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets3_cr)
+    # all_res_metrics.append({
+    #     "experiment_id": experiment_id,
+    #     "config": config,
+    #     "datetime": start_time,
+    #     "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+    #     "datastore_name": datastore_name,
+    #     "eval_dataframe": eval_dataframe,
+    #     "new": True,
+    # })
     # experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
     # print("EXPERIMENT:", experiment_id)
     # start_time = datetime.datetime.now()
