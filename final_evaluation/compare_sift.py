@@ -108,12 +108,12 @@ def sort_desc(compare_results):
 
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
-    for compare_method in [compare_siftFLANN2]:
+    for compare_method in [compare_siftBFMatcher1, compare_siftBFMatcher2]:
         start_time = datetime.datetime.now()
         sortmethod = sort_desc
         experiment_id = "datastore: {}, compare_method: {}, sort_method: {}".format(datastore_name, compare_method.__name__, sortmethod.__name__)
         print("EXPERIMENT:",experiment_id)
-        eval_dataframe = compare(list(datastore.values()), sortmethod, compare_siftBFMatcher1)
+        eval_dataframe = compare(list(datastore.values()), sortmethod, compare_method)
         all_res_metrics.append({
             "experiment_id": experiment_id,
             "datetime": start_time,
