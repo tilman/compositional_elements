@@ -10,6 +10,22 @@ from . import compare_deepfeatures
 from . import compare_compoelem
 from . import compare_combined
 
+
+
+
+def _pickle_keypoint(keypoint): #  : cv2.KeyPoint
+    return cv2.KeyPoint, (
+        keypoint.pt[0],
+        keypoint.pt[1],
+        keypoint.size,
+        keypoint.angle,
+        keypoint.response,
+        keypoint.octave,
+        keypoint.class_id,
+    )
+# Apply the bundling to pickle
+copyreg.pickle(cv2.KeyPoint().__class__, _pickle_keypoint)
+
 #dataset_cleaned_extended_balanced = ceb_dataset -> combination of clean_data (all with _art classes nativity and virgin) dataset and files from prathmesn & ronak from 18.03.
 
 if os.uname().nodename == 'MBP-von-Tilman':

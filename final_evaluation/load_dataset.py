@@ -43,7 +43,7 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
     if "sift" not in datastore[key]:
         datastore[key]["sift"] = calc_sift.precompute(filename)
         changed = True
-    if changed:
-        pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
-
+    # if changed:
+    #     pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
+pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
 print("output length", len(datastore.keys()))
