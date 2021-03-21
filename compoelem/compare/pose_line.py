@@ -80,6 +80,41 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
     # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
     return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits
 
+# third is same as second but normalizes neg md between 0 and 1
+def compare_pose_lines_3(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[float, float, float]:
+    if(len(b) == 0 or len(a) == 0):
+        return (0, 0, 0) # since there are 0 poses to match
+    pose_dist_tuple: Sequence[Tuple[float, int, int]] = [] # dist, query_idx, target_idx
+    for query_idx, query_pose_line in enumerate(a):
+        for target_idx, target_pose_line in enumerate(b):
+            pose_dist_tuple.append((compare_pose_line(query_pose_line, target_pose_line), query_idx, target_idx))
+    pose_dist_tuple_np = np.array(pose_dist_tuple)
+    pose_dist_tuple_sorted = pose_dist_tuple_np[np.argsort(pose_dist_tuple_np[:,0], axis=0)]
+    used_query_pose_idx = []
+    used_target_pose_idx = []
+    res = []
+    for t in pose_dist_tuple_sorted:
+        if t[1] not in used_query_pose_idx and t[2] not in used_target_pose_idx:
+            res.append(t)
+            used_query_pose_idx.append(t[1])
+            used_target_pose_idx.append(t[2])
+    res_np =  np.array(res)
+    max_pose_count = max(len(a), len(b))
+    # threshold = 1/(max_pose_count * 2)+0.05
+    res_filtered = res_np[res_np[:,0] < config["compare"]["filter_threshold"]]
+    # res_filtered = res_np[res_np[:,0] < 0.1] #TODO add 100 to config params
+    # res_filtered = res_np[res_np[:,0] < 100] #TODO add 100 to config params
+    # res_filtered = res_np[res_np[:,0] < threshold] #TODO another idea: make threshold dynamic and depend on amount of poses in image => reason: more people in one image means that chances are high for a matching pose. To reduce chance => reduce the threshold
+    if len(res_filtered) == 0:
+        neg_mean_distance_hits = 0
+    else:
+        neg_mean_distance_hits = (config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)) / config["compare"]["filter_threshold"]
+        # md ist gering => guter match => neg md hoch
+        # md ist hoch => schlechter match => neg md gering
+    hit_ratio = len(res_filtered) / max(len(a), len(b))
+    # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
+    return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits
+
 # if we normalize by action center we are getting more than one normalization results because we can have multiple action centers
 # because we only want one similarity score for each pair of pictures we then filter for the lowest similarity between all combination of normalizations
 def filter_pose_line_ga_result(ga_res: Sequence[Tuple[float, float, float, Any]]) -> Tuple[float, float, float, Any]:

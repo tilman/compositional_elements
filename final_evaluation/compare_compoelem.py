@@ -9,7 +9,7 @@ from tqdm import tqdm
 from . import eval_utils
 
 from compoelem.config import config
-from compoelem.compare.pose_line import compare_pose_lines_2, filter_pose_line_ga_result
+from compoelem.compare.pose_line import compare_pose_lines_2, compare_pose_lines_3, filter_pose_line_ga_result
 from compoelem.compare.normalize import minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action
 
 def compare_setupA(data, sort_method, norm_method):
@@ -28,7 +28,7 @@ def compare_setupA(data, sort_method, norm_method):
             pair_compare_results = []
             for query_pose_lines in query_pose_lines_seq:
                 for target_pose_lines in target_pose_lines_seq:
-                    combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_2(query_pose_lines, target_pose_lines)
+                    combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
                     pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
             compare_results.append(filter_pose_line_ga_result(pair_compare_results))
         compare_results = np.array(compare_results)
@@ -100,17 +100,18 @@ def lexsort_cr_hr(compare_results):
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
     for sort_method in [lexsort_hr_md, lexsort_cr_hr]:
-        for setup in [compare_setupA, compare_setupB]:
+        # for setup in [compare_setupA, compare_setupB]:
+        for setup in [compare_setupA]:
             for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
-                for filter_threshold in [75, 100, 125, 150, 175, 200]:
-                #for filter_threshold in [100]:
+                # for filter_threshold in [75, 100, 125, 150, 175, 200]:
+                for filter_threshold in [150]:
                     config["compare"]["filter_threshold"] = filter_threshold
                     start_time = datetime.datetime.now()
                     if setup.__name__ == 'compare_setupA':
                         result_filter_method_name = "filter_pose_line_ga_result"
                     elif setup.__name__ == 'compare_setupB':
                         result_filter_method_name = "none"
-                    experiment_id = "datastore: {}, setup: {}, filter_threshold: {}, norm_method: {}, compare_method: compare_pose_lines_2, result_filter_method: {}, sort_method: {}".format(
+                    experiment_id = "datastore: {}, setup: {}, filter_threshold: {}, norm_method: {}, compare_method: compare_pose_lines_3, result_filter_method: {}, sort_method: {}".format(
                         datastore_name, setup.__name__, filter_threshold, norm_method, result_filter_method_name, sort_method.__name__
                     )
                     print("EXPERIMENT:", experiment_id)
@@ -125,7 +126,7 @@ def eval_all_combinations(datastore, datastore_name):
                         "eval_time_s": (datetime.datetime.now() - start_time).seconds,
                         "datastore_name": datastore_name,
                         "norm_method": norm_method,
-                        "compare_method": "compare_pose_lines_2",
+                        "compare_method": "compare_pose_lines_3",
                         "result_filter_method": result_filter_method_name,
                         "sort_method": sort_method.__name__,
                         "eval_dataframe": eval_dataframe,

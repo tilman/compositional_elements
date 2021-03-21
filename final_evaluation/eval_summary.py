@@ -24,6 +24,8 @@ aliasNames = {
     "norm_by_global_action":"normGlAC",
     "lexsort_hr_md":"sortHrMd",
     "lexsort_cr_hr":"sortCrHr",
+    "compare_pose_lines_2":"cmp2",
+    "compare_pose_lines_3":"cmp3",
 }
 
 def get_short_eval_name(log_entry):
@@ -34,11 +36,11 @@ def get_short_eval_name(log_entry):
             aliasNames[log_entry["compare_method"]],
         )
     elif "setup" in log_entry:
-        return "{}|{}|{}|{}|th{}".format(
+        return "{}|{}|{}|{}|{}|th{}".format(
             aliasNames[log_entry["setup"]], 
             aliasNames[log_entry["datastore_name"]], 
             aliasNames[log_entry["norm_method"]], 
-            #aliasNames[log_entry["compare_method"]],
+            aliasNames[log_entry["compare_method"]],
             aliasNames[log_entry["sort_method"]],
             " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
         )
