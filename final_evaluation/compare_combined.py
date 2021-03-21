@@ -90,10 +90,34 @@ def lexsort_ncos_cr(compare_results): #sortNcosCr
     return sorted_compare_results
 
 #TODO sort ncos buckets -> dann cr
-def lexsort_ncosBuckets_cr(compare_results): #sortNcosNCr
+def lexsort_ncosBuckets2_cr(compare_results): #sortNcosNCr
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
     precision = 2 #sortNcosB2Cr
-    ncos = np.array(list(map(lambda x: np.round(x, precision), input)))
+    ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
+    cr = compare_results[:,0]
+    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
+    sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
+    # lexsort indices are reversed
+    # primary level of sorting: ncos
+    # secondary level of sorting: cr
+    return sorted_compare_results
+
+def lexsort_ncosBuckets1_cr(compare_results): #sortNcosNCr
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
+    precision = 1 #sortNcosB2Cr
+    ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
+    cr = compare_results[:,0]
+    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
+    sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
+    # lexsort indices are reversed
+    # primary level of sorting: ncos
+    # secondary level of sorting: cr
+    return sorted_compare_results
+
+def lexsort_ncosBuckets3_cr(compare_results): #sortNcosNCr
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
+    precision = 1 #sortNcosB2Cr
+    ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
     # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
     sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
@@ -106,10 +130,38 @@ def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
+    experiment_id = "cA|sortNcosB1Cr;A|ceb|normGlAC|th150;img_vggBn"
+    print("EXPERIMENT:", experiment_id)
+    start_time = datetime.datetime.now()
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets1_cr)
+    all_res_metrics.append({
+        "experiment_id": experiment_id,
+        "config": config,
+        "datetime": start_time,
+        "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+        "datastore_name": datastore_name,
+        "eval_dataframe": eval_dataframe,
+        "new": True,
+    })
+    start_time = datetime.datetime.now()
     experiment_id = "cA|sortNcosB2Cr;A|ceb|normGlAC|th150;img_vggBn"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets_cr)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets2_cr)
+    all_res_metrics.append({
+        "experiment_id": experiment_id,
+        "config": config,
+        "datetime": start_time,
+        "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+        "datastore_name": datastore_name,
+        "eval_dataframe": eval_dataframe,
+        "new": True,
+    })
+    start_time = datetime.datetime.now()
+    experiment_id = "cA|sortNcosB3Cr;A|ceb|normGlAC|th150;img_vggBn"
+    print("EXPERIMENT:", experiment_id)
+    start_time = datetime.datetime.now()
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncosBuckets3_cr)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,
