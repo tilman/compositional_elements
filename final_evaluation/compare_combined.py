@@ -61,39 +61,44 @@ def lexsort_nc_hr_asc(compare_results):
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,1]))]
     return sorted_compare_results
 
-def sort_ncos(compare_results):
+def sort_ncos(compare_results): #ncos2
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
     # sorted_compare_results = compare_results[np.lexsort(compare_results[:,3])] #ncos3
-    sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
+    sorted_compare_results = compare_results[np.argsort(compare_results[:,3])]
     return sorted_compare_results
 
-# TODO
-def sort_nccr(compare_results):
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), sort_nccr2, target_data)
+def sort_nccr(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr   =>   should be cA|nccr
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 4])]
-    # sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
     return sorted_compare_results
 
-def sort_nccr2(compare_results):
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), sort_nccr2, target_data)
+def sort_nccr2(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr2   =>   should be cA|nccr2
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 5])]
-    # sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
     return sorted_compare_results
 
 #TODO
-def lexsort_ncos_cr(compare_results):
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
-    sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))]
+def lexsort_ncos_cr(compare_results): #sortNcosCr
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
+    ncos = compare_results[:,3]
+    cr = compare_results[:,0]
+    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
+    sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
+    # lexsort indices are reversed
+    # primary level of sorting: ncos
+    # secondary level of sorting: cr
     return sorted_compare_results
+
+#TODO sort ncos buckets -> dann cr
 
 def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcCr;A|ceb|normGlAC|th150;img_vggBn"
+    experiment_id = "cA|sortNcosCr;A|ceb|normGlAC|th150;img_vggBn"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_ncos_cr)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,

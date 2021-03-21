@@ -35,8 +35,8 @@ except FileNotFoundError as e:
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_combinations(datastore, DATASTORE_NAME, "places365_resnet50_feature_noFC")] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
-# [evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
-# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+[evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
+pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 [evaluation_log.append(experiment) for experiment in compare_combined.eval_all_combinations(datastore, DATASTORE_NAME)] 
 pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 
