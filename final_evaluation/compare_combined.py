@@ -67,10 +67,16 @@ def sort_ncos(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
     return sorted_compare_results
 
-#TODO
+# TODO
+def sort_nccr(compare_results):
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), sort_nccr2, target_data)
+    sorted_compare_results = compare_results[np.argsort(compare_results[:, 4])]
+    # sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
+    return sorted_compare_results
+
 def sort_nccr2(compare_results):
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), sort_nccr2, target_data)
-    sorted_compare_results = compare_results[np.argsort(compare_results[:,-2])]
+    sorted_compare_results = compare_results[np.argsort(compare_results[:, 5])]
     # sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
     return sorted_compare_results
 
@@ -84,10 +90,10 @@ def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|nccr2"
+    experiment_id = "cA|sortNcCr;A|ceb|normGlAC|th150;img_vggBn"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr2)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,
