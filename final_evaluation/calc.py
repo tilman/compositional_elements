@@ -40,9 +40,9 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
         print("calc resnet")
         datastore[key]["places365_resnet50_feature_noFC"] = calc_places365_resnet50_feature_noFC_featuremaps.precompute(filename)
         changed = True
-    if "sift" not in datastore[key]:
-        datastore[key]["sift"] = calc_sift.precompute(filename)
-        changed = True
+    # if "sift" not in datastore[key]:
+    datastore[key]["sift"] = calc_sift.precompute(filename)
+    changed = True
     # if changed:
     #     pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
 pickle.dump(datastore, open(DATASTORE_FILE, "wb"))

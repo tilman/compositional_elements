@@ -21,7 +21,7 @@ def precompute(filename):
         print("could not open img:", filename)
         return {}
     gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    sift = cv2.SIFT_create()
+    sift = cv2.SIFT_create(nfeatures = 500)
     kp, des = sift.detectAndCompute(gray, None)
     return {
         "keypoints": kp,
