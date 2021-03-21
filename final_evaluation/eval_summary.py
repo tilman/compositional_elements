@@ -23,6 +23,7 @@ aliasNames = {
     "minmax_norm_by_bbox":"normBBox",
     "norm_by_global_action":"normGlAC",
     "lexsort_hr_md":"sortHrMd",
+    "lexsort_hr_cr":"sortHrCr",
     "lexsort_cr_hr":"sortCrHr",
     "compare_pose_lines_2":"cmp2",
     "compare_pose_lines_3":"cmp3",
