@@ -33,7 +33,7 @@ def compare_combinedSetupA(data, sort_method):
                     pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
             combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
             nccr = (n_cos/combined_ratio) if combined_ratio > 0 else 1/1000000
-            compare_results.append(combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, target_data)
+            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
 
