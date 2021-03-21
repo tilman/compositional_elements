@@ -45,8 +45,8 @@ datastore = pickle.load(open(DATASTORE_FILE, "rb"))
 
 try:
     evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
-    # for log_entry in evaluation_log:
-    #     log_entry["new"] = False
+    for log_entry in evaluation_log:
+        log_entry["new"] = False
     shutil.copyfile(EVAL_RESULTS_FILE, EVAL_RESULTS_FILE+"_"+str(datetime.date.today())+"_backup")
 except FileNotFoundError as e:
     evaluation_log = []
