@@ -33,7 +33,8 @@ def compare_combinedSetupA(data, sort_method):
                     pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
             combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
             nccr = (n_cos/combined_ratio) if combined_ratio > 0 else 1/1000000
-            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, target_data))
+            nccr2 = n_cos*(1-combined_ratio)
+            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, nccr2, target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
 
@@ -62,18 +63,31 @@ def lexsort_nc_hr_asc(compare_results):
 
 def sort_ncos(compare_results):
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
-    sorted_compare_results = compare_results[np.lexsort(compare_results[:,3])] #ncos3
+    # sorted_compare_results = compare_results[np.lexsort(compare_results[:,3])] #ncos3
+    sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
+    return sorted_compare_results
+
+#TODO
+def sort_nccr2(compare_results):
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), sort_nccr2, target_data)
+    sorted_compare_results = compare_results[np.argsort(compare_results[:,-2])]
     # sorted_compare_results = compare_results[np.argsort(compare_results[:,3])] #ncos2
+    return sorted_compare_results
+
+#TODO
+def lexsort_ncos_cr(compare_results):
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
+    sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))]
     return sorted_compare_results
 
 def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos3"
+    experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|nccr2"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_ncos)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_nccr2)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,

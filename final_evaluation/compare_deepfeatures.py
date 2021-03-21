@@ -17,6 +17,19 @@ def normal_cosine_dist(t1, t2):
     return np.dot(a, b)/(np.linalg.norm(a)*np.linalg.norm(b))
 
 def negative_cosine_dist_flatten(t1, t2):
+    """returns negative cosine similarity between two pytorch tensors. 0 => exatly the same, 2 => exactly oposite
+
+    Explanaition:
+    => cosine sim: −1 meaning exactly opposite, to 1 meaning exactly the same, with 0
+    => negative cosine sim = 1 - cosine sim
+
+    Args:
+        t1 ([type]): [description]
+        t2 ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
     return 1 - normal_cosine_dist(t1, t2)
 
 def compare(compare_method_name, featuremap_key, data, sort_method):
