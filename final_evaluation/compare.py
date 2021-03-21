@@ -3,16 +3,19 @@ import numpy as np
 import pickle
 import shutil
 import datetime
+import cv2
+import copyreg
 
 from tqdm.std import tqdm
 
 from . import compare_deepfeatures
 from . import compare_compoelem
 from . import compare_combined
+from . import compare_sift
 
 
 
-
+# fix cv2 keypoint pickling error
 def _pickle_keypoint(keypoint): #  : cv2.KeyPoint
     return cv2.KeyPoint, (
         keypoint.pt[0],
@@ -55,6 +58,8 @@ except FileNotFoundError as e:
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 [evaluation_log.append(experiment) for experiment in compare_combined.eval_all_combinations(datastore, DATASTORE_NAME)] 
 pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+# [evaluation_log.append(experiment) for experiment in compare_sift.eval_all_combinations(datastore, DATASTORE_NAME)] 
+# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 
 def get_new_evaluation_log():
     evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))

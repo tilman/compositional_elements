@@ -42,7 +42,7 @@ def compare(data, sort_method, compare_method):
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            compare_method(query_data["sift"], target_data["sift"])
+            compare_results.append((compare_method(query_data["sift"], target_data["sift"]), target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
         query_label = query_data["className"]
@@ -69,20 +69,26 @@ def compare(data, sort_method, compare_method):
             avgerave_metrics[metricKey]["total (w. mean)"] = np.mean(np.array(total_list).flatten()) # mean of all values regardless of class (-> the same as class mean weighted by amount of datapoints in class)
     return pd.DataFrame(avgerave_metrics)
 
+
+def sort_desc(compare_results):
+    sorted_compare_results = compare_results[np.argsort(compare_results[:, 0])][::-1]
+    return sorted_compare_results
+
 def eval_all_combinations(datastore, datastore_name, featuremap_key):
     all_res_metrics = []
-    for compare_method_name in ['eucl_dist_flatten', 'negative_cosine_dist_flatten']:
+    for compare_method in [compare_siftBFMatcher1, compare_siftBFMatcher2]:
         start_time = datetime.datetime.now()
-        experiment_id = "datastore: {}, featuremap_key: {}, compare_method: {}, sort_method: sort_distance_asc".format(datastore_name, featuremap_key, compare_method_name)
+        sortmethod = sort_desc
+        experiment_id = "datastore: {}, featuremap_key: {}, compare_method: {}, sort_method: {}".format(datastore_name, featuremap_key, compare_method.__name__, sortmethod.__name__)
         print("EXPERIMENT:",experiment_id)
-        eval_dataframe = compare(list(datastore.values()), sortmethod, compare_siftBFMatcher)
+        eval_dataframe = compare(list(datastore.values()), sortmethod, compare_siftBFMatcher1)
         all_res_metrics.append({
             "experiment_id": experiment_id,
             "datetime": start_time,
             "eval_time_s": (datetime.datetime.now() - start_time).seconds,
             "datastore_name": datastore_name,
             "featuremap_key": featuremap_key,
-            "compare_method": compare_method_name,
+            "compare_method": compare_method.__name__,
             "sort_method": "sort_distance_asc",
             "eval_dataframe": eval_dataframe,
             "new":True,
