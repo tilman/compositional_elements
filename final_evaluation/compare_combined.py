@@ -24,15 +24,16 @@ def compare_combinedSetupA(data, sort_method):
                 continue
             target_pose_lines_seq = norm_by_global_action(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["global_action_lines"])
             pair_compare_results = []
-
             # include deep features:
             n_cos = negative_cosine_dist_flatten(query_data["imageNet_vgg19_bn_features"], target_data["imageNet_vgg19_bn_features"])
+
             for query_pose_lines in query_pose_lines_seq:
                 for target_pose_lines in target_pose_lines_seq:
                     combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_2(query_pose_lines, target_pose_lines)
-                    nccr = (n_cos/combined_ratio) if combined_ratio > 0 else 1/1000000
-                    pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, target_data))
-            compare_results.append(filter_pose_line_ga_result(pair_compare_results))
+                    pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
+            combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
+            nccr = (n_cos/combined_ratio) if combined_ratio > 0 else 1/1000000
+            compare_results.append(combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, target_data)
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
 
@@ -59,14 +60,19 @@ def lexsort_nc_hr_asc(compare_results):
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,1]))]
     return sorted_compare_results
 
+def sort_ncos(compare_results):
+    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
+    sorted_compare_results = compare_results[np.argsort(compare_results[:,3])]
+    return sorted_compare_results
+
 def eval_all_combinations(datastore, datastore_name):
     # TODO: quick and dirty code needs refactoring to look like compare_compoelem or compare_deepfeatures
     all_res_metrics = []
     start_time = datetime.datetime.now()
-    experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
+    experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos2"
     print("EXPERIMENT:", experiment_id)
     start_time = datetime.datetime.now()
-    eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_nc_hr_asc)
+    eval_dataframe = compare_combinedSetupA(list(datastore.values()), sort_ncos)
     all_res_metrics.append({
         "experiment_id": experiment_id,
         "config": config,
@@ -76,6 +82,19 @@ def eval_all_combinations(datastore, datastore_name):
         "eval_dataframe": eval_dataframe,
         "new": True,
     })
+    # experiment_id = "cA|sortNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
+    # print("EXPERIMENT:", experiment_id)
+    # start_time = datetime.datetime.now()
+    # eval_dataframe = compare_combinedSetupA(list(datastore.values()), lexsort_nc_hr_asc)
+    # all_res_metrics.append({
+    #     "experiment_id": experiment_id,
+    #     "config": config,
+    #     "datetime": start_time,
+    #     "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+    #     "datastore_name": datastore_name,
+    #     "eval_dataframe": eval_dataframe,
+    #     "new": True,
+    # })
     # experiment_id = "cA|sortNccrNcHr;A|ceb|normGlAC|th150;img_vggBn|ncos"
     # print("EXPERIMENT:", experiment_id)
     # start_time = datetime.datetime.now()
