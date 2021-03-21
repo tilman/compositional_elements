@@ -9,7 +9,7 @@ from tqdm import tqdm
 from . import eval_utils
 
 from compoelem.config import config
-from compoelem.compare.pose_line import compare_pose_lines_2, compare_pose_lines_3, filter_pose_line_ga_result
+from compoelem.compare.pose_line import compare_pose_lines_3, compare_pose_lines_3, filter_pose_line_ga_result
 from compoelem.compare.normalize import minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action
 
 def compare_setupA(data, sort_method, norm_method):
@@ -23,7 +23,7 @@ def compare_setupA(data, sort_method, norm_method):
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            #combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_2(query_pose_lines, minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["width"], target_data["height"]))
+            #combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["width"], target_data["height"]))
             target_pose_lines_seq = norm_by_global_action(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["global_action_lines"])
             pair_compare_results = []
             for query_pose_lines in query_pose_lines_seq:
@@ -64,7 +64,7 @@ def compare_setupB(data, sort_method, norm_method):
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            #combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_2(query_pose_lines, minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["width"], target_data["height"]))
+            #combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["width"], target_data["height"]))
 
             if norm_method == 'minmax_norm_by_imgrect':
                 target_pose_lines = minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["width"], target_data["compoelem"]["height"])
@@ -72,7 +72,7 @@ def compare_setupB(data, sort_method, norm_method):
                 target_pose_lines = minmax_norm_by_bbox(target_data["compoelem"]["pose_lines"])
             else:
                 raise NotImplementedError("norm_method: {} not implemented".format(norm_method))
-            combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_2(query_pose_lines, target_pose_lines)
+            combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
             compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
