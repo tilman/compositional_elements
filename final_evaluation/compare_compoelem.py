@@ -98,13 +98,17 @@ def lexsort_cr_hr(compare_results):
     return sorted_compare_results
 
 def lexsort_hr_cr(compare_results):
-    sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,0]))][::-1] # 0,1 -> level1:hit_ratio, level2:combined_ratio, 
+    sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,0]))][::-1]
+    return sorted_compare_results
+
+def lexsort_md_hr(compare_results):
+    sorted_compare_results = compare_results[np.lexsort((compare_results[:,2], compare_results[:,1]))][::-1]
     return sorted_compare_results
 
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
     # for sort_method in [lexsort_hr_md, lexsort_cr_hr]:
-    for sort_method in [lexsort_hr_cr]:
+    for sort_method in [lexsort_md_hr]:
         # for setup in [compare_setupA, compare_setupB]:
         for setup in [compare_setupA]:
             for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
