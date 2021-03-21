@@ -7,6 +7,38 @@ import torch
 from tqdm import tqdm
 from . import eval_utils
 
+def compare_siftFLANN1(sift1, sift2):
+    des1 = sift1["descriptors"]
+    des2 = sift2["descriptors"]
+
+    index_params = dict(algorithm = 1, trees = 5)
+    search_params = dict(checks=30)   # or pass empty dictionary
+    flann = cv2.FlannBasedMatcher(index_params,search_params)
+    matches = flann.knnMatch(des1,des2,k=2)
+    # Apply ratio test
+    good = []
+    for m,n in matches:
+        if m.distance < 0.75*n.distance:
+            good.append([m])
+    # return len(good)/max(len(des1, des2))
+    return len(good)/max(len(des1), len(des2))
+
+def compare_siftFLANN2(sift1, sift2):
+    des1 = sift1["descriptors"]
+    des2 = sift2["descriptors"]
+
+    index_params = dict(algorithm = 1, trees = 5)
+    search_params = dict(checks = 30)   # or pass empty dictionary
+    flann = cv2.FlannBasedMatcher(index_params,search_params)
+    matches = flann.knnMatch(des1,des2,k=2)
+    # Apply ratio test
+    good = []
+    for m,n in matches:
+        if m.distance < 0.75*n.distance:
+            good.append([m])
+    # return len(good)/max(len(des1, des2))
+    return len(good)
+
 def compare_siftBFMatcher1(sift1, sift2):
     # BFMatcher with default params
     bf = cv2.BFMatcher()
@@ -74,12 +106,12 @@ def sort_desc(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 0])][::-1]
     return sorted_compare_results
 
-def eval_all_combinations(datastore, datastore_name, featuremap_key):
+def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
-    for compare_method in [compare_siftBFMatcher1, compare_siftBFMatcher2]:
+    for compare_method in [compare_siftFLANN2]:
         start_time = datetime.datetime.now()
         sortmethod = sort_desc
-        experiment_id = "datastore: {}, featuremap_key: {}, compare_method: {}, sort_method: {}".format(datastore_name, featuremap_key, compare_method.__name__, sortmethod.__name__)
+        experiment_id = "datastore: {}, compare_method: {}, sort_method: {}".format(datastore_name, compare_method.__name__, sortmethod.__name__)
         print("EXPERIMENT:",experiment_id)
         eval_dataframe = compare(list(datastore.values()), sortmethod, compare_siftBFMatcher1)
         all_res_metrics.append({
@@ -87,10 +119,10 @@ def eval_all_combinations(datastore, datastore_name, featuremap_key):
             "datetime": start_time,
             "eval_time_s": (datetime.datetime.now() - start_time).seconds,
             "datastore_name": datastore_name,
-            "featuremap_key": featuremap_key,
             "compare_method": compare_method.__name__,
             "sort_method": "sort_distance_asc",
             "eval_dataframe": eval_dataframe,
+            "sift":True,
             "new":True,
         })
     return all_res_metrics
