@@ -32,6 +32,12 @@ aliasNames = {
     "lexsort_ncosBuckets1_cr":"ncosB1Cr",
     "lexsort_ncosBuckets2_cr":"ncosB2Cr",
     "lexsort_ncosBuckets3_cr":"ncosB3Cr",
+    "lexsort_fmr_cr":"lFmrCr",
+    "lexsort_fmr_hr":"lFmrHr",
+    "lexsort_cr_fmr":"lCrFmr",
+    "lexsort_hr_fmr":"lHrFmr",
+    "sort_fmrcr1":"sFmrcr1",
+    "sort_fmrcr2":"sFmrcr2",
     "compare_pose_lines_2":"cmp2",
     "compare_pose_lines_3":"cmp3",
     "compare_siftFLANN2":"flann2",
@@ -41,6 +47,8 @@ aliasNames = {
     "compare_orbBFMatcher2":"bfm2",
     "compare_briefBFMatcher1":"bfm1",
     "compare_briefBFMatcher2":"bfm2",
+    "compare_combinedSetupB":"cB",
+    "compare_combinedSetupA":"cA",
 }
 
 def get_short_eval_name(log_entry):
@@ -60,7 +68,8 @@ def get_short_eval_name(log_entry):
             " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
         )
     elif "combinedSetup" in log_entry:
-        return "sift|{}|A|ceb|normGlAC|th150;img_vggBn".format(
+        return "{}|{};|A|ceb|normGlAC|th150;img_vggBn".format(
+            aliasNames[log_entry["combinedSetup"]],
             aliasNames[log_entry["sort_method"]],
         )
     elif "sift" in log_entry:
