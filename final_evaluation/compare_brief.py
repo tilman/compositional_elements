@@ -16,12 +16,8 @@ def compare_briefBFMatcher1(brief1, brief2):
     matches = bf.match(des1, des2)
     # Sort them in the order of their distance.
     matches = sorted(matches, key = lambda x:x.distance)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    return len(good)/max(len(des1), len(des2))
+    # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
+    return len(matches)/max(len(des1), len(des2))
 
 def compare_briefBFMatcher2(brief1, brief2):
     des1 = brief1["descriptors"]
@@ -32,12 +28,8 @@ def compare_briefBFMatcher2(brief1, brief2):
     matches = bf.match(des1, des2)
     # Sort them in the order of their distance.
     matches = sorted(matches, key = lambda x:x.distance)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    return len(good)
+    # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
+    return len(matches)
     
 def compare(data, sort_method, compare_method):
     res_metrics = {}

@@ -16,12 +16,8 @@ def compare_orbBFMatcher1(orb1, orb2):
     matches = bf.match(des1,des2)
     # Sort them in the order of their distance.
     matches = sorted(matches, key = lambda x:x.distance)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    return len(good)/max(len(des1), len(des2))
+    # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
+    return len(matches)/max(len(des1), len(des2))
 
 def compare_orbBFMatcher2(orb1, orb2):
     des1 = orb1["descriptors"]
@@ -32,12 +28,9 @@ def compare_orbBFMatcher2(orb1, orb2):
     matches = bf.match(des1,des2)
     # Sort them in the order of their distance.
     matches = sorted(matches, key = lambda x:x.distance)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    return len(good)
+    # INFO see https://docs.opencv.org/master/dc/dc3/tutorial_py_matcher.html
+    # -> Second param is boolean variable, crossCheck which is false by default. If it is true, Matcher returns only those matches with value (i,j) such that i-th descriptor in set A has j-th descriptor in set B as the best match and vice-versa. That is, the two features in both sets should match each other. It provides consistent result, and is a good alternative to ratio test proposed by D.Lowe in SIFT paper.
+    return len(matches) 
     
 def compare(data, sort_method, compare_method):
     res_metrics = {}

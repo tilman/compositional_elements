@@ -20,7 +20,7 @@ def compare_siftFLANN1(sift1, sift2):
     for m,n in matches:
         if m.distance < 0.75*n.distance:
             good.append([m])
-    # return len(good)/max(len(des1, des2))
+    # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
     return len(good)/max(len(des1), len(des2))
 
 def compare_siftBFMatcher1(sift1, sift2):
@@ -34,7 +34,7 @@ def compare_siftBFMatcher1(sift1, sift2):
     for m,n in matches:
         if m.distance < 0.75*n.distance:
             good.append([m])
-    # return len(good)/max(len(des1, des2))
+    # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
     return len(good)/max(len(des1), len(des2))
 
 def compare_siftBFMatcher2(sift1, sift2):
@@ -48,7 +48,7 @@ def compare_siftBFMatcher2(sift1, sift2):
     for m,n in matches:
         if m.distance < 0.75*n.distance:
             good.append([m])
-    # return len(good)/max(len(des1, des2))
+    # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
     return len(good)
     
 def compare(data, sort_method, compare_method):
