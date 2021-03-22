@@ -26,8 +26,21 @@ aliasNames = {
     "lexsort_hr_cr":"sortHrCr",
     "lexsort_cr_hr":"sortCrHr",
     "lexsort_md_hr":"sortHrMd",
+    "sort_nccr1":"nccr1",
+    "sort_nccr2":"nccr2",
+    "sort_nccr3":"nccr3",
+    "lexsort_ncosBuckets1_cr":"ncosB1Cr",
+    "lexsort_ncosBuckets2_cr":"ncosB2Cr",
+    "lexsort_ncosBuckets3_cr":"ncosB3Cr",
     "compare_pose_lines_2":"cmp2",
     "compare_pose_lines_3":"cmp3",
+    "compare_siftFLANN2":"flann2",
+    "compare_siftBFMatcher1":"bfm1",
+    "compare_siftBFMatcher2":"bfm2",
+    "compare_orbBFMatcher1":"bfm1",
+    "compare_orbBFMatcher2":"bfm2",
+    "compare_briefBFMatcher1":"bfm1",
+    "compare_briefBFMatcher2":"bfm2",
 }
 
 def get_short_eval_name(log_entry):
@@ -46,6 +59,22 @@ def get_short_eval_name(log_entry):
             aliasNames[log_entry["sort_method"]],
             " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
         )
+    elif "combinedSetup" in log_entry:
+        return "sift|{}|A|ceb|normGlAC|th150;img_vggBn".format(
+            aliasNames[log_entry["sort_method"]],
+        )
+    elif "sift" in log_entry:
+        return "sift|{}".format(
+            aliasNames[log_entry["compare_method"]],
+        )
+    elif "orb" in log_entry:
+        return "orb|{}".format(
+            aliasNames[log_entry["compare_method"]],
+        )
+    elif "brief" in log_entry:
+        return "brief|{}".format(
+            aliasNames[log_entry["compare_method"]],
+        )
     else:
         return log_entry["experiment_id"]
 
@@ -54,5 +83,6 @@ def get_short_eval_name(log_entry):
 log = evaluation_log
 display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics])
+pd.set_option('display.max_rows', None)
 print(a)
     

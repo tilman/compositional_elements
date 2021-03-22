@@ -7,48 +7,36 @@ import torch
 from tqdm import tqdm
 from . import eval_utils
 
-def compare_siftFLANN1(sift1, sift2):
-    des1 = sift1["descriptors"]
-    des2 = sift2["descriptors"]
-
-    index_params = dict(algorithm = 1, trees = 5)
-    search_params = dict(checks=30)   # or pass empty dictionary
-    flann = cv2.FlannBasedMatcher(index_params,search_params)
-    matches = flann.knnMatch(des1,des2,k=2)
+def compare_briefBFMatcher1(brief1, brief2):
+    des1 = brief1["descriptors"]
+    des2 = brief2["descriptors"]
+    # BFMatcher with default params
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    # Match descriptors.
+    matches = bf.match(des1, des2)
+    # Sort them in the order of their distance.
+    matches = sorted(matches, key = lambda x:x.distance)
     # Apply ratio test
     good = []
     for m,n in matches:
         if m.distance < 0.75*n.distance:
             good.append([m])
-    # return len(good)/max(len(des1, des2))
     return len(good)/max(len(des1), len(des2))
 
-def compare_siftBFMatcher1(sift1, sift2):
+def compare_briefBFMatcher2(brief1, brief2):
+    des1 = brief1["descriptors"]
+    des2 = brief2["descriptors"]
     # BFMatcher with default params
-    bf = cv2.BFMatcher()
-    des1 = sift1["descriptors"]
-    des2 = sift2["descriptors"]
-    matches = bf.knnMatch(des1, des2, k=2)
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    # Match descriptors.
+    matches = bf.match(des1, des2)
+    # Sort them in the order of their distance.
+    matches = sorted(matches, key = lambda x:x.distance)
     # Apply ratio test
     good = []
     for m,n in matches:
         if m.distance < 0.75*n.distance:
             good.append([m])
-    # return len(good)/max(len(des1, des2))
-    return len(good)/max(len(des1), len(des2))
-
-def compare_siftBFMatcher2(sift1, sift2):
-    # BFMatcher with default params
-    bf = cv2.BFMatcher()
-    des1 = sift1["descriptors"]
-    des2 = sift2["descriptors"]
-    matches = bf.knnMatch(des1, des2, k=2)
-    # Apply ratio test
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
-    # return len(good)/max(len(des1, des2))
     return len(good)
     
 def compare(data, sort_method, compare_method):
@@ -58,7 +46,7 @@ def compare(data, sort_method, compare_method):
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            compare_results.append((compare_method(query_data["sift"], target_data["sift"]), target_data))
+            compare_results.append((compare_method(query_data["brief"], target_data["brief"]), target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
         query_label = query_data["className"]
@@ -92,7 +80,7 @@ def sort_desc(compare_results):
 
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
-    for compare_method in [compare_siftBFMatcher1, compare_siftBFMatcher2]:
+    for compare_method in [compare_briefBFMatcher1, compare_briefBFMatcher2]:
         start_time = datetime.datetime.now()
         sortmethod = sort_desc
         experiment_id = "datastore: {}, compare_method: {}, sort_method: {}".format(datastore_name, compare_method.__name__, sortmethod.__name__)
@@ -106,7 +94,7 @@ def eval_all_combinations(datastore, datastore_name):
             "compare_method": compare_method.__name__,
             "sort_method": sortmethod.__name__,
             "eval_dataframe": eval_dataframe,
-            "sift":True,
+            "brief":True,
             "new":True,
         })
     return all_res_metrics

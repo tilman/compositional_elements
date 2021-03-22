@@ -1,11 +1,16 @@
 import os
 import numpy as np
 import pickle
+import shutil
+import datetime
 
 from tqdm.std import tqdm
 
 from . import calc_compoelem
 from . import calc_sift
+# from . import calc_surf
+from . import calc_brief
+from . import calc_orb
 from . import calc_imageNet_vgg19_bn_features_featuremaps
 from . import calc_places365_resnet50_feature_noFC_featuremaps
 
@@ -16,6 +21,7 @@ DATASET_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/dat
 
 try:
     datastore = pickle.load(open(DATASTORE_FILE, "rb"))
+    shutil.copyfile(DATASTORE_FILE, DATASTORE_FILE+"_"+str(datetime.date.today())+"_backup")
 except FileNotFoundError as e:
     datastore = {}
 
@@ -43,7 +49,16 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
     if "sift" not in datastore[key]:
         datastore[key]["sift"] = calc_sift.precompute(filename)
         changed = True
-    if changed:
-        pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
+    # if "surf" not in datastore[key]:  # only working with commercial build of opencv contrib
+    #     datastore[key]["surf"] = calc_surf.precompute(filename)
+    #     changed = True
+    if "brief" not in datastore[key]:
+        datastore[key]["brief"] = calc_brief.precompute(filename)
+        changed = True
+    if "orb" not in datastore[key]:
+        datastore[key]["orb"] = calc_orb.precompute(filename)
+        changed = True
+    # if changed:
+    #     pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
 pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
 print("output length", len(datastore.keys()))
