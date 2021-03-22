@@ -7,6 +7,7 @@ import torch
 from tqdm import tqdm
 from . import eval_utils
 
+#https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_matcher/py_matcher.html#flann-based-matcher
 def compare_siftFLANN1(sift1, sift2):
     des1 = sift1["descriptors"]
     des2 = sift2["descriptors"]
@@ -23,6 +24,7 @@ def compare_siftFLANN1(sift1, sift2):
     # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
     return len(good)/max(len(des1), len(des2))
 
+#https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_matcher/py_matcher.html#brute-force-matching-with-sift-descriptors-and-ratio-test
 def compare_siftBFMatcher1(sift1, sift2):
     # BFMatcher with default params
     bf = cv2.BFMatcher()
@@ -37,6 +39,7 @@ def compare_siftBFMatcher1(sift1, sift2):
     # see compare_orbBFMatcher2 for why we use len(matches) or len(good) from ratio test
     return len(good)/max(len(des1), len(des2))
 
+#https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_matcher/py_matcher.html#brute-force-matching-with-sift-descriptors-and-ratio-test
 def compare_siftBFMatcher2(sift1, sift2):
     # BFMatcher with default params
     bf = cv2.BFMatcher()
