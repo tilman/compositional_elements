@@ -84,12 +84,15 @@ def compare_dist_bipart(poses_i1, poses_i2): #in paper this is dist_t(i1,i2)
                 continue
             dist.append(flipped_cosine_min_dist(r_tick, s_tick))
             combinations.append((idx_r, idx_s))
-        am = np.argmin(np.array(dist))
-        if dist[am] <= t:
-            all_dist.append(dist[am])
-            all_combinations.append(combinations[am])
+        if len(dist) == 0:
+            all_dist.append(t) #dist can be empty if r has no neck point.
         else:
-            all_dist.append(t)
+            am = np.argmin(np.array(dist))
+            if dist[am] <= t:
+                all_dist.append(dist[am])
+                all_combinations.append(combinations[am])
+            else:
+                all_dist.append(t)
     dist_sum = np.sum(all_dist)
     return (dist_sum, all_combinations)
 
@@ -142,7 +145,7 @@ def sort_asc(compare_results):
 
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
-    for compare_method in [compare_dist_min]:
+    for compare_method in [compare_dist_bipart]:
         start_time = datetime.datetime.now()
         sortmethod = sort_asc
         experiment_id = "datastore: {}, compare_method: {}, sort_method: {}".format(datastore_name, compare_method.__name__, sortmethod.__name__)
