@@ -50,18 +50,22 @@ def compare_dist_min(poses_i1, poses_i2): #in paper this is dist_min(i1, i2), we
     poses_i1 = np.array([openpose_to_nparray(human) for human in poses_i1]) # output shape of each item is (18, 2) since we are using the 18 openpose keypoint model
     poses_i2 = np.array([openpose_to_nparray(human) for human in poses_i2])
     dist = []
-    for r in poses_i1:
-        for s in poses_i2:
+    combinations = []
+    for idx_r, r in enumerate(poses_i1):
+        for idx_s, s in enumerate(poses_i2):
             try:
                 r_tick, s_tick = neck_norm_poses(r, s)
             except ValueError as e: # "neck point missing, normalization not possible, skipping that pose"  => this edge case is not mentioned in the paper but was the only sensible decision I think
                 #print(e) 
                 continue
             dist.append(flipped_cosine_min_dist(r_tick, s_tick))
+            combinations.append((idx_r, idx_s))
     if(len(dist) == 0):
-        return 2 #maximum possible neg cos dist
+        return (2, (0,0)) #maximum possible neg cos dist
     else:
-        return min(dist)
+        # return min(dist)
+        am = np.argmin(np.array(dist))
+        return (dist[am], combinations[am])
     
 def compare(data, sort_method, compare_method):
     res_metrics = {}
@@ -70,7 +74,8 @@ def compare(data, sort_method, compare_method):
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            compare_results.append((compare_method(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"]), target_data)) # we will use the same precomputed poses as we already computed for compoelem method
+            distance, min_combination = compare_method(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
+            compare_results.append((distance, min_combination, target_data)) # we will use the same precomputed poses as we already computed for compoelem method
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
         query_label = query_data["className"]
