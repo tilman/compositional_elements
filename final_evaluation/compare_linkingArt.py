@@ -95,18 +95,24 @@ def compare(data, sort_method, compare_method):
                 total_list.append(res_metrics[metricKey][label])
             avgerave_metrics[metricKey]["total (mean)"] = np.mean(list(avgerave_metrics[metricKey].values())) # mean of all classes means
             avgerave_metrics[metricKey]["total (w. mean)"] = np.mean(np.array(total_list).flatten()) # mean of all values regardless of class (-> the same as class mean weighted by amount of datapoints in class)
-    return pd.DataFrame(avgerave_metrics)
+    eval_dataframe = pd.DataFrame(avgerave_metrics)
+    print(eval_dataframe)
+    return eval_dataframe
 
 
 def sort_desc(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 0])][::-1]
     return sorted_compare_results
 
+def sort_asc(compare_results):
+    sorted_compare_results = compare_results[np.argsort(compare_results[:, 0])]
+    return sorted_compare_results
+
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
     for compare_method in [compare_dist_min]:
         start_time = datetime.datetime.now()
-        sortmethod = sort_desc
+        sortmethod = sort_asc
         experiment_id = "datastore: {}, compare_method: {}, sort_method: {}".format(datastore_name, compare_method.__name__, sortmethod.__name__)
         print("EXPERIMENT:",experiment_id)
         eval_dataframe = compare(list(datastore.values()), sortmethod, compare_method)
