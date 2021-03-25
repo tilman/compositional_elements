@@ -16,7 +16,7 @@ def pose_lines(pose_lines: Sequence[PoseLine], img=None) -> Img:
     if img is None:
         img = create_blank()
     for pose_line in pose_lines:
-        cv2.line(img, p(pose_line.top), p(pose_line.bottom), (0,255,0), 4)
+        cv2.line(img, p(pose_line.top), p(pose_line.bottom), (0,255,0), 8)
     return img
 
 def global_action_lines(global_action_lines: Sequence[GlobalActionLine], img=None) -> Img:
@@ -28,8 +28,8 @@ def global_action_lines(global_action_lines: Sequence[GlobalActionLine], img=Non
         #     visible_intersection = cast(Polygon, visible_area.intersection(ga_line.intersection_shape))
         #     cv2.drawContours(img, [np.array(visible_intersection.exterior.coords[:], np.int)], 0, (150,100,100), -1)
         #     # cv2.drawContours(img, [np.array(ga_line.intersection_shape.exterior.coords[:], np.int)], 0, (150,100,100), -1)
-        cv2.line(img, p(ga_line.start), p(ga_line.end), (0,255,255), 4)
-        cv2.circle(img, p(ga_line.center), 10, (255,255,0), -1)
+        cv2.line(img, p(ga_line.start), p(ga_line.end), (0,255,255), 8)
+        cv2.circle(img, p(ga_line.center), 15, (255,255,0), -1)
     return img
 
 def pose_triangles(pose_lines: Sequence[PoseTriangle], img=None) -> Img:

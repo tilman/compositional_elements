@@ -12,6 +12,7 @@ from . import compare_deepfeatures
 from . import compare_compoelem
 from . import compare_combined_vgg19
 from . import compare_combined_sift
+from . import compare_linkingArt
 from . import compare_sift
 from . import compare_orb
 from . import compare_brief
@@ -67,7 +68,9 @@ except FileNotFoundError as e:
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_brief.eval_all_combinations(datastore, DATASTORE_NAME)] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
-[evaluation_log.append(experiment) for experiment in compare_combined_sift.eval_all_combinations(datastore, DATASTORE_NAME)] 
+# [evaluation_log.append(experiment) for experiment in compare_combined_sift.eval_all_combinations(datastore, DATASTORE_NAME)] 
+# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+[evaluation_log.append(experiment) for experiment in compare_linkingArt.eval_all_combinations(datastore, DATASTORE_NAME)] 
 pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 
 def get_new_evaluation_log():
