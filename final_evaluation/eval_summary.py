@@ -9,7 +9,6 @@ elif os.uname().nodename == 'lme117':
     COMPOELEM_ROOT = "/home/zi14teho/compositional_elements"
 else:
     COMPOELEM_ROOT = os.getenv('COMPOELEM_ROOT')
-COMPOELEM_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem"
 EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log.pkl"
 evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
 aliasNames = {
@@ -50,7 +49,8 @@ aliasNames = {
     "compare_briefBFMatcher2":"bfm2",
     "compare_combinedSetupB":"cB",
     "compare_combinedSetupA":"cA",
-    "compare_dist_min":"dist_min"
+    "compare_dist_min":"dist_min",
+    "compare_dist_bipart":"dist_bipart",
 }
 
 def get_short_eval_name(log_entry):
@@ -101,6 +101,6 @@ log = new_log_entries
 display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics])
 pd.set_option('display.max_rows', None)
-#print(a[-10:len(a)])
+print(a[-10:len(a)])
 print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
     

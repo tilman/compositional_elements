@@ -85,7 +85,7 @@ def compare_dist_bipart(poses_i1, poses_i2): #in paper this is dist_t(i1,i2)
             dist.append(flipped_cosine_min_dist(r_tick, s_tick))
             combinations.append((idx_r, idx_s))
         if len(dist) == 0:
-            all_dist.append(t) #dist can be empty if r has no neck point.
+            all_dist.append(t) #dist can be empty if r has no neck point. => return t as there is no pose matching
         else:
             am = np.argmin(np.array(dist))
             if dist[am] <= t:
