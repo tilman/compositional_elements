@@ -46,7 +46,7 @@ def neck_norm_poses(r, s): # TODO check
             s_tick.append(np.array([0, 0]))
     return np.array(r_tick), np.array(s_tick)
 
-def compare_dist_min(poses_i1, poses_i2): #in paper this is dist_min(i1, i2), we do not inpur images but rather input the precomputed poses directly
+def compare_dist_min(poses_i1, poses_i2): #in paper this is dist_min(i1, i2), we do not input images but rather input the precomputed poses directly
     poses_i1 = np.array([openpose_to_nparray(human) for human in poses_i1]) # output shape of each item is (18, 2) since we are using the 18 openpose keypoint model
     poses_i2 = np.array([openpose_to_nparray(human) for human in poses_i2])
     dist = []
@@ -54,8 +54,8 @@ def compare_dist_min(poses_i1, poses_i2): #in paper this is dist_min(i1, i2), we
         for s in poses_i2:
             try:
                 r_tick, s_tick = neck_norm_poses(r, s)
-            except ValueError as e:
-                #print(e)
+            except ValueError as e: # "neck point missing, normalization not possible, skipping that pose"  => this edge case is not mentioned in the paper but was the only sensible decision I think
+                #print(e) 
                 continue
             dist.append(flipped_cosine_min_dist(r_tick, s_tick))
     if(len(dist) == 0):

@@ -50,6 +50,7 @@ aliasNames = {
     "compare_briefBFMatcher2":"bfm2",
     "compare_combinedSetupB":"cB",
     "compare_combinedSetupA":"cA",
+    "compare_dist_min":"dist_min"
 }
 
 def get_short_eval_name(log_entry):
@@ -85,6 +86,10 @@ def get_short_eval_name(log_entry):
         return "brief|{}".format(
             aliasNames[log_entry["compare_method"]],
         )
+    elif "linkingArt" in log_entry:
+        return "linkingArt|{}".format(
+            aliasNames[log_entry["compare_method"]],
+        )
     else:
         return log_entry["experiment_id"]
 
@@ -96,5 +101,5 @@ log = new_log_entries
 display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics])
 pd.set_option('display.max_rows', None)
-print(a)
+print(a[-1:len(a)])
     
