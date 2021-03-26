@@ -35,9 +35,11 @@ copyreg.pickle(cv2.KeyPoint().__class__, _pickle_keypoint)
 
 #dataset_cleaned_extended_balanced = ceb_dataset -> combination of clean_data (all with _art classes nativity and virgin) dataset and files from prathmesn & ronak from 18.03.
 
-if os.uname().nodename == 'MBP-von-Tilman':
+osuname = os.uname().nodename
+print("osuname", osuname)
+if osuname == 'MBP-von-Tilman' or osuname == 'MacBook-Pro-von-Tilman.local':
     COMPOELEM_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem"
-elif os.uname().nodename == 'lme117':
+elif osuname == 'lme117':
     COMPOELEM_ROOT = "/home/zi14teho/compositional_elements"
 else:
     COMPOELEM_ROOT = os.getenv('COMPOELEM_ROOT')
