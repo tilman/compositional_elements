@@ -88,7 +88,6 @@ def lexsort_ncos_cr(compare_results): #sortNcosCr
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, target_data)
     ncos = compare_results[:,3]
     cr = compare_results[:,0]
-    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
     sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
     # lexsort indices are reversed
     # primary level of sorting: ncos
@@ -100,7 +99,6 @@ def lexsort_ncosBuckets1_cr(compare_results): #sortNcosNCr
     precision = 1 #sortNcosB2Cr
     ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
-    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
     sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
     # lexsort indices are reversed
     # primary level of sorting: ncos
@@ -112,7 +110,6 @@ def lexsort_ncosBuckets2_cr(compare_results): #sortNcosNCr
     precision = 2 #sortNcosB2Cr
     ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
-    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
     sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
     # lexsort indices are reversed
     # primary level of sorting: ncos
@@ -124,7 +121,6 @@ def lexsort_ncosBuckets3_cr(compare_results): #sortNcosNCr
     precision = 3 #sortNcosB2Cr
     ncos = np.array(list(map(lambda x: np.round(x, precision), compare_results[:,3])))
     cr = compare_results[:,0]
-    # sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,0]))] # wrong buggy
     sorted_compare_results = compare_results[np.lexsort((-cr,ncos))]
     # lexsort indices are reversed
     # primary level of sorting: ncos

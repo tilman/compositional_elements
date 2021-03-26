@@ -5,7 +5,9 @@ import pandas as pd
 import datetime
 import torch
 from tqdm import tqdm
+from tqdm.std import trange
 from . import eval_utils
+from itertools import combinations
 from compoelem.detect.openpose.lib.utils.common import BodyPart, Human, CocoPart
 
 def neg_cos_dist(r_tick, s_tick):
@@ -96,6 +98,95 @@ def compare_dist_bipart(poses_i1, poses_i2): #in paper this is dist_t(i1,i2)
     dist_sum = np.sum(all_dist)
     return (dist_sum, all_combinations)
 
+def verify_inliers(r,s,transformation):
+    # inlier_threshold = calc_ransac_inlier_threshold(r,s)
+    # apply transformation on all keypoints of s (cite: projection to the query image)
+    # then: A pair of keypoints is considered consistent with a transformation when the keypoint from the potential image match is within a specified distance from the query image keypoint.
+    # This threshold distance is relative with respect to the estimated query image pose size and is therefore different for each pose in the query image.
+
+    # return => indices of consistent keypoints
+    return [] #TODO
+
+def calc_ransac_inlier_threshold(r,s): #maybe wrong function here
+    # To determine the inlier threshold for RANSAC, relative query pose size with respect to the canonical pose size is estimated.
+    # For a canonical pose, the distances between connected pose keypoints are known. 
+    # The relative query pose size is computed as a median of the ratios between distances of connected keypoints detected in the query pose and corresponding distances in the canonical pose.
+    pass
+
+def calc_geometric_transformation(kpr1, kpr2, kps1, kps2): #maybe also two kp from each
+    # ????
+    # The transformation consists of scale, translation and horizontal flip.  => return transformation matrix here???
+    # Using two keypoint correspondences (two keypoint pairs?), the transformation is estimated in terms of least-squares. 
+    #   => An exact solution to the system of equations does not exist as the transformation 
+    #      has three degrees of freedom and there are four equations resulting in an overdetermined system.
+    pass
+
+def reestimate_geometric_transformation_least_square(r_inliers, s_inliers):
+    # Once a transformation with a sufficient number of inliers is found, all keypoint correspondences consistent with it are used to re-estimate the transformation in terms of least squares
+    pass
+
+def estimate_geometric_transformation_ransac(r,s):
+    s_star = s #TODO flip s
+    inliers = [] #list of list of keypoint indices of inliers
+    transformations = []
+
+    combi = np.array(list(combinations(range(0,18), r=2)))
+    T = 30 #number of trials for ransac, not mentioned in paper
+    for idx1, idx2 in combi[np.random.choice(len(combi), T, replace=False)]:  # 1) sample 2 keypoint indices -> idx1 and idx2, and then take the keypoints from both images:     (for T times)
+        # 2) transformation          =    calc_geometric_transformation(r[idx1], r[idx2], s[idx1], s[idx2]) or (kp1, kp2)
+        #    transformation_flipped  =    calc_geometric_transformation(kpr1, kpr2, kps_star1, kps_star2) or (kp1, kp2)
+        transformation_normal = calc_geometric_transformation(r[idx1], r[idx2], s[idx1], s[idx2])
+        transformation_flipped = calc_geometric_transformation(r[idx1], r[idx2], s_star[idx1], s_star[idx2])
+        consistent_points_normal = verify_inliers(r,s,transformation_normal)
+        consistent_points_flipped = verify_inliers(r,s_star,transformation_flipped)
+        # 3) verify_inliers(r,s,transformation))
+        if len(consistent_points_normal) >= len(consistent_points_flipped):  # ???? the transformation with a smaller error on the two keypoint correspondences is chosen. => what error? How can we see this error? => or do we perform verify_inliers on both and choose the higher amount of inliers
+            inliers.append(consistent_points_normal)
+            transformations.append(transformation_normal)
+        else:
+            inliers.append(consistent_points_flipped)
+            transformations.append(transformation_flipped)
+
+    inliers = np.array(inliers)
+    transformations = np.array(transformations)
+    inliers_count = [len(il) for il in inliers]
+    ai = np.argmax(inliers_count) # The output of the RANSAC method is the best transformation found, measured by the number of inliers
+    return (transformations[ai], inliers[ai]) # return: transformation + inliers: The transformation is found with RANSAC [27], so that it has the largest number of inliers, i.e. keypoints consistent with the transformation
+    #???? Where to put this: In geometric validation, pose pairs whose distance exceeds 0,1 are discarded => maybe at input of ransac where we split the list with l=50???
+    #pass
+
+def robust_verify(poses_i1, poses_i2):
+    poses_i1 = np.array([openpose_to_nparray(human) for human in poses_i1]) # output shape of each item is (18, 2) since we are using the 18 openpose keypoint model
+    poses_i2 = np.array([openpose_to_nparray(human) for human in poses_i2])
+    transformations = [] # list of refined transformations
+    validated_pairs = []
+    unvalidated_pairs = []
+    for idx_r, r in enumerate(poses_i1):  # For each tentative pose correspondence (one figure in the query image, one figure in the database image), a geometric transformation is estimated.
+        for idx_s, s in enumerate(poses_i2):
+            transformation, inliers = estimate_geometric_transformation_ransac(r,s)
+            # If the number of inliers is sufficient, the corresponding pose pair is considered validated, otherwise, the transformation is filtered out.
+            # Once a transformation with a sufficient number of inliers is found, all keypoint correspondences consistent with it are used to re-estimate the transformation in terms of least squares
+            # If the number of inliers is sufficient, the corresponding pose pair is considered validated, otherwise, the transformation is filtered out.
+            # 18 keypoints / 4 => 4,5 => 5 # The poses are considered validated if the estimated transformation aligned at least 1/4 of all keypoints of the pose, which is 7 out of 25 in our setup.
+            if len(inliers) >= 5: 
+                final_transformation = reestimate_geometric_transformation_least_square(r[inliers], s[inliers]) #save for later => Each transformation, corresponding to a different pair of poses, is applied on all validated pairs of poses, transforming other figures in the image
+                validated_pairs.append((idx_r, idx_s))
+                transformations.append(final_transformation)
+            else:
+                unvalidated_pairs.append((idx_r, idx_s))
+
+
+    # Each transformation, corresponding to a different pair of poses, is applied on all validated pairs of poses, transforming other figures in the image.
+    #  The maximum number of keypoints consistent with a transformation is used as a measure of image similarity.
+    total_consistent = []
+    for transformation in transformations:
+        consistent_for_this_transformation = []
+        for r, s in validated_pairs:
+            vi = verify_inliers(r,s,transformation)
+            if vi is not None:
+                consistent_for_this_transformation.append(len(vi))
+        total_consistent.append(sum(consistent_for_this_transformation))
+    return max(total_consistent)
     
 def compare(data, sort_method, compare_method):
     res_metrics = {}
@@ -108,6 +199,24 @@ def compare(data, sort_method, compare_method):
             compare_results.append((distance, combinations, target_data)) # we will use the same precomputed poses as we already computed for compoelem method
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
+
+        l = 50
+        # TODO: cut sorted_compare_results into first segment [0:l] and remaining segment [l:-1]
+        # for first segment perform RANSAC (robust verification) and set matched/unmatched
+                # => TODO: pose pairs whose distance exceeds 0,1 are discarded
+        # for last segment set all to unmatched
+        # then perform lexsort, Sort in a manner that all matched ones comes to the front and unmatched to the back. Second criteria is than distance from above
+        compare_results = [(0, *r) for r in sorted_compare_results[l:-1]]
+        for target in sorted_compare_results[0:l]:
+            target_data = target[-1]
+            if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
+                continue
+            matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
+            compare_results.append((matched, *target))
+        compare_results = np.array(compare_results)
+        sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
+
+
         query_label = query_data["className"]
         res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
         metrics = eval_utils.score_retrievals(query_label, res_labels)
