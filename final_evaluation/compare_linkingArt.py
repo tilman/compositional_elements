@@ -146,7 +146,7 @@ def estimate_geometric_transformation_ransac(r,s):
     transformations = []
 
     combi = np.array(list(combinations(range(0,18), r=2)))
-    T = 30 #number of trials for ransac, not mentioned in paper,  maximum of len(combi) = 153 possible for T
+    T = 50 #number of trials for ransac, not mentioned in paper,  maximum of len(combi) = 153 possible for T
     for idx1, idx2 in combi[np.random.choice(len(combi), T, replace=False)]:  # 1) sample 2 keypoint indices -> idx1 and idx2, and then take the keypoints from both images:     (for T times)
         # 2) transformation          =    calc_geometric_transformation(r[idx1], r[idx2], s[idx1], s[idx2]) or (kp1, kp2)
         #    transformation_flipped  =    calc_geometric_transformation(kpr1, kpr2, kps_star1, kps_star2) or (kp1, kp2)
