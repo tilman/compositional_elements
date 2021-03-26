@@ -231,8 +231,8 @@ def compare(data, sort_method, compare_method):
                 continue
             matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
             compare_results.append((matched, *target))
-,         compare_results = np.array(compare_results)
-        sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
+        compare_results = np.array(compare_results)
+        sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], -compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
 
 
         query_label = query_data["className"]
