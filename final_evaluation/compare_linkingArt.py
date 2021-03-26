@@ -204,7 +204,7 @@ def robust_verify(poses_i1, poses_i2):  #TODO: not sure if we are working with t
             if vi is not None:
                 consistent_for_this_transformation.append(len(vi))
         total_consistent.append(sum(consistent_for_this_transformation))
-    return max(total_consistent)
+    return 0 if len(total_consistent) == 0 else max(total_consistent)
     
 def compare(data, sort_method, compare_method):
     res_metrics = {}
