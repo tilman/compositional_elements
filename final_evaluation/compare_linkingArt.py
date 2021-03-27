@@ -219,20 +219,20 @@ def compare(data, sort_method, compare_method):
         sorted_compare_results = sort_method(compare_results)
 
         l = 50
-        # TODO: cut sorted_compare_results into first segment [0:l] and remaining segment [l:-1]
+        # cut sorted_compare_results into first segment [0:l] and remaining segment [l:-1]
         # for first segment perform RANSAC (robust verification) and set matched/unmatched
-                # => TODO: pose pairs whose distance exceeds 0.1 are discarded
         # for last segment set all to unmatched
-        # then perform lexsort, Sort in a manner that all matched ones comes to the front and unmatched to the back. Second criteria is than distance from above
         compare_results = [(0, *r) for r in sorted_compare_results[l:-1]] #TODO check if padding with 0 is really what we want. Since idx0 stand for max(total_consistent) in the robust_verify result i guess so
         for target in sorted_compare_results[0:l]:
+            # => TODO: pose pairs whose distance exceeds 0.1 are discarded => means attached to list without robust_verify
             target_data = target[-1]
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
-            compare_results.append((matched, *target))
+            match_count = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
+            compare_results.append((match_count, *target))
         compare_results = np.array(compare_results)
-        sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], -compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
+        # then perform lexsort, Sort in a manner that higher match count comes to the front and unmatched to the back. Second criteria is than distance from above
+        sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], -compare_results[:,0]))] # first level of sorting is 0 (robust verification), and then 1 (distance)
 
 
         query_label = query_data["className"]
