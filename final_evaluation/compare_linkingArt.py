@@ -16,7 +16,7 @@ def neg_cos_dist(r_tick, s_tick):
     return 1 - np.dot(a, b)/(np.linalg.norm(a)*np.linalg.norm(b)) # type: ignore, manually checked it works!
 
 def flipped_cosine_min_dist(r_tick, s_tick):
-    s_star = np.array([[-kp[0], kp[1]] for kp in s_tick]) #TODO check if correct
+    s_star = np.array([[-kp[0], kp[1]] for kp in s_tick])
     return min(
         neg_cos_dist(r_tick, s_tick),
         neg_cos_dist(r_tick, s_star),
@@ -31,12 +31,22 @@ def openpose_to_nparray(human: Human):
 def isNoneKp(kp):
     return kp[0] == 0 and kp[1] == 0
 
-def neck_norm_poses(r, s): # TODO check
+def neck_norm_poses(r, s):
     ROOT_POINT = CocoPart.Neck.value
     r_root = r[ROOT_POINT]
     s_root = s[ROOT_POINT]
-    if(isNoneKp(r_root) or isNoneKp(s_root)):
-        raise ValueError("neck point missing, normalization not possible, skipping that pose")
+    RSHOULDER = CocoPart.RShoulder.value
+    LSHOULDER = CocoPart.LShoulder.value
+    if(isNoneKp(r_root)): # extension to the paper: if neck point is missing we try to esitmate it with the midpoint of left and right shoulder
+        if(isNoneKp(r[RSHOULDER]) or isNoneKp(r[LSHOULDER])):
+            raise ValueError("neck point and shoulder point missing, normalization not possible, skipping that pose")
+        else:
+            r_root = [(r[RSHOULDER][0]+r[LSHOULDER][0])/2, (r[RSHOULDER][1]+r[LSHOULDER][1])/2]
+    if(isNoneKp(s_root)): # extension to the paper: if neck point is missing we try to esitmate it with the midpoint of left and right shoulder
+        if(isNoneKp(s[RSHOULDER]) or isNoneKp(s[LSHOULDER])):
+            raise ValueError("neck point and shoulder point missing, normalization not possible, skipping that pose")
+        else:
+            r_root = [(s[RSHOULDER][0]+s[LSHOULDER][0])/2, (s[RSHOULDER][1]+s[LSHOULDER][1])/2]
     r_tick = []
     s_tick = []
     for r_i, s_i in zip(r, s):
@@ -63,7 +73,7 @@ def compare_dist_min(poses_i1, poses_i2): #in paper this is dist_min(i1, i2), we
             dist.append(flipped_cosine_min_dist(r_tick, s_tick))
             combinations.append((idx_r, idx_s))
     if(len(dist) == 0):
-        return (2, (0,0)) #maximum possible neg cos dist
+        return (2, []) #maximum possible neg cos dist
     else:
         # return min(dist)
         am = np.argmin(np.array(dist))
@@ -134,6 +144,14 @@ def calc_geometric_transformation(r, s): #maybe also two kp from each
     R = np.hstack([r, np.ones((r.shape[0], 1))])
     S = np.hstack([s, np.ones((s.shape[0], 1))])
     A, residuals, rank, singular_values = np.linalg.lstsq(S, R, rcond=None) # we want to transform s points to query image. So perform `s @ A => r'`
+    # zero out these values to get only scale and translation
+    # print("A",A)
+    # A[0,1] = 0
+    # A[1,0] = 0
+    # A[2,0] = 0
+    # A[2,1] = 0
+    # A[2,2] = 1
+    # print("A",A)
     return A, sum(residuals) # seems like residuals is always an empty array => check np.linalg.lstsq again
 
 # def reestimate_geometric_transformation_least_square(r_inliers, s_inliers): => is the same as calc_geometric_transformation
@@ -142,12 +160,9 @@ def calc_geometric_transformation(r, s): #maybe also two kp from each
 
 def estimate_geometric_transformation_ransac(r,s):
     s_star = np.array([[-kp[0], kp[1]] for kp in s]) # s_star is flipped pose
-    inliers = [] #list of list of keypoint indices of inliers
-    transformations = []
 
     combi = np.array(list(combinations(range(0,18), r=2)))
-    T = 50 #number of trials for ransac, not mentioned in paper,  maximum of len(combi) = 153 possible for T
-    for idx1, idx2 in combi[np.random.choice(len(combi), T, replace=False)]:  # 1) sample 2 keypoint indices -> idx1 and idx2, and then take the keypoints from both images:     (for T times)
+    for idx1, idx2 in combi[np.random.choice(len(combi), len(combi), replace=False)]:  # 1) sample 2 keypoint indices -> idx1 and idx2, and then take the keypoints from both images:
         # 2) transformation          =    calc_geometric_transformation(r[idx1], r[idx2], s[idx1], s[idx2]) or (kp1, kp2)
         #    transformation_flipped  =    calc_geometric_transformation(kpr1, kpr2, kps_star1, kps_star2) or (kp1, kp2)
         two_kp_sample = [idx1,idx2]
@@ -161,16 +176,15 @@ def estimate_geometric_transformation_ransac(r,s):
             transformation = transformation_flipped
             s_used = s_star
         # print("ransac lrs",len(r),len(s))
-        consistent_points = verify_inliers(r,s_used,transformation)
-        inliers.append(consistent_points)
-        transformations.append(transformation)
-    inliers = np.array(inliers)
-    transformations = np.array(transformations)
-    inliers_count = [len(il) for il in inliers]
-    ai = np.argmax(inliers_count) # The output of the RANSAC method is the best transformation found, measured by the number of inliers
-    return (transformations[ai], inliers[ai]) # return: transformation + inliers: The transformation is found with RANSAC [27], so that it has the largest number of inliers, i.e. keypoints consistent with the transformation
+        inliers = verify_inliers(r,s_used,transformation)
+        #break as soon as 18/4 => 5 inliers are found and then return!!!
+        #print("inliers",len(inliers))
+        if(len(inliers) >= 5 ): #break as soon as 18/4 => 5 inliers are found and then return!!!
+            # The output of the RANSAC method is the best transformation found, measured by the number of inliers
+            return (transformation, inliers) # return: transformation + inliers: The transformation is found with RANSAC [27], so that it has the largest number of inliers, i.e. keypoints consistent with the transformation
+    return (None, None)
 
-def robust_verify(poses_i1, poses_i2):  #TODO: not sure if we are working with the right input data => normalised around root or not?? Keypoints normed to imgrect between 0 and 1 or with pixel values?
+def robust_verify(poses_i1, poses_i2, neck_norm):  #TODO: Test out both. normed to neckpoint and normal. Not sure if we are working with the right input data => normalised around root or not?? Keypoints normed to imgrect between 0 and 1 or with pixel values?
     poses_i1 = np.array([openpose_to_nparray(human) for human in poses_i1]) # output shape of each item is (18, 2) since we are using the 18 openpose keypoint model
     poses_i2 = np.array([openpose_to_nparray(human) for human in poses_i2])
     transformations = [] # list of refined transformations
@@ -178,12 +192,14 @@ def robust_verify(poses_i1, poses_i2):  #TODO: not sure if we are working with t
     unvalidated_pairs = []
     for idx_r, r in enumerate(poses_i1):  # For each tentative pose correspondence (one figure in the query image, one figure in the database image), a geometric transformation is estimated.
         for idx_s, s in enumerate(poses_i2):
+            if neck_norm:
+                r, s = neck_norm_poses(r, s)
             transformation, inliers = estimate_geometric_transformation_ransac(r,s)
             # If the number of inliers is sufficient, the corresponding pose pair is considered validated, otherwise, the transformation is filtered out.
             # Once a transformation with a sufficient number of inliers is found, all keypoint correspondences consistent with it are used to re-estimate the transformation in terms of least squares
             # If the number of inliers is sufficient, the corresponding pose pair is considered validated, otherwise, the transformation is filtered out.
             # 18 keypoints / 4 => 4,5 => 5 # The poses are considered validated if the estimated transformation aligned at least 1/4 of all keypoints of the pose, which is 7 out of 25 in our setup.
-            if len(inliers) >= 5: 
+            if inliers is not None:
                 final_transformation, sum_residuals = calc_geometric_transformation(r[inliers], s[inliers]) #save for later => Each transformation, corresponding to a different pair of poses, is applied on all validated pairs of poses, transforming other figures in the image
                 validated_pairs.append((idx_r, idx_s))
                 transformations.append(final_transformation)
@@ -206,7 +222,7 @@ def robust_verify(poses_i1, poses_i2):  #TODO: not sure if we are working with t
         total_consistent.append(sum(consistent_for_this_transformation))
     return 0 if len(total_consistent) == 0 else max(total_consistent)
     
-def compare(data, sort_method, compare_method):
+def compare(data, sort_method, compare_method, neck_norm):
     res_metrics = {}
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
@@ -228,7 +244,7 @@ def compare(data, sort_method, compare_method):
             target_data = target[-1]
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
-            match_count = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
+            match_count = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"], neck_norm)
             compare_results.append((match_count, *target))
         compare_results = np.array(compare_results)
         # then perform lexsort, Sort in a manner that higher match count comes to the front and unmatched to the back. Second criteria is than distance from above
@@ -272,21 +288,23 @@ def sort_asc(compare_results):
 
 def eval_all_combinations(datastore, datastore_name):
     all_res_metrics = []
-    for compare_method in [compare_dist_bipart]:
-        start_time = datetime.datetime.now()
-        sortmethod = sort_asc
-        experiment_id = "datastore: {}, compare_method: {}, sort_method: {}".format(datastore_name, compare_method.__name__, sortmethod.__name__)
-        print("EXPERIMENT:",experiment_id)
-        eval_dataframe = compare(list(datastore.values()), sortmethod, compare_method)
-        all_res_metrics.append({
-            "experiment_id": experiment_id,
-            "datetime": start_time,
-            "eval_time_s": (datetime.datetime.now() - start_time).seconds,
-            "datastore_name": datastore_name,
-            "compare_method": compare_method.__name__,
-            "sort_method": sortmethod.__name__,
-            "eval_dataframe": eval_dataframe,
-            "linkingArt":True,
-            "new":True,
-        })
+    for neck_norm in [True, False]:
+        for compare_method in [compare_dist_bipart, compare_dist_min]:
+            start_time = datetime.datetime.now()
+            sortmethod = sort_asc
+            experiment_id = "datastore: {}, compare_method: {}, sort_method: {}, neck_norm:{}".format(datastore_name, compare_method.__name__, sortmethod.__name__,neck_norm)
+            print("EXPERIMENT:",experiment_id)
+            eval_dataframe = compare(list(datastore.values()), sortmethod, compare_method, neck_norm)
+            all_res_metrics.append({
+                "experiment_id": experiment_id,
+                "datetime": start_time,
+                "eval_time_s": (datetime.datetime.now() - start_time).seconds,
+                "datastore_name": datastore_name,
+                "neck_norm": neck_norm,
+                "compare_method": compare_method.__name__,
+                "sort_method": sortmethod.__name__,
+                "eval_dataframe": eval_dataframe,
+                "linkingArt":True,
+                "new":True,
+            })
     return all_res_metrics

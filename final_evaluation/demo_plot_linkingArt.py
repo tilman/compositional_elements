@@ -74,28 +74,40 @@ print(metrics)
 
 RES_PLOT_SIZE = 3
 
-fig, axis = plt.subplots(RES_PLOT_SIZE, 2)
+fig, axis = plt.subplots(RES_PLOT_SIZE, 4)
 for idx, res in enumerate(sorted_compare_results[0:RES_PLOT_SIZE]): #type: ignore
     print(res)
     matched_keypoints, score, combinations, res_data = res # type: ignore => numpy unpack typing not fully supported
     query_img = cv2.imread(DATASET_ROOT+'/'+query_data["className"]+'/'+query_data["imgName"])
     res_img = cv2.imread(DATASET_ROOT+'/'+res_data["className"]+'/'+res_data["imgName"])
 
+    # draw all poses:
+    query_img_all = draw_humans(np.array(query_img), query_data["compoelem"]["humans"])
+    res_img_all = draw_humans(np.array(res_img), res_data["compoelem"]["humans"])
+
     # draw all matched poses:
     for idx_r, idx_s in combinations:
         query_img = draw_humans(query_img, query_data["compoelem"]["humans"][idx_r:idx_r+1])
         res_img = draw_humans(res_img, res_data["compoelem"]["humans"][idx_s:idx_s+1])
 
+    query_img_all_rgb = cv2.cvtColor(query_img_all, cv2.COLOR_BGR2RGB)
     query_img_rgb = cv2.cvtColor(query_img, cv2.COLOR_BGR2RGB)
     res_img_rgb = cv2.cvtColor(res_img, cv2.COLOR_BGR2RGB)
+    res_img_all_rgb = cv2.cvtColor(res_img_all, cv2.COLOR_BGR2RGB)
     ax = axis[idx]
-    ax[0].imshow(query_img_rgb)
+    ax[0].imshow(query_img_all_rgb)
     ax[0].axis('off')
-    ax[0].set_title('{}'.format(query_data["className"]))
-    ax[1].imshow(res_img_rgb)
+    ax[0].set_title('all query poses'.format(query_data["className"]))
+    ax[1].imshow(query_img_rgb)
     ax[1].axis('off')
+    ax[1].set_title('matched poses {}'.format(query_data["className"]))
+    ax[2].imshow(res_img_rgb)
+    ax[2].axis('off')
+    ax[2].set_title("matched poses\nmatched kp:{} score{:.3f} {}".format(matched_keypoints, score, res_data["className"]))
+    ax[3].imshow(res_img_all_rgb)
+    ax[3].axis('off')
+    ax[3].set_title("all target poses".format(matched_keypoints, score, res_data["className"]))
     print("res_key", idx, res_data["imgName"])
-    ax[1].set_title("matched kp:{}\nscore{:.3f} {}".format(matched_keypoints, score, res_data["className"]))
 
 #plt.tight_layout()
 # plt.subplots_adjust(top=0.85) # Make space for title
