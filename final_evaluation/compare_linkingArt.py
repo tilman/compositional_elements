@@ -193,7 +193,10 @@ def robust_verify(poses_i1, poses_i2, neck_norm):  #TODO: Test out both. normed 
     for idx_r, r in enumerate(poses_i1):  # For each tentative pose correspondence (one figure in the query image, one figure in the database image), a geometric transformation is estimated.
         for idx_s, s in enumerate(poses_i2):
             if neck_norm:
-                r, s = neck_norm_poses(r, s)
+                try:
+                    r, s = neck_norm_poses(r, s)
+                except ValueError:
+                    continue
             transformation, inliers = estimate_geometric_transformation_ransac(r,s)
             # If the number of inliers is sufficient, the corresponding pose pair is considered validated, otherwise, the transformation is filtered out.
             # Once a transformation with a sufficient number of inliers is found, all keypoint correspondences consistent with it are used to re-estimate the transformation in terms of least squares

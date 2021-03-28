@@ -60,7 +60,7 @@ for target in sorted_compare_results[0:l]:
     target_data = target[-1]
     if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
         continue
-    matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
+    matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"], neck_norm=True)
     compare_results.append((matched, *target))
 compare_results = np.array(compare_results)
 sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], -compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
