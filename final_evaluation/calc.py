@@ -13,6 +13,7 @@ from . import calc_brief
 from . import calc_orb
 from . import calc_imageNet_vgg19_bn_features_featuremaps
 from . import calc_places365_resnet50_feature_noFC_featuremaps
+from compoelem.generate import pose_abstraction
 
 #dataset_cleaned_extended_balanced = ceb_dataset
 
@@ -38,6 +39,11 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
         changed = True
     if "compoelem" not in datastore[key]:
         datastore[key]["compoelem"] = calc_compoelem.precompute(filename)
+        changed = True
+    if "compoelem" in datastore[key] and "pose_lines_with_fallback" not in datastore[key]["compoelem"]:
+        poses = datastore[key]["compoelem"]["poses"]
+        datastore[key]["compoelem"]["pose_lines_with_fallback"] = pose_abstraction.get_pose_lines_with_fallback(poses)
+        # print("pose_lines_with_fallback added to", key)
         changed = True
     if "imageNet_vgg19_bn_features" not in datastore[key]:
         datastore[key]["imageNet_vgg19_bn_features"] = calc_imageNet_vgg19_bn_features_featuremaps.precompute(filename)

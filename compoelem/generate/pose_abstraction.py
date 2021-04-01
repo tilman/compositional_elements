@@ -6,8 +6,37 @@ from compoelem.config import config
 from compoelem.types import *
 from compoelem.detect.converter import k, p
 
+poses_counter = 0
+normal_pose_line_counter = 0
+fallback_line_counter = 0
+
+# new ICC+ method
+def get_pose_lines_with_fallback(poses: Poses) -> Sequence[PoseLine]:
+    global poses_counter
+    global normal_pose_line_counter
+    global fallback_line_counter
+    pose_lines: Sequence[PoseLine] = []
+    for pose in poses:
+        poses_counter += 1
+        try:
+            pose_abstraction = get_pose_abstraction(pose)
+            pose_lines.append(pose_abstraction)
+            normal_pose_line_counter += 1
+        except ValueError as e:
+            try:
+                pose_lines.append(get_fallback_pose_line(pose))
+                fallback_line_counter += 1
+            except AssertionError as e2:
+                print("fallback err", e2)
+    print(
+        "poses_counter", poses_counter,
+        "normal_pose_line_counter", normal_pose_line_counter,
+        "fallback_line_counter", fallback_line_counter,
+    )
+    return pose_lines
+
 def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
-    pose_lines: Sequence[PoseLine] = [];
+    pose_lines: Sequence[PoseLine] = []
     for pose in poses:
         try:
             pose_abstraction = get_pose_abstraction(pose)
@@ -18,7 +47,7 @@ def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
     return pose_lines
 
 def get_pose_triangles(poses: Poses) -> Sequence[PoseTriangle]:
-    pose_triangles: Sequence[PoseTriangle] = [];
+    pose_triangles: Sequence[PoseTriangle] = []
     for pose in poses:
         try:
             triangle = get_pose_triangle(pose)
@@ -37,21 +66,41 @@ def get_pose_abstraction(pose: Pose) -> PoseLine:
     #     #return PoseLine(top_point, bottom_point)
     #     return get_fallback_pose_line(pose)
 
+# FIXes: missing pose line for virgin and child / maria 
 def get_fallback_pose_line(pose: Pose) -> PoseLine:
     pose_keypoints = np.array(pose.keypoints, dtype=Keypoint)
-    if(pose_keypoints[0].isNone or pose_keypoints[1].isNone):
-        raise AssertionError('missing valid keypoint 0 (nose) or 1 (neck) for pose line fallback!')
+    left_eye_kp: Keypoint = pose_keypoints[config["pose_abstraction"]["fallback"]["left_eye_kp"]]
+    right_eye_kp: Keypoint = pose_keypoints[config["pose_abstraction"]["fallback"]["right_eye_kp"]]
+    left_shoulder_kp: Keypoint = pose_keypoints[config["pose_abstraction"]["fallback"]["left_shoulder_kp"]]
+    right_shoulder_kp: Keypoint = pose_keypoints[config["pose_abstraction"]["fallback"]["right_shoulder_kp"]]
+    neck_kp: Keypoint = pose_keypoints[config["pose_abstraction"]["fallback"]["neck_kp"]]
+    nose_kp: Keypoint = pose_keypoints[config["pose_abstraction"]["fallback"]["nose_kp"]]
+    if neck_kp.isNone:
+        if left_shoulder_kp.isNone or right_shoulder_kp.isNone:
+            neck_kp = Keypoint(int((left_shoulder_kp.x+right_shoulder_kp.x)/2), int((left_shoulder_kp.y+right_shoulder_kp.y)/2), (left_shoulder_kp.score+right_shoulder_kp.score)/2)
+        else:
+            raise AssertionError('missing valid keypoint 1 (neck) and left/right shoulder for pose line fallback!')
+    if nose_kp.isNone:
+        if left_eye_kp.isNone or right_eye_kp.isNone:
+            nose_kp = Keypoint(int((left_eye_kp.x+right_eye_kp.x)/2), int((left_eye_kp.y+right_eye_kp.y)/2), (left_eye_kp.score+right_eye_kp.score)/2)
+        else:
+            raise AssertionError('missing valid keypoint 0 (nose) and left/right eye for pose line fallback!')
     
     top_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config["pose_abstraction"]["keypoint_list"]["top"]].tolist()
     top_keypoints = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))
-    top_point = Point(*k(top_keypoints[0]))
-    
+    if len(top_keypoints) == 0:
+        if neck_kp.isNone:
+            raise ValueError('missing valid top keypoints and neck_kp for pose line fallback!!')
+        else:
+            top_point = Point(*k(neck_kp)) # use midpoint calculated from above
+    else:
+        top_point = Point(*k(top_keypoints[0]))
 
-    nose_point = np.array(k(pose_keypoints[0]))
-    neck_point = np.array(k(pose_keypoints[1]))
-    fallback_length = np.linalg.norm(nose_point-neck_point) * 2
+    nose_point = np.array(k(nose_kp))
+    neck_point = np.array(k(neck_kp))
+    fallback_length = np.linalg.norm(nose_point-neck_point) * config["pose_abstraction"]["fallback"]["length_scale_factor"]
 
-    bottom_point = Point(neck_point[0], (neck_point[1] - fallback_length))
+    bottom_point = Point(neck_point[0], (neck_point[1] + fallback_length))
     return PoseLine(top_point, bottom_point)
 
 

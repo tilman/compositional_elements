@@ -17,6 +17,14 @@ pose_abstraction:
     top: [0,1,14,15,16,17] #this will also define the selection order/priority
     right: [10,9,8]
     left: [13,12,11]
+  fallback:
+    left_shoulder_kp: 5
+    right_shoulder_kp: 2
+    left_eye_kp: 15
+    right_eye_kp: 14
+    neck_kp: 1
+    nose_kp: 0
+    length_scale_factor: 3
 keypoint_colors:
   - [0,120,40]
   - [105,160,50]

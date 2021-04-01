@@ -34,7 +34,6 @@ def precompute(filename):
         "humans": humans,
         "poses": poses,
         "pose_lines": pose_lines,
-        #"pose_lines_fallback": pose_lines_fallback, # more robust poselines with fallback for maria
         "pose_directions": pose_directions,
         "global_action_lines": global_action_lines,
         "width": width,
