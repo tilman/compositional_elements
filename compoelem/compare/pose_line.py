@@ -67,16 +67,15 @@ def compare_pose_lines_2(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
     max_pose_count = max(len(a), len(b))
     threshold = 1/(max_pose_count * 2)+0.05
     res_filtered = res_np[res_np[:,0] < config["compare"]["filter_threshold"]]
-    # res_filtered = res_np[res_np[:,0] < 0.1] #TODO add 100 to config params
-    # res_filtered = res_np[res_np[:,0] < 100] #TODO add 100 to config params
     # res_filtered = res_np[res_np[:,0] < threshold] #TODO another idea: make threshold dynamic and depend on amount of poses in image => reason: more people in one image means that chances are high for a matching pose. To reduce chance => reduce the threshold
     if len(res_filtered) == 0:
         neg_mean_distance_hits = 0
     else:
         neg_mean_distance_hits = config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)
-        # md ist gering => guter match => neg md hoch
-        # md ist hoch => schlechter match => neg md gering
+        # guter match => neg md hoch (max: filter threshold wenn mean dist = 0)
+        # schlechter match => neg md gering (0)
     hit_ratio = len(res_filtered) / max(len(a), len(b))
+    # hit ratio: 
     # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
     return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits
 
@@ -102,15 +101,13 @@ def compare_pose_lines_3(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
     max_pose_count = max(len(a), len(b))
     # threshold = 1/(max_pose_count * 2)+0.05
     res_filtered = res_np[res_np[:,0] < config["compare"]["filter_threshold"]]
-    # res_filtered = res_np[res_np[:,0] < 0.1] #TODO add 100 to config params
-    # res_filtered = res_np[res_np[:,0] < 100] #TODO add 100 to config params
     # res_filtered = res_np[res_np[:,0] < threshold] #TODO another idea: make threshold dynamic and depend on amount of poses in image => reason: more people in one image means that chances are high for a matching pose. To reduce chance => reduce the threshold
     if len(res_filtered) == 0:
         neg_mean_distance_hits = 0
     else:
         neg_mean_distance_hits = (config["compare"]["filter_threshold"] - np.sum(res_filtered[:,0])/len(res_filtered)) / config["compare"]["filter_threshold"]
-        # md ist gering => guter match => neg md hoch
-        # md ist hoch => schlechter match => neg md gering
+        # guter match => neg md hoch (max = 1)
+        # schlechter match => neg md gering (min = 0)
     hit_ratio = len(res_filtered) / max(len(a), len(b))
     # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
     return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits
@@ -122,4 +119,4 @@ def filter_pose_line_ga_result(ga_res: Sequence[Tuple[float, float, float, Any]]
     np_ga_res = np.array(ga_res)
     ga_res_filtered_by_hit_ratio = np_ga_res[np_ga_res[:,1] == max(np.array(ga_res)[:,1])] #first filter elem with max hit ratio
     ga_res_filtered_by_mean_dist = ga_res_filtered_by_hit_ratio[ga_res_filtered_by_hit_ratio[:,2] == max(np.array(ga_res_filtered_by_hit_ratio)[:,2])] #then filter elem with max neq md
-    return ga_res_filtered_by_mean_dist[0] # TODO: evaluate if it makes senso to return both at this point here
+    return ga_res_filtered_by_mean_dist[0]

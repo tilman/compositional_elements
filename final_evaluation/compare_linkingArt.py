@@ -144,6 +144,7 @@ def calc_geometric_transformation(r, s): #maybe also two kp from each
     R = np.hstack([r, np.ones((r.shape[0], 1))])
     S = np.hstack([s, np.ones((s.shape[0], 1))])
     A, residuals, rank, singular_values = np.linalg.lstsq(S, R, rcond=None) # we want to transform s points to query image. So perform `s @ A => r'`
+    print(A)
     # zero out these values to get only scale and translation
     # print("A",A)
     # A[0,1] = 0
@@ -177,6 +178,7 @@ def estimate_geometric_transformation_ransac(r,s):
             s_used = s_star
         # print("ransac lrs",len(r),len(s))
         inliers = verify_inliers(r,s_used,transformation)
+        print("sample_kp", two_kp_sample, "inliers_kp", inliers)
         #break as soon as 18/4 => 5 inliers are found and then return!!!
         #print("inliers",len(inliers))
         if(len(inliers) >= 5 ): #break as soon as 18/4 => 5 inliers are found and then return!!!

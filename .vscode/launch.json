@@ -6,6 +6,12 @@
     "configurations": [
 
         {
+            "name": "playground.presi_retrival_visualization",
+            "type": "python",
+            "request": "launch",
+            "module": "playground.presi_retrival_visualization"
+        },
+        {
             "name": "final eval compare",
             "type": "python",
             "request": "launch",

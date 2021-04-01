@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Sequence, Tuple
 import numpy as np
 
+from compoelem.detect.openpose.lib.utils.common import CocoPart
 from shapely.geometry import LineString, Point, Polygon
 
 Img = Sequence[Sequence[int]]

@@ -60,8 +60,8 @@ except FileNotFoundError as e:
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_combinations(datastore, DATASTORE_NAME, "places365_resnet50_feature_noFC")] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
-# [evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
-# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+[evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
+pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_combined_vgg19.eval_all_combinations(datastore, DATASTORE_NAME)] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_sift.eval_all_combinations(datastore, DATASTORE_NAME)] 
@@ -72,8 +72,8 @@ except FileNotFoundError as e:
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_combined_sift.eval_all_combinations(datastore, DATASTORE_NAME)] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
-[evaluation_log.append(experiment) for experiment in compare_linkingArt.eval_all_combinations(datastore, DATASTORE_NAME)] 
-pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
+# [evaluation_log.append(experiment) for experiment in compare_linkingArt.eval_all_combinations(datastore, DATASTORE_NAME)] 
+# pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 
 def get_new_evaluation_log():
     evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
