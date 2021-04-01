@@ -12,7 +12,7 @@ from compoelem.config import config
 from compoelem.compare.pose_line import compare_pose_lines_3, compare_pose_lines_3, filter_pose_line_ga_result
 from compoelem.compare.normalize import minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action
 
-def compare_setupA(data, sort_method, norm_method):
+def compare_setupA(data, sort_method, norm_method, pose_lines_key):
     if norm_method != 'norm_by_global_action':
         raise NotImplementedError("only norm_by_global_action is implemented")
     res_metrics = {}
@@ -51,7 +51,7 @@ def compare_setupA(data, sort_method, norm_method):
                 res_metrics[key][label].append(metrics[key])
     return eval_utils.get_eval_dataframe(res_metrics)
 
-def compare_setupB(data, sort_method, norm_method, pose_lines_key = "pose_lines"):
+def compare_setupB(data, sort_method, norm_method, pose_lines_key):
     res_metrics = {}
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
@@ -124,7 +124,7 @@ def eval_all_combinations(datastore, datastore_name):
                         )
                         print("EXPERIMENT:", experiment_id)
                         start_time = datetime.datetime.now()
-                        eval_dataframe = setup(list(datastore.values()), sort_method, norm_method)
+                        eval_dataframe = setup(list(datastore.values()), sort_method, norm_method, pose_lines_key)
                         all_res_metrics.append({
                             "experiment_id": experiment_id,
                             "config": config,
