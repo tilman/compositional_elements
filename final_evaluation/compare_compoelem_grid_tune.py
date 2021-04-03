@@ -188,5 +188,4 @@ def eval_all_combinations(datastore, datastore_name):
                                             "precision_curves": precision_curves,
                                             "new": True,
                                         })
-    exit()
     return all_res_metrics
