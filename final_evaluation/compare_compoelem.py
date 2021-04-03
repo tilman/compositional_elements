@@ -125,7 +125,8 @@ def eval_all_combinations(datastore, datastore_name):
         # for global_action_lines_key in ["global_action_lines_with_fallback", "global_action_lines"]:
         for global_action_lines_key in ["global_action_lines_with_fallback"]:
             # for sort_method in [lexsort_md_hr, lexsort_hr_md, lexsort_cr_hr]:
-            for sort_method in [lexsort_cr_hr, sort_hr, sort_cr]:
+            # for sort_method in [lexsort_cr_hr, sort_hr, sort_cr]:
+            for sort_method in [lexsort_cr_hr]:
             # for sort_method in [lexsort_cr_hr]:
                 # for setup in [compare_setupA, compare_setupB]:
                 for setup in [compare_setupA]:
@@ -139,7 +140,6 @@ def eval_all_combinations(datastore, datastore_name):
                                         config["bisection"]["cone_scale_factor"] = cone_scale_factor
                                         new_datastore_values = []
                                         for key in datastore.keys():
-                                            className = datastore[key]["className"]
                                             poses = datastore[key]["compoelem"]["poses"]
                                             datastore[key]["compoelem"]["global_action_lines_with_fallback"] = global_action.get_global_action_lines(poses, True)
                                             new_datastore_values.append(datastore[key])
