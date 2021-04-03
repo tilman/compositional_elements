@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "playground.presi_retrival_visualization",
             "type": "python",
@@ -16,6 +17,12 @@
             "type": "python",
             "request": "launch",
             "module": "final_evaluation.compare"
+        },
+        {
+            "name": "final eval calc",
+            "type": "python",
+            "request": "launch",
+            "module": "final_evaluation.calc"
         },
         {
             "name": "eval topK",

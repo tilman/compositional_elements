@@ -26,9 +26,39 @@ def get_cone_combination_intersections(pose_directions: Sequence[PoseDirection])
     #   combination_length = 1 => [(0,), (1,), (2,), (3,), (4,), (5,), (6,), (7,)]
     #   combination_length = 2 => [(0, 1), ..., (0, 7), (1, 2), ..., (1, 7), (2, 3), ...]   # no duplicate combinations live (1, 0) since intersection would be the same
     #   combination_length = 8 => [(0, 1, 2, 3, 4, 5, 6, 7)]
+    # combinations can still get HUGGEE... for 21 poses: 2097151 combinations: sum([len(list(itertools.combinations(range(0,21), r))) for r in range(1,22)])
+    # is the same as 2097151 2**21-1 => Loop has size: (2^len(pose_directions))-1
+
+    # # old from 0 to len(poserange) => and calc all
+    # # new from len(poserange) to 0 and break after first r is found where entries exist
+    # for combination_length in list(range(1,len(pose_directions)+1))[::-1]:
+    #     cone_combinations: Sequence[ConeCombination] = list(itertools.combinations(range(0,len(pose_directions)), combination_length))
+    #     # generating all combinations of cones with combi length r
+    #     for combination in cone_combinations:
+    #         # start the recursive intersection calculation with the first entry of the combination tuple as the target cone
+    #         combi_intersection_result = pose_directions[combination[0]].cone
+    #         for i in combination[1:]:
+    #             # iterate over the remaining combinations and recursivly call the intersection on the current intersection
+    #             # this will slowly make the intersection smaller till all intersections from the combination are generated
+    #             combi_intersection_result = cast(Polygon, combi_intersection_result.intersection(pose_directions[i].cone))
+    #         if not combi_intersection_result.is_empty:
+    #             # only append the final intersection if the target cone is not empty
+    #             # also store the combination tuple
+    #             combination_intersections.append(ConeIntersection(combi_intersection_result, combination))
+    #     if len(combination_intersections) > 0:
+    #         # new optimization, calc backwards (from many combinations) to less combinations
+    #         # since length_cone_combinations with combination_length has pyramid form. we have potential to save a lot of calculations!!!
+    #         print("cone_combination_length", map(lambda x: x.cone_combination_length, combination_intersections), "length_cone_combinations", len(cone_combinations))
+    #         break
+    # return combination_intersections
+
+
+    # old from 0 to len(poserange) => and calc all
+    # new from len(poserange) to 0 and break after first r is found where entries exist
     for combination_length in range(1,len(pose_directions)+1):
         cone_combinations: Sequence[ConeCombination] = list(itertools.combinations(range(0,len(pose_directions)), combination_length))
         # generating all combinations of cones with combi length r
+        empty_round = True
         for combination in cone_combinations:
             # start the recursive intersection calculation with the first entry of the combination tuple as the target cone
             combi_intersection_result = pose_directions[combination[0]].cone
@@ -40,9 +70,14 @@ def get_cone_combination_intersections(pose_directions: Sequence[PoseDirection])
                 # only append the final intersection if the target cone is not empty
                 # also store the combination tuple
                 combination_intersections.append(ConeIntersection(combi_intersection_result, combination))
+                empty_round = False
+        if empty_round: # NEW add empty round as optimization
+            # print("empty round at combi length", combination_length)
+            # if we now have one round without any intersections, increasing the combination length by one will not have any intersections as well
+            break
     return combination_intersections
 
-def get_filtered_cone_intersections(poses) -> Sequence[ConeIntersection]:
+def get_filtered_cone_intersections(poses, fallback) -> Sequence[ConeIntersection]:
     """get the filtered cone intersections from the poses. We filter by selecting the intersections with the most cones participating. Therfore it could happen that the amount of intersections is greater than 1.
 
     Args:
@@ -51,7 +86,7 @@ def get_filtered_cone_intersections(poses) -> Sequence[ConeIntersection]:
     Returns:
         Sequence[Polygon]: Each entry is a cone intersection represented by a Polygon
     """
-    pose_directions = get_pose_directions(poses)
+    pose_directions = get_pose_directions(poses, fallback)
     combination_intersections = get_cone_combination_intersections(pose_directions)
     if len(combination_intersections) == 0:
         return []
@@ -60,7 +95,7 @@ def get_filtered_cone_intersections(poses) -> Sequence[ConeIntersection]:
     filtered_cone_intersections = [v for v in combination_intersections if v.cone_combination_length == filtered_combi_length]
     return filtered_cone_intersections
 
-def get_combined_angle(poses) -> float:
+def get_combined_angle(poses, fallback) -> float:
     """calculates and combines the bisection angle of all input poses.
 
     Args:
@@ -72,13 +107,13 @@ def get_combined_angle(poses) -> float:
     angles: Sequence[float] = []
     for pose in poses:
         try:
-            angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints)))
+            angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints, fallback)))
         except ValueError as e:
             #print(e)
             pass
     return np.mean(angles) * -1
 
-def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
+def get_global_action_lines(poses, fallback=False) -> Sequence[GlobalActionLine]:
     """calculate global action lines. Therefore we calculate the intersecting pose direction cones and take the centroid of
     the intersection with the most cones participating. From these participating cones we also calculate the angle from the
     bisection vector and average it together to calculate the angle for the global action line. The line is then drawn trough
@@ -91,17 +126,18 @@ def get_global_action_lines(poses) -> Sequence[GlobalActionLine]:
         Sequence[GlobalActionLine]: a single or multiple global action lines. Mostly a single line but if there are multiple 
         different intersection areas with the same amount of cones participating we take all of them.
     """
-    cone_intersections = get_filtered_cone_intersections(poses)
+    cone_intersections = get_filtered_cone_intersections(poses, fallback)
     global_action_lines = []
     for cone_intersection in cone_intersections:
         filtered_participating_poses = np.array(poses)[np.array(cone_intersection.cone_combination)]
-        combined_angle = get_combined_angle(filtered_participating_poses)
-        global_action_lines.append(
-            GlobalActionLine(
-                cast(Point, cone_intersection.shape.centroid),
-                combined_angle,
-                cone_intersection.shape.area,
-                cone_intersection.shape
+        if len(filtered_participating_poses) > 0:
+            combined_angle = get_combined_angle(filtered_participating_poses, fallback)
+            global_action_lines.append(
+                GlobalActionLine(
+                    cast(Point, cone_intersection.shape.centroid),
+                    combined_angle,
+                    cone_intersection.shape.area,
+                    cone_intersection.shape
+                )
             )
-        )
     return global_action_lines

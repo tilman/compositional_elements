@@ -13,7 +13,7 @@ from . import calc_brief
 from . import calc_orb
 from . import calc_imageNet_vgg19_bn_features_featuremaps
 from . import calc_places365_resnet50_feature_noFC_featuremaps
-from compoelem.generate import pose_abstraction
+from compoelem.generate import pose_abstraction, pose_direction, global_action
 
 #dataset_cleaned_extended_balanced = ceb_dataset
 
@@ -34,36 +34,47 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
     filename = DATASET_ROOT+'/'+className+'/'+imgName
     key = className+'_'+imgName
     changed = False
-    if key not in datastore:
-        datastore[key] = {"className":className, "imgName":imgName}
-        changed = True
-    if "compoelem" not in datastore[key]:
-        datastore[key]["compoelem"] = calc_compoelem.precompute(filename)
-        changed = True
-    if "compoelem" in datastore[key] and "pose_lines_with_fallback" not in datastore[key]["compoelem"]:
+    print(key)
+    # if key not in datastore:
+    #     datastore[key] = {"className":className, "imgName":imgName}
+    #     changed = True
+    # if "compoelem" not in datastore[key]:
+    #     datastore[key]["compoelem"] = calc_compoelem.precompute(filename)
+    #     changed = True
+    # if "compoelem" in datastore[key] and "pose_lines_with_fallback" not in datastore[key]["compoelem"]:
+    #     poses = datastore[key]["compoelem"]["poses"]
+    #     datastore[key]["compoelem"]["pose_lines_with_fallback"] = pose_abstraction.get_pose_lines_with_fallback(poses)
+    #     # print("pose_lines_with_fallback added to", key)
+    #     changed = True
+    if "compoelem" in datastore[key] and "pose_directions_with_fallback" not in datastore[key]["compoelem"]:
         poses = datastore[key]["compoelem"]["poses"]
-        datastore[key]["compoelem"]["pose_lines_with_fallback"] = pose_abstraction.get_pose_lines_with_fallback(poses)
-        # print("pose_lines_with_fallback added to", key)
+        datastore[key]["compoelem"]["pose_directions_with_fallback"] = pose_direction.get_pose_directions(poses, True)
+        #print("pose_lines_with_fallback added to", key, len(datastore[key]["compoelem"]["pose_directions_with_fallback"]))
         changed = True
-    if "imageNet_vgg19_bn_features" not in datastore[key]:
-        datastore[key]["imageNet_vgg19_bn_features"] = calc_imageNet_vgg19_bn_features_featuremaps.precompute(filename)
+    if "compoelem" in datastore[key] and "global_action_lines_with_fallback" not in datastore[key]["compoelem"]:
+        poses = datastore[key]["compoelem"]["poses"]
+        datastore[key]["compoelem"]["global_action_lines_with_fallback"] = global_action.get_global_action_lines(poses, True)
+        #print("global_action_lines_with_fallback added to", key)
         changed = True
-    if "places365_resnet50_feature_noFC" not in datastore[key]:
-        print("calc resnet")
-        datastore[key]["places365_resnet50_feature_noFC"] = calc_places365_resnet50_feature_noFC_featuremaps.precompute(filename)
-        changed = True
-    if "sift" not in datastore[key]:
-        datastore[key]["sift"] = calc_sift.precompute(filename)
-        changed = True
+    # if "imageNet_vgg19_bn_features" not in datastore[key]:
+    #     datastore[key]["imageNet_vgg19_bn_features"] = calc_imageNet_vgg19_bn_features_featuremaps.precompute(filename)
+    #     changed = True
+    # if "places365_resnet50_feature_noFC" not in datastore[key]:
+    #     print("calc resnet")
+    #     datastore[key]["places365_resnet50_feature_noFC"] = calc_places365_resnet50_feature_noFC_featuremaps.precompute(filename)
+    #     changed = True
+    # if "sift" not in datastore[key]:
+    #     datastore[key]["sift"] = calc_sift.precompute(filename)
+    #     changed = True
     # if "surf" not in datastore[key]:  # only working with commercial build of opencv contrib
     #     datastore[key]["surf"] = calc_surf.precompute(filename)
     #     changed = True
-    if "brief" not in datastore[key]:
-        datastore[key]["brief"] = calc_brief.precompute(filename)
-        changed = True
-    if "orb" not in datastore[key]:
-        datastore[key]["orb"] = calc_orb.precompute(filename)
-        changed = True
+    # if "brief" not in datastore[key]:
+    #     datastore[key]["brief"] = calc_brief.precompute(filename)
+    #     changed = True
+    # if "orb" not in datastore[key]:
+    #     datastore[key]["orb"] = calc_orb.precompute(filename)
+    #     changed = True
     # if changed:
     #     pickle.dump(datastore, open(DATASTORE_FILE, "wb"))
 pickle.dump(datastore, open(DATASTORE_FILE, "wb"))

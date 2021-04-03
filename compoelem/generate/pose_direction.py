@@ -8,8 +8,7 @@ from compoelem.config import config
 from compoelem.detect.converter import k, p
 from compoelem.types import *
 
-
-def get_pose_directions(poses: Poses) -> Sequence[PoseDirection]:
+def get_pose_directions(poses: Poses, fallback = False) -> Sequence[PoseDirection]:
     """Generate pose directions from multiple input Poses
 
     Args:
@@ -22,14 +21,14 @@ def get_pose_directions(poses: Poses) -> Sequence[PoseDirection]:
     # pose_directions: Sequence[Tuple[Point, Point]] = [];
     for pose in poses:
         try:
-            pose_directions.append(get_pose_direction(pose))
+            pose_directions.append(get_pose_direction(pose, fallback))
         except ValueError:
             # print('skipping pose because of missing points') #TODO selbe optimierung wie bei trianlge abstraction
             pass
     return pose_directions
 
-def get_pose_direction(pose: Pose) -> PoseDirection:
-    top_kp, middle_kp, bottom_kp = get_centroids_for_bisection(pose.keypoints)
+def get_pose_direction(pose: Pose, fallback=False) -> PoseDirection:
+    top_kp, middle_kp, bottom_kp = get_centroids_for_bisection(pose.keypoints, fallback)
     bisection_point = get_bisection_point(top_kp, middle_kp, bottom_kp)
     bisection_cone = get_bisection_cone(top_kp, middle_kp, bottom_kp)
     middle_pose_direction = PoseDirection(keypoint_to_point(middle_kp), keypoint_to_point(bisection_point), bisection_cone)

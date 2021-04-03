@@ -9,7 +9,11 @@ from compoelem.config import config
 from compoelem.detect.converter import k, p
 from compoelem.types import *
 
-def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint, Keypoint, Keypoint]:
+body_direction_counter = 0
+normal_body_direction_counter = 0
+fallback_body_direction_counter = 0
+
+def get_centroids_for_bisection(keypoints: Sequence[Keypoint], fallback: bool) -> Tuple[Keypoint, Keypoint, Keypoint]:
     """Helper method for transforming COCO input in a way that we can calculate the bisection vector of upper,
     middle and lower keypoints. Therefore we calculate the centroid of the keypoint pairs specified in 
     the config bisection.left_pose_points and bisection.right_pose_points
@@ -23,13 +27,43 @@ def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint
     Returns:
         Tuple[Keypoint, Keypoint, Keypoint]: top_kp, middle_kp, bottom_kp
     """
+    global body_direction_counter
+    global normal_body_direction_counter
+    global fallback_body_direction_counter
+    body_direction_counter = body_direction_counter + 1
+
+    keypoints_np = np.array(keypoints)
+    left_kp = keypoints_np[config["bisection"]["left_pose_points"]]
+    right_kp = keypoints_np[config["bisection"]["right_pose_points"]]
+
+    left_shoulder_kp = keypoints_np[config["bisection"]["fallback"]["left_shoulder_kp"]]
+    right_shoulder_kp = keypoints_np[config["bisection"]["fallback"]["right_shoulder_kp"]]
+    left_eye_kp = keypoints_np[config["bisection"]["fallback"]["left_eye_kp"]]
+    right_eye_kp = keypoints_np[config["bisection"]["fallback"]["right_eye_kp"]]
+    with_fallback_kps: Sequence[Tuple[Keypoint,Keypoint]] = []
+    if fallback:
+        fb_used = False
+        for idx, t in enumerate(zip(left_kp, right_kp)): # 0,1,8 & 11
+            if t[0].isNone or t[1].isNone:
+                fb_used = True
+                if idx == 0: # top point fallback
+                    with_fallback_kps.append((left_eye_kp, right_eye_kp))
+                if idx == 1: # middle point fallback
+                    with_fallback_kps.append((left_shoulder_kp, right_shoulder_kp))
+                if idx == 2: # bottom point fallback
+                    l_middle_point_pair, r_middle_point_pair = with_fallback_kps[-1]
+                    left_bottom_fallback = Keypoint(l_middle_point_pair.x, l_middle_point_pair.y + 40, 1)
+                    right_bottom_fallback = Keypoint(r_middle_point_pair.x, r_middle_point_pair.y + 40, 1)
+                    with_fallback_kps.append((left_bottom_fallback, right_bottom_fallback))
+            else:
+                with_fallback_kps.append(t)
+        if fb_used:
+            fallback_body_direction_counter = fallback_body_direction_counter + 1
+        else:
+            normal_body_direction_counter = normal_body_direction_counter + 1
+
     bisection_keypoint_pairs: Sequence[Tuple[Keypoint,Keypoint]] = list(
-        filter(lambda x: not (x[0].isNone or x[1].isNone),
-            zip(
-                np.array(keypoints)[config["bisection"]["left_pose_points"]], 
-                np.array(keypoints)[config["bisection"]["right_pose_points"]]
-            )
-        )
+        filter(lambda x: not (x[0].isNone or x[1].isNone), with_fallback_kps if fallback else zip(left_kp, right_kp,))
     )
     if len(bisection_keypoint_pairs) != 3:
         raise ValueError('some keypoints for bisection calculation are missing!')
@@ -38,6 +72,7 @@ def get_centroids_for_bisection(keypoints: Sequence[Keypoint]) -> Tuple[Keypoint
         for a,b in bisection_keypoint_pairs
     ]
     top_kp, middle_kp, bottom_kp = keypoint_pairs
+    # print("body_direction_counter, normal_body_direction_counter, fallback_body_direction_counter", body_direction_counter, normal_body_direction_counter, fallback_body_direction_counter)
     return top_kp, middle_kp, bottom_kp
 
 def keypoint_to_point(k: Keypoint) -> Point:
