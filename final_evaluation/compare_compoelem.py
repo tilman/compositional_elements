@@ -9,6 +9,7 @@ from tqdm import tqdm
 from . import eval_utils
 
 from compoelem.config import config
+from compoelem.generate import global_action
 from compoelem.compare.pose_line import compare_pose_lines_3, compare_pose_lines_3, filter_pose_line_ga_result
 from compoelem.compare.normalize import minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action
 
@@ -129,25 +130,27 @@ def eval_all_combinations(datastore, datastore_name):
                 # for setup in [compare_setupA, compare_setupB]:
                 for setup in [compare_setupA]:
                     for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
-                        for filter_threshold in [100, 125, 150, 175, 200]:
-                            # for correction_angle in [10, 20, 30, 40]: #20
-                            #     for cone_opening_angle in [60, 80, 100, 120]: #80
-                            #         for cone_scale_factor in [5, 10, 20, 30]: #10
-                                        # TODO: this will only have an effect if global action center is recalculated
-                                        # for key in datastore.keys():
-                                        #     poses = datastore[key]["compoelem"]["poses"]
-                                        #     datastore[key]["compoelem"]["global_action_lines_with_fallback"] = global_action.get_global_action_lines(poses, True)
-                                        # config["bisection"]["correction_angle"] = correction_angle
-                                        # config["bisection"]["cone_opening_angle"] = cone_opening_angle
-                                        # config["bisection"]["cone_scale_factor"] = cone_scale_factor
+                        for filter_threshold in [150, 200, 225]:
+                            for correction_angle in [30]:
+                                for cone_opening_angle in [60, 80, 100]:
+                                    for cone_scale_factor in [5, 10]:
+                                        config["bisection"]["correction_angle"] = correction_angle
+                                        config["bisection"]["cone_opening_angle"] = cone_opening_angle
+                                        config["bisection"]["cone_scale_factor"] = cone_scale_factor
+                                        new_datastore_values = []
+                                        for key in datastore.keys():
+                                            className = datastore[key]["className"]
+                                            poses = datastore[key]["compoelem"]["poses"]
+                                            datastore[key]["compoelem"]["global_action_lines_with_fallback"] = global_action.get_global_action_lines(poses, True)
+                                            new_datastore_values.append(datastore[key])
                                         config["compare"]["filter_threshold"] = filter_threshold
                                         start_time = datetime.datetime.now()
                                         if setup.__name__ == 'compare_setupA':
                                             result_filter_method_name = "filter_pose_line_ga_result"
                                         else:
                                             result_filter_method_name = "none"
-                                        experiment_id = "datastore: {}, setup: {}, filter_threshold: {}, norm_method: {}, pose_lines_key: {}, compare_method: compare_pose_lines_3, result_filter_method: {}, sort_method: {}".format(
-                                            datastore_name, setup.__name__, filter_threshold, norm_method, pose_lines_key, result_filter_method_name, sort_method.__name__
+                                        experiment_id = "datastore: {}, setup: {}, filter_threshold: {}, norm_method: {}, pose_lines_key: {}, compare_method: compare_pose_lines_3, result_filter_method: {}, sort_method: {}, correction_angle: {}, cone_opening_angle: {}, cone_scale_factor: {}".format(
+                                            datastore_name, setup.__name__, filter_threshold, norm_method, pose_lines_key, result_filter_method_name, sort_method.__name__, correction_angle, cone_opening_angle, cone_scale_factor
                                         )
                                         print("EXPERIMENT:", experiment_id)
                                         start_time = datetime.datetime.now()
@@ -156,9 +159,9 @@ def eval_all_combinations(datastore, datastore_name):
                                             "experiment_id": experiment_id,
                                             "config": config,
                                             "filter_threshold": filter_threshold,
-                                            # "correction_angle": correction_angle,
-                                            # "cone_opening_angle": cone_opening_angle,
-                                            # "cone_scale_factor": cone_scale_factor,
+                                            "correction_angle": correction_angle,
+                                            "cone_opening_angle": cone_opening_angle,
+                                            "cone_scale_factor": cone_scale_factor,
                                             "datetime": start_time,
                                             "pose_lines_key": pose_lines_key,
                                             "global_action_lines_key": global_action_lines_key,
