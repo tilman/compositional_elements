@@ -9,6 +9,7 @@ elif os.uname().nodename == 'lme117':
     COMPOELEM_ROOT = "/home/zi14teho/compositional_elements"
 else:
     COMPOELEM_ROOT = os.getenv('COMPOELEM_ROOT')
+#EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log_grid_tune.pkl"
 EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log.pkl"
 evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
 aliasNames = {
@@ -26,6 +27,8 @@ aliasNames = {
     "lexsort_hr_cr":"sortHrCr",
     "lexsort_cr_hr":"sortCrHr",
     "lexsort_md_hr":"sortHrMd",
+    "sort_hr":"sortHr",
+    "sort_cr":"sortCr",
     "sort_nccr1":"nccr1",
     "sort_nccr2":"nccr2",
     "sort_nccr3":"nccr3",
@@ -61,14 +64,30 @@ def get_short_eval_name(log_entry):
             aliasNames[log_entry["compare_method"]],
         )
     elif "setup" in log_entry:
-        return "{}|{}|{}|{}|{}|th{}".format(
-            aliasNames[log_entry["setup"]], 
-            aliasNames[log_entry["datastore_name"]], 
-            aliasNames[log_entry["norm_method"]], 
-            aliasNames[log_entry["compare_method"]],
-            aliasNames[log_entry["sort_method"]],
-            " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
-        )
+        if "correction_angle" in log_entry:
+          return "{}|{}|{}|{}|{}|ca{},co{},cs{}|th{}".format(
+              aliasNames[log_entry["setup"]], 
+              aliasNames[log_entry["datastore_name"]], 
+              aliasNames[log_entry["norm_method"]], 
+              aliasNames[log_entry["compare_method"]],
+              aliasNames[log_entry["sort_method"]],
+              log_entry["correction_angle"],
+              log_entry["cone_opening_angle"],
+              log_entry["cone_scale_factor"],
+              " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
+          )
+        else:
+          return "{}|{}|{}|{}|{}|ca{},co{},cs{}|th{}".format(
+              aliasNames[log_entry["setup"]], 
+              aliasNames[log_entry["datastore_name"]], 
+              aliasNames[log_entry["norm_method"]], 
+              aliasNames[log_entry["compare_method"]],
+              aliasNames[log_entry["sort_method"]],
+              20,
+              80,
+              10,
+              " 75" if log_entry["filter_threshold"] == 75 else log_entry["filter_threshold"],
+          )
     elif "combinedSetup" in log_entry:
         return "{}|{};|A|ceb|normGlAC|th150;img_vggBn".format(
             aliasNames[log_entry["combinedSetup"]],
@@ -101,6 +120,7 @@ log = new_log_entries
 display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics])
 pd.set_option('display.max_rows', None)
-print(a[-10:len(a)])
-print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
+#print(a[-20:len(a)])
+print(a)
+#print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
     
