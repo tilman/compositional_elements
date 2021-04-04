@@ -131,10 +131,10 @@ def eval_all_combinations(datastore, datastore_name):
                 # for setup in [compare_setupA, compare_setupB]:
                 for setup in [compare_setupA]:
                     for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
-                        for filter_threshold in [150, 200, 225]:
-                            for correction_angle in [30]:
-                                for cone_opening_angle in [60, 80, 100]:
-                                    for cone_scale_factor in [5, 10]:
+                        for filter_threshold in [200, 225, 250]:
+                            for correction_angle in [30, 40]:
+                                for cone_opening_angle in [80]:
+                                    for cone_scale_factor in [10, 15]:
                                         config["bisection"]["correction_angle"] = correction_angle
                                         config["bisection"]["cone_opening_angle"] = cone_opening_angle
                                         config["bisection"]["cone_scale_factor"] = cone_scale_factor
