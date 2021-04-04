@@ -131,10 +131,10 @@ def eval_all_combinations(datastore, datastore_name):
                 # for setup in [compare_setupA, compare_setupB]:
                 for setup in [compare_setupA]:
                     for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
-                        for filter_threshold in [200, 225, 250]:
-                            for correction_angle in [30, 40]:
-                                for cone_opening_angle in [80]:
-                                    for cone_scale_factor in [10, 15]:
+                        for filter_threshold in [280]:
+                            for correction_angle in [40]:
+                                for cone_opening_angle in [82]:
+                                    for cone_scale_factor in [11,12]:
                                         config["bisection"]["correction_angle"] = correction_angle
                                         config["bisection"]["cone_opening_angle"] = cone_opening_angle
                                         config["bisection"]["cone_scale_factor"] = cone_scale_factor
@@ -155,6 +155,7 @@ def eval_all_combinations(datastore, datastore_name):
                                         print("EXPERIMENT:", experiment_id)
                                         start_time = datetime.datetime.now()
                                         eval_dataframe, precision_curves = setup(list(datastore.values()), sort_method, norm_method, pose_lines_key, global_action_lines_key)
+                                        print(eval_dataframe)
                                         all_res_metrics.append({
                                             "experiment_id": experiment_id,
                                             "config": config,
