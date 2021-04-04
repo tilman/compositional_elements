@@ -7,6 +7,12 @@
 
 
         {
+            "name": "playground.query_image_new",
+            "type": "python",
+            "request": "launch",
+            "module": "playground.query_image_new"
+        },
+        {
             "name": "playground.presi_retrival_visualization",
             "type": "python",
             "request": "launch",

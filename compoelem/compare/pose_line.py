@@ -109,12 +109,15 @@ def compare_pose_lines_3(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
         # guter match => neg md hoch (max = 1)
         # schlechter match => neg md gering (min = 0)
     hit_ratio = len(res_filtered) / max(len(a), len(b))
-    # print(threshold, len(res_filtered), len(a), len(b), hit_ratio, neg_mean_distance_hits)
+    # guter match => neg hr hoch (max = 1)
+    # schlechter match => neg hr gering (min = 0)
+    # guter match => neg cr hoch (max = 1)
+    # schlechter match => neg cr gering (min = 0)
     return (hit_ratio * neg_mean_distance_hits), hit_ratio, neg_mean_distance_hits
 
 # if we normalize by action center we are getting more than one normalization results because we can have multiple action centers
 # because we only want one similarity score for each pair of pictures we then filter for the lowest similarity between all combination of normalizations
-def filter_pose_line_ga_result(ga_res: Sequence[Tuple[float, float, float, Any]]) -> Tuple[float, float, float, Any]:
+def filter_pose_line_ga_result(ga_res: Sequence[Tuple[float, float, float, str, Any]]) -> Tuple[float, float, float, str, Any]:
     # combined_ratio, hit_ratio, neg_mean_distance_hits, target_data
     np_ga_res = np.array(ga_res)
     ga_res_filtered_by_hit_ratio = np_ga_res[np_ga_res[:,1] == max(np.array(ga_res)[:,1])] #first filter elem with max hit ratio
