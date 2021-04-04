@@ -10,7 +10,8 @@ bisection:
   cone_opening_angle: 80
   # cone_shape_length: 450
   cone_scale_factor: 12
-  cone_base_scale_factor: 1.5
+  #cone_base_scale_factor: 1.5
+  cone_base_scale_factor: 2
   left_pose_points: [0,1,8]
   right_pose_points: [0,1,11]
   fallback:
