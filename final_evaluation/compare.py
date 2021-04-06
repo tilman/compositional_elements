@@ -9,7 +9,7 @@ import copyreg
 from tqdm.std import tqdm
 
 from . import compare_deepfeatures
-from . import compare_compoelem
+from . import compare_compoelem_new
 from . import compare_combined_vgg19
 from . import compare_combined_sift
 from . import compare_linkingArt
@@ -60,7 +60,23 @@ except FileNotFoundError as e:
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_deepfeatures.eval_all_combinations(datastore, DATASTORE_NAME, "places365_resnet50_feature_noFC")] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
-[evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
+# [evaluation_log.append(experiment) for experiment in compare_compoelem.eval_all_combinations(datastore, DATASTORE_NAME)] 
+
+#fallback: yes, no
+#filter_threshold: 150, 200, 250, 300
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 150, True)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 200, True)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 250, True)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 300, True)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 150, False)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 200, False)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 250, False)]
+[evaluation_log.append(experiment) for experiment in compare_compoelem_new.eval_all_combinations(datastore, DATASTORE_NAME, 300, False)]
+# def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fallback):
+try:
+    evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
+except Exception as e:
+    print("open err",e)
 pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
 # [evaluation_log.append(experiment) for experiment in compare_combined_vgg19.eval_all_combinations(datastore, DATASTORE_NAME)] 
 # pickle.dump(evaluation_log, open(EVAL_RESULTS_FILE, "wb"))
