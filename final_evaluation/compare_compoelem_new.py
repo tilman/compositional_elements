@@ -87,7 +87,7 @@ def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fall
                     print("EXPERIMENT:", experiment_id)
                     start_time = datetime.datetime.now()
                     eval_dataframe, precision_curves = setup(list(datastore.values()), sort_method, norm_method)
-                    all_res_metrics.append({
+                    res = {
                         "experiment_id": experiment_id,
                         "config": config,
                         "filter_threshold": filter_threshold,
@@ -107,6 +107,8 @@ def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fall
                         "precision_curves": precision_curves,
                         "with_fallback": with_fallback,
                         "new": True,
-                    })
+                    }
+                    all_res_metrics.append(res)
+                    tmp_eval_log.append(res)
                     pickle.dump(tmp_eval_log, open(".tmpEvalLog_fth{}_{}".format(filter_threshold,"fb" if with_fallback else "noFb"), "wb"))
     return all_res_metrics
