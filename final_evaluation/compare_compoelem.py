@@ -133,7 +133,7 @@ def eval_all_combinations(datastore, datastore_name):
                     for norm_method in ['minmax_norm_by_imgrect', 'minmax_norm_by_bbox'] if setup.__name__ == 'compare_setupB' else ['norm_by_global_action']:
                         for filter_threshold in [275]:
                             for correction_angle in [40]:
-                                for cone_opening_angle in [80,75]:
+                                for cone_opening_angle in [75,72]:
                                     for cone_scale_factor in [12]:
                                         config["bisection"]["correction_angle"] = correction_angle
                                         config["bisection"]["cone_opening_angle"] = cone_opening_angle
