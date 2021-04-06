@@ -10,6 +10,9 @@ poses_counter = 0
 normal_pose_line_counter = 0
 fallback_line_counter = 0
 
+def get_pose_lines(poses: Poses, fallback=False) -> Sequence[PoseLine]:
+    return get_pose_lines_with_fallback(poses) if fallback else get_pose_lines_without_fallback(poses)
+
 # new ICC+ method
 def get_pose_lines_with_fallback(poses: Poses) -> Sequence[PoseLine]:
     global poses_counter
@@ -28,14 +31,14 @@ def get_pose_lines_with_fallback(poses: Poses) -> Sequence[PoseLine]:
                 fallback_line_counter += 1
             except AssertionError as e2:
                 print("fallback err", e2)
-    print(
-        "poses_counter", poses_counter,
-        "normal_pose_line_counter", normal_pose_line_counter,
-        "fallback_line_counter", fallback_line_counter,
-    )
+    # print(
+    #     "poses_counter", poses_counter,
+    #     "normal_pose_line_counter", normal_pose_line_counter,
+    #     "fallback_line_counter", fallback_line_counter,
+    # )
     return pose_lines
 
-def get_pose_lines(poses: Poses) -> Sequence[PoseLine]:
+def get_pose_lines_without_fallback(poses: Poses) -> Sequence[PoseLine]:
     pose_lines: Sequence[PoseLine] = []
     for pose in poses:
         try:
