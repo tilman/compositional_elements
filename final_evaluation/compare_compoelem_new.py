@@ -110,5 +110,6 @@ def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fall
                     }
                     all_res_metrics.append(res)
                     tmp_eval_log.append(res)
+                    print(res)
                     pickle.dump(tmp_eval_log, open(".tmpEvalLog_fth{}_{}".format(filter_threshold,"fb" if with_fallback else "noFb"), "wb"))
     return all_res_metrics
