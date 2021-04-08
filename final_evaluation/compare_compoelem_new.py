@@ -73,7 +73,7 @@ def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fall
                     new_datastore_values = []
                     for key in datastore.keys():
                         poses = datastore[key]["compoelem"]["poses"]
-                        datastore[key]["compoelem"]["global_action_lines"] = global_action.get_global_action_lines(poses, fallback=with_fallback)
+                        datastore[key]["compoelem"]["global_action_lines"] = global_action.get_global_action_lines(poses, fallback=False)
                         datastore[key]["compoelem"]["pose_lines"] = pose_abstraction.get_pose_lines(poses, fallback=with_fallback)
                         new_datastore_values.append(datastore[key])
                     start_time = datetime.datetime.now()
@@ -106,10 +106,11 @@ def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fall
                         "eval_dataframe": eval_dataframe,
                         "precision_curves": precision_curves,
                         "with_fallback": with_fallback,
+                        "only_poseline_fallbakc": True,
                         "new": True,
                     }
                     all_res_metrics.append(res)
                     tmp_eval_log.append(res)
                     print(res)
-                    pickle.dump(tmp_eval_log, open(".tmpEvalLog_fth{}_{}".format(filter_threshold,"fb" if with_fallback else "noFb"), "wb"))
+                    pickle.dump(tmp_eval_log, open(".tmpEvalLog_fth{}_onlyPoseFb".format(filter_threshold), "wb"))
     return all_res_metrics

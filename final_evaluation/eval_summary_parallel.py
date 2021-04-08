@@ -76,7 +76,7 @@ def get_short_eval_name(log_entry):
         )
     elif "setup" in log_entry:
         if "correction_angle" in log_entry:
-          return "{}|{}|ca{},co{},cs{}|th{}".format(
+          return "{}|ca{},co{},cs{},csb{}|th{}".format(
             #   aliasNames[log_entry["setup"]], 
               "wFb" if log_entry["with_fallback"] else "nFb",
             #   aliasNames[log_entry["datastore_name"]], 
@@ -142,7 +142,7 @@ def get_short_eval_name(log_entry):
 new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log))
 # new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log))
 log = new_log_entries
-display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
+display_metrics = ["p@1","p@2","p@3","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics]).sort_values("p@1")
 pd.set_option('display.max_rows', None)
 #print(a[-20:len(a)])

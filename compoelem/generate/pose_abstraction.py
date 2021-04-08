@@ -92,10 +92,10 @@ def get_fallback_pose_line(pose: Pose) -> PoseLine:
     top_keypoint_selection: Sequence[Keypoint] = pose_keypoints[config["pose_abstraction"]["keypoint_list"]["top"]].tolist()
     top_keypoints = list(filter(lambda kp: not kp.isNone, top_keypoint_selection))
     if len(top_keypoints) == 0:
-        if neck_kp.isNone:
+        if nose_kp.isNone:
             raise ValueError('missing valid top keypoints and neck_kp for pose line fallback!!')
         else:
-            top_point = Point(*k(neck_kp)) # use midpoint calculated from above
+            top_point = Point(*k(nose_kp)) # use midpoint calculated from above
     else:
         top_point = Point(*k(top_keypoints[0]))
 
