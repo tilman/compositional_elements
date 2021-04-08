@@ -22,12 +22,12 @@ def compare_setupA(data, sort_method, norm_method):
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
         #query_pose_lines = minmax_norm_by_imgrect(query_data["compoelem"][pose_lines_key], query_data["width"], query_data["height"])
-        query_pose_lines_seq = norm_by_global_action(query_data["compoelem"]["pose_lines"], query_data["compoelem"]["global_action_lines"])
+        query_pose_lines_seq = norm_by_global_action(query_data["compoelem"]["pose_lines"], query_data["compoelem"]["global_action_lines"], fallback=True)
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
             #combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, minmax_norm_by_imgrect(target_data["compoelem"][pose_lines_key], target_data["width"], target_data["height"]))
-            target_pose_lines_seq = norm_by_global_action(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["global_action_lines"])
+            target_pose_lines_seq = norm_by_global_action(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["global_action_lines"], fallback=True)
             pair_compare_results = []
             for query_pose_lines in query_pose_lines_seq:
                 for target_pose_lines in target_pose_lines_seq:
@@ -112,5 +112,5 @@ def eval_all_combinations(datastore, datastore_name, filter_threshold, with_fall
                     all_res_metrics.append(res)
                     tmp_eval_log.append(res)
                     print(res)
-                    pickle.dump(tmp_eval_log, open(".tmpEvalLog_fth{}_onlyPoseFb".format(filter_threshold), "wb"))
+                    pickle.dump(tmp_eval_log, open(".tmpEvalLog_fth{}_onlyPoseFb_normGacFallback".format(filter_threshold), "wb"))
     return all_res_metrics
