@@ -226,7 +226,7 @@ def eval_single_combination(
         "norm_by_global_action":"Glac",
         "none":"None",
     }
-    filename = "final2_time{}_norm{}_ca{}_co{}_cs{}_csb{}_th{}_fbPl{}_fbBis{}_fbGlac{}.pkl".format(
+    filename = "final2_time{}_norm{}_{}_ca{}_co{}_cs{}_cbs{}_th{}_fbPl{}_fbBis{}_fbGa{}.pkl".format(
         start_time.strftime("%d%m%y%H%M%S"),
 
         norm_alias[norm_method],

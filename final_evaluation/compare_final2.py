@@ -6,8 +6,9 @@ from .compare_final2_compoelem import eval_single_combination
 # allowed values:
 # norm_method: minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action, none, 
 # sort_method_name: cr_desc, nmd_desc, lexsort_hr_nmd
-
 # order of the arguments matter!!!
+
+# First step experiments:
 experiments = [
     # BASELINE
     {
