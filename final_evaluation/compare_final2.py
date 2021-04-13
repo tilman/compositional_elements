@@ -13,6 +13,8 @@ from .compare_final2_compoelem import eval_single_combination
 experiments = [
     # BASELINE
     {
+        "experiment_name":"BASELINE",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 
@@ -30,6 +32,8 @@ experiments = [
 
     # vs all norm methods:
     {
+        "experiment_name":"vs. all norm methods",
+
         "norm_method":"minmax_norm_by_imgrect",
         "sort_method_name":"cr_desc",
 
@@ -75,6 +79,8 @@ experiments = [
 
     # vs all sort methods:
     {
+        "experiment_name":"vs. all sort methods",
+
         "norm_method":"none",
         "sort_method_name":"nmd_desc",
 
@@ -105,6 +111,8 @@ experiments = [
 
     # vs conebase:
     {
+        "experiment_name":"vs. conebase",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 
@@ -150,6 +158,8 @@ experiments = [
 
     # vs fallbacks:
     {
+        "experiment_name":"vs. fallbacks",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 

@@ -17,15 +17,14 @@ EVAL_RESULTS_FILE_DIR = COMPOELEM_ROOT+"/final_evaluation/final2pkl/"
 
 
 evaluation_log = [pickle.load(open(EVAL_RESULTS_FILE_DIR+"/"+logfile, "rb")) for logfile in os.listdir( EVAL_RESULTS_FILE_DIR )]
+print(len(evaluation_log))
 # new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log))
 # log = new_log_entries
 
+
 #display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 display_metrics = ["p@1","p@5","p@10","p@50"]
-a = pd.DataFrame([[ le['filename'], *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["short name", *display_metrics])
+a = pd.DataFrame([[ le['filename'][24:-4], le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["name", "date", *display_metrics]).sort_values("name")
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
-#print(a[-20:len(a)])
 print(a)
-#print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
-print("# TODO change function names to match paper!!! -> revesed order of keys")

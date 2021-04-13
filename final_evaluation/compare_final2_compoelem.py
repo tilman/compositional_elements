@@ -196,6 +196,7 @@ datastore_name = DATASTORE_NAME
 #     })
 def eval_single_combination(arg_obj):
     print(arg_obj)
+    experiment_name = arg_obj["experiment_name"]
     norm_method = arg_obj["norm_method"]
     sort_method_name = arg_obj["sort_method_name"]
     correction_angle = arg_obj["correction_angle"]
@@ -256,6 +257,7 @@ def eval_single_combination(arg_obj):
     )
     print("filename", filename, "p@1", eval_dataframe["p@1"]["total (mean)"])
     res_summary = {
+        "experiment_name": experiment_name,
         "experiment_id": filename,
         "filename": filename,
         "datetime": start_time,
