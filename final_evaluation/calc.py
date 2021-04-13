@@ -46,16 +46,22 @@ for className, imgName in tqdm(dataset, total=len(dataset)):
     #     datastore[key]["compoelem"]["pose_lines_with_fallback"] = pose_abstraction.get_pose_lines_with_fallback(poses)
     #     # print("pose_lines_with_fallback added to", key)
     #     changed = True
-    if "compoelem" in datastore[key] and "pose_directions_with_fallback" not in datastore[key]["compoelem"]:
+    # if "compoelem" in datastore[key] and "pose_directions_with_fallback" not in datastore[key]["compoelem"]:
+    #     poses = datastore[key]["compoelem"]["poses"]
+    #     datastore[key]["compoelem"]["pose_directions_with_fallback"] = pose_direction.get_pose_directions(poses, True)
+    #     #print("pose_lines_with_fallback added to", key, len(datastore[key]["compoelem"]["pose_directions_with_fallback"]))
+    #     changed = True
+    # if "compoelem" in datastore[key] and "global_action_lines_with_fallback" not in datastore[key]["compoelem"]:
+    #     poses = datastore[key]["compoelem"]["poses"]
+    #     datastore[key]["compoelem"]["global_action_lines_with_fallback"] = global_action.get_global_action_lines(poses, True)
+    #     #print("global_action_lines_with_fallback added to", key)
+    #     changed = True
+    # recalc datastore with new canvas threshold but old poses
+    if "compoelem" in datastore[key]:
         poses = datastore[key]["compoelem"]["poses"]
-        datastore[key]["compoelem"]["pose_directions_with_fallback"] = pose_direction.get_pose_directions(poses, True)
-        #print("pose_lines_with_fallback added to", key, len(datastore[key]["compoelem"]["pose_directions_with_fallback"]))
-        changed = True
-    if "compoelem" in datastore[key] and "global_action_lines_with_fallback" not in datastore[key]["compoelem"]:
-        poses = datastore[key]["compoelem"]["poses"]
-        datastore[key]["compoelem"]["global_action_lines_with_fallback"] = global_action.get_global_action_lines(poses, True)
-        #print("global_action_lines_with_fallback added to", key)
-        changed = True
+        datastore[key]["compoelem"]["pose_directions"] = pose_direction.get_pose_directions(poses)
+        datastore[key]["compoelem"]["global_action_lines"] = global_action.get_global_action_lines(poses)
+        datastore[key]["compoelem"]["pose_lines"] = pose_abstraction.get_pose_lines(poses)
     # if "imageNet_vgg19_bn_features" not in datastore[key]:
     #     datastore[key]["imageNet_vgg19_bn_features"] = calc_imageNet_vgg19_bn_features_featuremaps.precompute(filename)
     #     changed = True

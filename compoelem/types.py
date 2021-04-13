@@ -95,7 +95,7 @@ class GlobalActionLine:
         if np.isnan(angle):
             x_offset = 0
             y_offset = 0
-            print("Warning: GlobalActionLine angle is NaN")
+            #print("Warning: GlobalActionLine angle is NaN")
         else:
             x_offset = int(dist * np.cos(angle))
             y_offset = int(dist * np.sin(angle))

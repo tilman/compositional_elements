@@ -24,10 +24,10 @@ aliasNames = {
     "minmax_norm_by_imgrect":"normRect",
     "minmax_norm_by_bbox":"normBBox",
     "norm_by_global_action":"normGlAC",
-    "lexsort_hr_md":"sortHrMd",   # TODO change function names to match paper!!! -> revesed order of keys
-    "lexsort_hr_cr":"sortHrCr",     # TODO change function names to match paper!!! -> revesed order of keys
-    "lexsort_cr_hr":"sortCrHr",# TODO change function names to match paper!!! -> revesed order of keys
-    "lexsort_md_hr":"sortHrMd",# TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_hr_md":"md_hr_desc",   # TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_hr_cr":"cr_hr_desc",     # TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_cr_hr":"hr_cr_desc",# TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_md_hr":"hr_md_desc",# TODO change function names to match paper!!! -> revesed order of keys
     "sort_hr":"sortHr",
     "sort_cr":"sortCr",
     "sort_nccr1":"nccr1",
@@ -121,6 +121,7 @@ log = new_log_entries
 display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics])
 pd.set_option('display.max_rows', None)
+pd.set_option('display.max_colwidth', None)
 #print(a[-20:len(a)])
 print(a)
 #print(a.iloc[[1,23,36,49]]) # highscores for each method categorie

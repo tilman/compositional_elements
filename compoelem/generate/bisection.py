@@ -142,11 +142,10 @@ def get_horizantal_b_reference(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp:
     """
     vector_a = keypoint_to_vector(top_kp, middle_kp)
     vector_c = keypoint_to_vector(bottom_kp, middle_kp)
+    # NOTE: checking angle_left_opening has the same effect as to check if biscetion point is positioned to the left or right of the neck point
     angle_left_opening = np.cross(vector_a, vector_c) < 0
     return Keypoint(middle_kp.x - 100, middle_kp.y) if angle_left_opening else Keypoint(middle_kp.x + 100, middle_kp.y)
 
-# TODO: rewrite
-# # previously poseToBisectCone
 def get_bisection_cone(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoint) -> Polygon:
     cone_offset_angle = np.deg2rad(int(config["bisection"]["cone_opening_angle"])/2)
     cone_scale_factor = float(config["bisection"]["cone_scale_factor"])

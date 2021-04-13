@@ -1,14 +1,14 @@
 version: '0.1.0'
-parameter_comment: 'evaluation, step1'
+parameter_comment: 'params from parallized grid tune: 08.04.21 18:44 -> p@1: 0.490'
 keypoint_names: ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LKnee', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 new_fixed_width: 1000
 compare:
-  filter_threshold: 150
+  filter_threshold: 250
 bisection:
-  correction_angle: 20
-  cone_opening_angle: 80
-  cone_scale_factor: 10
-  cone_base_scale_factor: 0
+  correction_angle: 50
+  cone_opening_angle: 70
+  cone_scale_factor: 5
+  cone_base_scale_factor: 1
   cone_base_angle: 225 # 225 = 135 + 90
   left_pose_points: [0,1,8]
   right_pose_points: [0,1,11]
