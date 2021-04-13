@@ -167,33 +167,45 @@ DATASTORE_NAME = "combined_datastore_ceb_dataset"
 datastore = pickle.load(open(DATASTORE_FILE, "rb"))
 datastore_name = DATASTORE_NAME
 
-def eval_single_combination(
-        norm_method,
-        sort_method_name,
+# def eval_single_combination(
+#         norm_method,
+#         sort_method_name,
         
-        correction_angle,
-        cone_opening_angle,
-        cone_scale_factor,
-        cone_base_scale_factor,
-        filter_threshold,
+#         correction_angle,
+#         cone_opening_angle,
+#         cone_scale_factor,
+#         cone_base_scale_factor,
+#         filter_threshold,
 
-        poseline_fallback,
-        bisection_fallback,
-        glac_fallback,
-    ):
+#         poseline_fallback,
+#         bisection_fallback,
+#         glac_fallback,
+#     ):
 
-    print({
-        "norm_method":norm_method,
-        "sort_method_name":sort_method_name,
-        "correction_angle":correction_angle,
-        "cone_opening_angle":cone_opening_angle,
-        "cone_scale_factor":cone_scale_factor,
-        "cone_base_scale_factor":cone_base_scale_factor,
-        "filter_threshold":filter_threshold,
-        "poseline_fallback":poseline_fallback,
-        "bisection_fallback":bisection_fallback,
-        "glac_fallback":glac_fallback,
-    })
+#     print({
+#         "norm_method":norm_method,
+#         "sort_method_name":sort_method_name,
+#         "correction_angle":correction_angle,
+#         "cone_opening_angle":cone_opening_angle,
+#         "cone_scale_factor":cone_scale_factor,
+#         "cone_base_scale_factor":cone_base_scale_factor,
+#         "filter_threshold":filter_threshold,
+#         "poseline_fallback":poseline_fallback,
+#         "bisection_fallback":bisection_fallback,
+#         "glac_fallback":glac_fallback,
+#     })
+def eval_single_combination(arg_obj):
+    print(arg_obj)
+    norm_method = arg_obj["norm_method"]
+    sort_method_name = arg_obj["sort_method_name"]
+    correction_angle = arg_obj["correction_angle"]
+    cone_opening_angle = arg_obj["cone_opening_angle"]
+    cone_scale_factor = arg_obj["cone_scale_factor"]
+    cone_base_scale_factor = arg_obj["cone_base_scale_factor"]
+    filter_threshold = arg_obj["filter_threshold"]
+    poseline_fallback = arg_obj["poseline_fallback"]
+    bisection_fallback = arg_obj["bisection_fallback"]
+    glac_fallback = arg_obj["glac_fallback"]
 
     setup = compare_setupA if norm_method == 'norm_by_global_action' else compare_setupB
     if sort_method_name == 'cr_desc':

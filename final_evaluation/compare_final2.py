@@ -1,4 +1,5 @@
-import threading
+#import threading
+import multiprocessing
 import numpy as np
 
 from .compare_final2_compoelem import eval_single_combination
@@ -193,27 +194,41 @@ experiments = [
 ]
 
 
-class myThread (threading.Thread):
-   def __init__(self, args):
-      threading.Thread.__init__(self)
-      self.args = args
-   def run(self):
-      print ("Starting " + self.name)
-      eval_single_combination(**self.args)
-      print ("Exiting " + self.name)
+#class myThread (threading.Thread):
+#   def __init__(self, args):
+#      threading.Thread.__init__(self)
+#      self.args = args
+#   def run(self):
+#      print ("Starting " + self.name)
+#      eval_single_combination(**self.args)
+#      print ("Exiting " + self.name)
 
 # Create new threads
 
-threads = []
+# threads = []
+# 
+# for exp in experiments[8:len(experiments)]:
+    # threads.append(myThread(exp))
+# 
+#Start Threads
+# for j in range(0, len(threads)):
+    # threads[j].start()
+# 
+#Join Threads
+# for j in range(0, len(threads)):
+    # threads[j].join()
+# print ("Exiting Main Thread")
 
-for exp in experiments[0:8]:
-    threads.append(myThread(exp))
+def main():
+    print("starting pool")
+    p = multiprocessing.Pool()
+    print("pool started")
+    p.map(eval_single_combination, experiments[8:-1])
+    print("map done")
+    p.close()
+    print("closed")
+    p.join()
+    print("joined")
 
-# Start Threads
-for j in range(0, len(threads)):
-    threads[j].start()
-
-# Join Threads
-for j in range(0, len(threads)):
-    threads[j].join()
-print ("Exiting Main Thread")
+if __name__ == '__main__':
+    main()
