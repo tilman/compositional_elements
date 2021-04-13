@@ -24,7 +24,7 @@ print(len(evaluation_log))
 
 #display_metrics = ["p@1","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 display_metrics = ["p@1","p@5","p@10","p@50"]
-a = pd.DataFrame([[ le['filename'][24:-4], le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["name", "date", *display_metrics]).sort_values("name")
+a = pd.DataFrame([[ le['experiment_name'], le['filename'][24:-4], le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["experiment_name", "name", "date", *display_metrics]).sort_values("experiment_name")
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
 print(a)
