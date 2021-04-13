@@ -32,10 +32,9 @@ def compare_combinedSetupA(data, sort_method):
                     combined_ratio, hit_ratio, mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
                     pair_compare_results.append((combined_ratio, hit_ratio, mean_distance_hits, target_data))
             combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
-            nccr = (n_cos/combined_ratio) if combined_ratio > 0 else 1/1000000
-            nccr2 = n_cos*(1-combined_ratio) #only works with compare_pose_lines_3
-            nccr3 = n_cos+(1-combined_ratio) #only works with compare_pose_lines_3
-            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data))
+            nccr1 = n_cos*(1-combined_ratio) #only works with compare_pose_lines_3
+            nccr2 = n_cos+(1-combined_ratio) #only works with compare_pose_lines_3
+            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr1, nccr2, target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
 
@@ -52,35 +51,32 @@ def compare_combinedSetupA(data, sort_method):
                 res_metrics[key][label].append(metrics[key])
     return eval_utils.get_eval_dataframe(res_metrics)
 
-def lexsort_nccr_nc_hr_asc(compare_results):
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
-    sorted_compare_results = compare_results[np.lexsort((compare_results[:,4], compare_results[:,3], compare_results[:,1]))]
-    return sorted_compare_results
+# def lexsort_nccr_nc_hr_asc(compare_results):
+#     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
+#     sorted_compare_results = compare_results[np.lexsort((compare_results[:,4], compare_results[:,3], compare_results[:,1]))]
+#     return sorted_compare_results
+
+#TODO: def lexsort_hr_nc_asc(compare_results): #
 
 def lexsort_nc_hr_asc(compare_results):
     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,3], compare_results[:,1]))]
     return sorted_compare_results
 
-def sort_ncos(compare_results): #ncos2
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
-    # sorted_compare_results = compare_results[np.lexsort(compare_results[:,3])] #ncos3
-    sorted_compare_results = compare_results[np.argsort(compare_results[:,3])]
-    return sorted_compare_results
+# def sort_ncos(compare_results): #ncos2  --> deep only
+#     # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, (n_cos/combined_ratio), target_data)
+#     # sorted_compare_results = compare_results[np.lexsort(compare_results[:,3])] #ncos3
+#     sorted_compare_results = compare_results[np.argsort(compare_results[:,3])]
+#     return sorted_compare_results
 
 def sort_nccr1(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr   =>   should be cA|nccr
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
+    # (combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr1, nccr2, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 4])]
     return sorted_compare_results
 
 def sort_nccr2(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr2   =>   should be cA|nccr2
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
+    # (combined_ratio, hit_ratio, neg_mean_distance_hits, n_cos, nccr1, nccr2, target_data)
     sorted_compare_results = compare_results[np.argsort(compare_results[:, 5])]
-    return sorted_compare_results
-
-def sort_nccr3(compare_results): # experiment id was wrong: cA|sortNcHr;...|nccr2   =>   should be cA|nccr3
-    # (combined_ratio, hit_ratio, mean_distance_hits, n_cos, nccr, nccr2, nccr3, target_data)
-    sorted_compare_results = compare_results[np.argsort(compare_results[:, 6])]
     return sorted_compare_results
 
 #TODO

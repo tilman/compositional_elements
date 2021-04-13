@@ -98,7 +98,7 @@ def compare_pose_lines_3(a: Sequence[PoseLine], b: Sequence[PoseLine]) -> Tuple[
             used_query_pose_idx.append(t[1])
             used_target_pose_idx.append(t[2])
     res_np =  np.array(res)
-    max_pose_count = max(len(a), len(b))
+    # max_pose_count = max(len(a), len(b))
     # threshold = 1/(max_pose_count * 2)+0.05
     res_filtered = res_np[res_np[:,0] < config["compare"]["filter_threshold"]]
     # res_filtered = res_np[res_np[:,0] < threshold] #TODO another idea: make threshold dynamic and depend on amount of poses in image => reason: more people in one image means that chances are high for a matching pose. To reduce chance => reduce the threshold

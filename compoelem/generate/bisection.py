@@ -54,7 +54,7 @@ def get_centroids_for_bisection(keypoints: Sequence[Keypoint], fallback: bool) -
                     l_middle_point_pair, r_middle_point_pair = with_fallback_kps[-1]
                     left_bottom_fallback = Keypoint(l_middle_point_pair.x, l_middle_point_pair.y + 40, 1)
                     right_bottom_fallback = Keypoint(r_middle_point_pair.x, r_middle_point_pair.y + 40, 1)
-                    with_fallback_kps.append((left_bottom_fallback, right_bottom_fallback))
+                    with_fallback_kps.append((left_bottom_fallback, right_bottom_fallback)) #actually they can be the same. Since we calculate the centroid anyways
             else:
                 with_fallback_kps.append(t)
         if fb_used:
@@ -96,7 +96,7 @@ def get_bisection_point(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoi
     Returns:
         Keypoint: Endpoint of bisection vector
     """
-    phi = get_angle(top_kp, middle_kp, bottom_kp) - np.deg2rad(int(config["bisection"]["correction_angle"]))
+    phi = get_angle(top_kp, middle_kp, bottom_kp) - np.deg2rad(int(config["bisection"]["correction_angle"])) #TODO: check if this correction_angle is correct for both directions (bisection vector show to the left or right (clockwise/counterclockwise rotation))
     return get_bisection_point_from_angle(top_kp, middle_kp, phi)
 
 def get_bisection_point_from_angle(top_kp: Keypoint, middle_kp: Keypoint, phi: float, scale: float = 1) -> Keypoint:
@@ -156,8 +156,8 @@ def get_bisection_cone(top_kp: Keypoint, middle_kp: Keypoint, bottom_kp: Keypoin
     # cone points
     cone_endpoint1 = get_bisection_point_from_angle(top_kp, middle_kp, phi + cone_offset_angle, cone_scale_factor)
     cone_endpoint2 = get_bisection_point_from_angle(top_kp, middle_kp, phi - cone_offset_angle, cone_scale_factor)
-    cone_startpoint1 = get_bisection_point_from_angle(top_kp, middle_kp, phi + np.deg2rad(225), cone_base_scale_factor)
-    cone_startpoint2 = get_bisection_point_from_angle(top_kp, middle_kp, phi - np.deg2rad(225), cone_base_scale_factor)
+    cone_startpoint1 = get_bisection_point_from_angle(top_kp, middle_kp, phi + np.deg2rad(config["bisection"]["cone_base_angle"]), cone_base_scale_factor)
+    cone_startpoint2 = get_bisection_point_from_angle(top_kp, middle_kp, phi - np.deg2rad(config["bisection"]["cone_base_angle"]), cone_base_scale_factor)
     cone = Polygon([keypoint_to_np(cone_endpoint1), keypoint_to_np(cone_endpoint2), keypoint_to_np(cone_startpoint2), keypoint_to_np(cone_startpoint1)])
     # if phi > 0:
     #     cone = Polygon([keypoint_to_np(cone1), keypoint_to_np(cone2), [middle_kp.x, middle_kp.y - 20], [middle_kp.x, middle_kp.y + 20]]) # new

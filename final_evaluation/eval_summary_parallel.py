@@ -8,7 +8,7 @@ if os.uname().nodename == 'MBP-von-Tilman':
 elif os.uname().nodename == 'lme117':
     COMPOELEM_ROOT = "/home/zi14teho/compositional_elements"
 else:
-    COMPOELEM_ROOT = os.getenv('COMPOELEM_ROOT')
+    COMPOELEM_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/compoelem"
 #EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log_grid_tune.pkl"
 EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log.pkl"
 
@@ -21,6 +21,31 @@ evaluation_log = []
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth250_noFb", "rb"))]
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth300_fb", "rb"))]
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth300_noFb", "rb"))]
+# new second batch
+for le in pickle.load(open(".tmpEvalLog_fth150_onlyPoseFb","rb")):
+    le["prefix"] = "pFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth150_onlyPoseFb_normGacFallback","rb")):
+    le["prefix"] = "pgFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth200_onlyPoseFb","rb")):
+    le["prefix"] = "pFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth200_onlyPoseFb_normGacFallback","rb")):
+    le["prefix"] = "pgFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth250_onlyPoseFb","rb")):
+    le["prefix"] = "pFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth250_onlyPoseFb_normGacFallback","rb")):
+    le["prefix"] = "pgFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth300_onlyPoseFb","rb")):
+    le["prefix"] = "pFb"
+    evaluation_log.append(le)
+for le in pickle.load(open(".tmpEvalLog_fth300_onlyPoseFb_normGacFallback","rb")):
+    le["prefix"] = "pgFb"
+    evaluation_log.append(le)
 
 # evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
 aliasNames = {
@@ -78,7 +103,7 @@ def get_short_eval_name(log_entry):
         if "correction_angle" in log_entry:
           return "{}|ca{},co{},cs{},csb{}|th{}".format(
             #   aliasNames[log_entry["setup"]], 
-              "wFb" if log_entry["with_fallback"] else "nFb",
+              log_entry["prefix"] if "prefix" in log_entry else ("wFb" if log_entry["with_fallback"] else "nFb"),
             #   aliasNames[log_entry["datastore_name"]], 
             #   aliasNames[log_entry["norm_method"]], 
             #   aliasNames[log_entry["compare_method"]],
@@ -144,7 +169,7 @@ new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log
 log = new_log_entries
 display_metrics = ["p@1","p@2","p@3","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
 a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics]).sort_values("p@1")
-pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_rows', None)
 #print(a[-20:len(a)])
 print(a)
 #print(a.iloc[[1,23,36,49]]) # highscores for each method categorie

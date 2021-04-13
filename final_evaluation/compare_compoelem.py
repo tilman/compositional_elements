@@ -94,10 +94,6 @@ def compare_setupB(data, sort_method, norm_method, pose_lines_key, global_action
                 res_metrics[key][label].append(metrics[key])
     return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
 
-def lexsort_hr_md(compare_results):
-    sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,2]))][::-1] # 0,1 -> level1:mean_distance_hits, level2:hit_ratio, 
-    return sorted_compare_results
-
 def sort_hr(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:,1])][::-1]
     return sorted_compare_results
@@ -106,15 +102,19 @@ def sort_cr(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:,0])][::-1]
     return sorted_compare_results
 
-def lexsort_cr_hr(compare_results):
-    sorted_compare_results = compare_results[np.lexsort((compare_results[:,0], compare_results[:,1]))][::-1] # 0,1 -> level1:hit_ratio, level2:combined_ratio, 
+def lexsort_hr_md(compare_results): # in paper: md\_hr\_desc
+    sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,2]))][::-1] # 0,1 -> level1:mean_distance_hits, level2:hit_ratio, 
     return sorted_compare_results
 
-def lexsort_hr_cr(compare_results):
+def lexsort_hr_cr(compare_results): # in paper: cr\_hr\_desc
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], compare_results[:,0]))][::-1]
     return sorted_compare_results
 
-def lexsort_md_hr(compare_results):
+def lexsort_cr_hr(compare_results): # in paper: hr\_cr\_desc
+    sorted_compare_results = compare_results[np.lexsort((compare_results[:,0], compare_results[:,1]))][::-1] # 0,1 -> level1:hit_ratio, level2:combined_ratio, 
+    return sorted_compare_results
+
+def lexsort_md_hr(compare_results): # in paper: hr\_md\_desc
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,2], compare_results[:,1]))][::-1]
     return sorted_compare_results
 

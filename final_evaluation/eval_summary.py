@@ -12,6 +12,7 @@ else:
 #EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log_grid_tune.pkl"
 EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log.pkl"
 evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
+# TODO change function names to match paper!!!
 aliasNames = {
     "eucl_dist_flatten":              "eucl",
     "negative_cosine_dist_flatten":   "ncos",
@@ -23,10 +24,10 @@ aliasNames = {
     "minmax_norm_by_imgrect":"normRect",
     "minmax_norm_by_bbox":"normBBox",
     "norm_by_global_action":"normGlAC",
-    "lexsort_hr_md":"sortHrMd",
-    "lexsort_hr_cr":"sortHrCr",
-    "lexsort_cr_hr":"sortCrHr",
-    "lexsort_md_hr":"sortHrMd",
+    "lexsort_hr_md":"sortHrMd",   # TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_hr_cr":"sortHrCr",     # TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_cr_hr":"sortCrHr",# TODO change function names to match paper!!! -> revesed order of keys
+    "lexsort_md_hr":"sortHrMd",# TODO change function names to match paper!!! -> revesed order of keys
     "sort_hr":"sortHr",
     "sort_cr":"sortCr",
     "sort_nccr1":"nccr1",
@@ -123,4 +124,4 @@ pd.set_option('display.max_rows', None)
 #print(a[-20:len(a)])
 print(a)
 #print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
-    
+print("# TODO change function names to match paper!!! -> revesed order of keys")

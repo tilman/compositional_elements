@@ -51,6 +51,8 @@ def compare_setupA(data, sort_method, norm_method):
     return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
 
 def lexsort_cr_hr(compare_results):
+    # first index has lower importance as second indice -> so idx 1 = hit ratio is the primary sorting and cr the secondary sorting
+    # in other words, first sorted by first key and then resorted by second key
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,0], compare_results[:,1]))][::-1] # 0,1 -> level1:hit_ratio, level2:combined_ratio, 
     return sorted_compare_results
 
