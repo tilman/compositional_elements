@@ -48,6 +48,8 @@ experiments = [
         "glac_fallback":False,
     },
     {
+        "experiment_name":"vs. all norm methods",
+
         "norm_method":"minmax_norm_by_bbox",
         "sort_method_name":"cr_desc",
 
@@ -62,6 +64,8 @@ experiments = [
         "glac_fallback":False,
     },
     {
+        "experiment_name":"vs. all norm methods",
+
         "norm_method":"norm_by_global_action",
         "sort_method_name":"cr_desc",
 
@@ -127,6 +131,8 @@ experiments = [
         "glac_fallback":False,
     },
     {
+        "experiment_name":"vs. conebase",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 
@@ -141,6 +147,8 @@ experiments = [
         "glac_fallback":False,
     },
     {
+        "experiment_name":"vs. conebase",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 
@@ -174,6 +182,8 @@ experiments = [
         "glac_fallback":False,
     },
     {
+        "experiment_name":"vs. fallbacks",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 
@@ -188,6 +198,8 @@ experiments = [
         "glac_fallback":False,
     },
     {
+        "experiment_name":"vs. fallbacks",
+
         "norm_method":"none",
         "sort_method_name":"cr_desc",
 
@@ -233,7 +245,8 @@ def main():
     print("starting pool")
     p = multiprocessing.Pool()
     print("pool started")
-    p.map(eval_single_combination, experiments[0:8])
+    p.map(eval_single_combination, experiments[8:len(experiments)])
+    #p.map(eval_single_combination, experiments[8:len(experiments)])
     print("map done")
     p.close()
     print("closed")
