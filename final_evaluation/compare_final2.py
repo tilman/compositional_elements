@@ -223,7 +223,7 @@ def main():
     print("starting pool")
     p = multiprocessing.Pool()
     print("pool started")
-    p.map(eval_single_combination, experiments[8:-1])
+    p.map(eval_single_combination, experiments[0:8])
     print("map done")
     p.close()
     print("closed")
