@@ -535,8 +535,8 @@ def main():
     #p.map(eval_single_combination, experiments[15:len(experiments)])
     #p.map(eval_single_combination, experiments[25:27])
     #p.map(eval_single_combination, [experiments[19]]) #glac fallback
-    p.map(eval_single_combination, experiments2_fbFalse) #glac fallback
-    #p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
+    #p.map(eval_single_combination, experiments2_fbFalse) #glac fallback
+    p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
     print("map done")
     p.close()
     print("closed")
