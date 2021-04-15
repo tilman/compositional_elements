@@ -679,7 +679,7 @@ experiments_combined_vgg19 = [
 ]
 
 
-experiments_combined_vgg19 = [
+experiments_combined_sift = [
     
     {
         "experiment_name":"combined SIFT baseline",
@@ -911,7 +911,7 @@ def main():
     #p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
     #p.map(eval_single_combination, experiments3_fix) #glac fallback
     #p.map(eval_single_combination, experiments_combined_vgg19)
-    p.map(eval_single_combination, experiments_combined_vgg19)
+    p.map(eval_single_combination, experiments_combined_sift)
     print("map done")
     p.close()
     print("closed")
