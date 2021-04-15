@@ -177,17 +177,17 @@ a = pd.DataFrame([
         *le["eval_dataframe"].loc["total (mean)", display_metrics],
         np.mean(le["eval_dataframe"].loc["total (mean)", ["p@1","p@2","p@3","p@5","p@10"]]),
         np.mean(le["eval_dataframe"].loc["total (mean)", ["r@1","r@2","r@3","r@5","r@10"]]),
-    ] for le in log], columns=["short name", "datetime", *display_metrics, "p@1-p@10 mean", "r@1-r@10 mean"]).sort_values("p@1-p@10 mean")
+    ] for le in log], columns=["short name", "datetime", *display_metrics, "p@1-p@10 mean", "r@1-r@10 mean"]).sort_values("p@1")
 # pd.set_option('display.max_rows', None)
 #print(a[-20:len(a)])
 print(a[-10:len(a)])
 
 for r in a.iloc[-10:len(a)][["short name", "p@1", "r@1", "p@1-p@10 mean", "r@1-r@10 mean"]].to_numpy()[::-1]:
     name, p1, r1, p1_10_mean, r1_10_mean = r
-    p1 = round(p1*100,2)
-    r1 = round(r1*100,2)
-    p1_10_mean = round(p1_10_mean*100,2)
-    r1_10_mean = round(r1_10_mean*100,2)
+    p1 = round(p1*100,3)
+    r1 = round(r1*100,4)
+    p1_10_mean = round(p1_10_mean*100,3)
+    r1_10_mean = round(r1_10_mean*100,4)
     line = "{}        &    {}\\%    &   {}\\%    &  {}\\%   &   {}\\% \\\\".format(name, p1, r1, p1_10_mean, r1_10_mean)
     print(line)
 

@@ -6,7 +6,7 @@ from .compare_final2_compoelem import eval_single_combination
 
 # allowed values:
 # norm_method: minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action, none, 
-# sort_method_name: cr_desc, nmd_desc, lexsort_hr_nmd
+# sort_method_name: cr_desc, nmd_desc, hr_nmd_desc
 # order of the arguments matter!!!
 
 # First step experiments:
@@ -102,7 +102,7 @@ experiments = [
         "experiment_name":"vs. all sort methods",
 
         "norm_method":"none",
-        "sort_method_name":"lexsort_hr_nmd",
+        "sort_method_name":"hr_nmd_desc",
 
         "correction_angle":20,
         "cone_opening_angle":80,
@@ -424,7 +424,7 @@ experiments = [
         "experiment_name":"vs. all sort methods (pose fb dependend)",
 
         "norm_method":"none",
-        "sort_method_name":"lexsort_hr_nmd",
+        "sort_method_name":"hr_nmd_desc",
 
         "correction_angle":20,
         "cone_opening_angle":80,
@@ -465,7 +465,7 @@ experiments2_fbTrue = [ #step 2 evaluation bbox norm, other is in seperate compa
         "experiment_name":"step 2 bbox norm setup",
 
         "norm_method":"minmax_norm_by_bbox",
-        "sort_method_name":"lexsort_hr_nmd",
+        "sort_method_name":"hr_nmd_desc",
 
         "correction_angle":20,
         "cone_opening_angle":80,
@@ -485,7 +485,7 @@ experiments2_fbFalse = [ #step 2 evaluation bbox norm, other is in seperate comp
         "experiment_name":"step 2 bbox norm setup",
 
         "norm_method":"minmax_norm_by_bbox",
-        "sort_method_name":"lexsort_hr_nmd",
+        "sort_method_name":"hr_nmd_desc",
 
         "correction_angle":20,
         "cone_opening_angle":80,
@@ -499,32 +499,404 @@ experiments2_fbFalse = [ #step 2 evaluation bbox norm, other is in seperate comp
     }
     for th in [0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0]
 ]
+experiments2_fbFalse2 = [
+    {
+        "experiment_name":"step 2 bbox norm setup",
+
+        "norm_method":"minmax_norm_by_bbox",
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 1.1,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+    {
+        "experiment_name":"step 2 bbox norm setup",
+
+        "norm_method":"minmax_norm_by_bbox",
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 2,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+    {
+        "experiment_name":"step 2 bbox norm setup",
+
+        "norm_method":"minmax_norm_by_bbox",
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    }
+]
+experiments3_fix = [
+    {
+        "experiment_name":"step 2 bbox norm setup",
+
+        "norm_method":"minmax_norm_by_bbox",
+        "sort_method_name":"cr_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 0.15,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    }
+]
+
+experiments_combined_vgg19 = [
+    
+    {
+        "experiment_name":"combined vgg19 baseline",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+    {
+        "experiment_name":"combined vgg19",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_additional_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi3_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi4_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi1_asc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi2_asc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"vgg19_ncos",
+    },
+]
 
 
-#class myThread (threading.Thread):
-#   def __init__(self, args):
-#      threading.Thread.__init__(self)
-#      self.args = args
-#   def run(self):
-#      print ("Starting " + self.name)
-#      eval_single_combination(**self.args)
-#      print ("Exiting " + self.name)
+experiments_combined_vgg19 = [
+    
+    {
+        "experiment_name":"combined SIFT baseline",
 
-# Create new threads
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_nmd_desc",
 
-# threads = []
-# 
-# for exp in experiments[8:len(experiments)]:
-    # threads.append(myThread(exp))
-# 
-#Start Threads
-# for j in range(0, len(threads)):
-    # threads[j].start()
-# 
-#Join Threads
-# for j in range(0, len(threads)):
-    # threads[j].join()
-# print ("Exiting Main Thread")
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+    {
+        "experiment_name":"combined SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_additional_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi3_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi4_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi1_asc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi2_asc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    # +tuned features  ###########################################
+    
+    {
+        "experiment_name":"combined tuned SIFT baseline",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+    {
+        "experiment_name":"combined tuned SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_additional_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined tuned SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi3_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined tuned SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi4_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined tuned SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi1_asc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+    {
+        "experiment_name":"combined tuned SIFT",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi2_asc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+
+        "compare_other":"sift_bfm1",
+    },
+]
+
 
 def main():
     print("starting pool")
@@ -536,7 +908,10 @@ def main():
     #p.map(eval_single_combination, experiments[25:27])
     #p.map(eval_single_combination, [experiments[19]]) #glac fallback
     #p.map(eval_single_combination, experiments2_fbFalse) #glac fallback
-    p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
+    #p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
+    #p.map(eval_single_combination, experiments3_fix) #glac fallback
+    #p.map(eval_single_combination, experiments_combined_vgg19)
+    p.map(eval_single_combination, experiments_combined_vgg19)
     print("map done")
     p.close()
     print("closed")

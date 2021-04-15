@@ -8,6 +8,9 @@ import pickle
 import copyreg
 import cv2
 
+from .compare_deepfeatures import negative_cosine_dist_flatten
+from .compare_sift import compare_siftBFMatcher1
+
 from compoelem.config import config
 from compoelem.generate import global_action, pose_abstraction
 from compoelem.compare.pose_line import compare_pose_lines_3, compare_pose_lines_3, filter_pose_line_ga_result
@@ -31,7 +34,7 @@ def _pickle_keypoint(keypoint): #  : cv2.KeyPoint
 # Apply the bundling to pickle
 copyreg.pickle(cv2.KeyPoint().__class__, _pickle_keypoint)
 
-def compare_setupA(data, sort_method, norm_method, glac_fallback):
+def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other):
     if norm_method != 'norm_by_global_action':
         raise NotImplementedError("only norm_by_global_action is implemented")
     res_metrics = {}
@@ -43,6 +46,15 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback):
         for target_data in data:
             if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
                 continue
+            if compare_other == 'vgg19_ncos':
+                r_addition = negative_cosine_dist_flatten(query_data["imageNet_vgg19_bn_features"], target_data["imageNet_vgg19_bn_features"])
+            elif compare_other == 'sift_bfm1':
+                r_addition = compare_siftBFMatcher1(query_data["sift"], target_data["sift"])
+            elif compare_other is None:
+                r_addition = 0
+            else:
+                raise NotImplementedError("not implemented compare_other", compare_other)
+
             #combined_ratio, hit_ratio, neg_mean_distance_hits = compare_pose_lines_3(query_pose_lines, minmax_norm_by_imgrect(target_data["compoelem"][pose_lines], target_data["width"], target_data["height"]))
             target_pose_lines_seq = norm_by_global_action(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["global_action_lines"], fallback=glac_fallback)
             pair_compare_results = []
@@ -50,7 +62,15 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback):
                 for target_pose_lines in target_pose_lines_seq:
                     combined_ratio, hit_ratio, neg_mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
                     pair_compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, target_data))
-            compare_results.append(filter_pose_line_ga_result(pair_compare_results))
+            combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
+
+            r_combi1 = r_addition * (1 - combined_ratio)
+            r_combi2 = r_addition + (1 - combined_ratio)
+            r_combi3 = r_addition * (1 - neg_mean_distance_hits)
+            r_combi4 = r_addition + (1 - neg_mean_distance_hits)
+
+
+            compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, r_combi1, r_combi2, r_combi3, r_combi4, r_addition, target_data))
         compare_results = np.array(compare_results)
         sorted_compare_results = sort_method(compare_results)
         query_label = query_data["className"]
@@ -67,7 +87,9 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback):
                 res_metrics[key][label].append(metrics[key])
     return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
 
-def compare_setupB(data, sort_method, norm_method, glac_fallback):
+def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other):
+    if compare_other is not None:
+        raise NotImplementedError("compare other not implemented")
     res_metrics = {}
     precision_curves = {}
     for query_data in tqdm(data, total=len(data)):
@@ -117,6 +139,12 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback):
 # 0: combined_ratio
 # 1: hit_ratio
 # 2: neg_mean_distance_hits
+# 3: r_combi1
+# 4: r_combi2
+# 5: r_combi3
+# 6: r_combi4
+# 7: r_addition
+# 8: target_data
 
 def cr_desc(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:,0])][::-1]
@@ -126,35 +154,40 @@ def nmd_desc(compare_results):
     sorted_compare_results = compare_results[np.argsort(compare_results[:,2])][::-1]
     return sorted_compare_results
 
-def lexsort_hr_nmd(compare_results):
+def hr_nmd_desc(compare_results):
     # hr is primary and therefore second sorting key
     # nmd is seondary and therefore second first key
     sorted_compare_results = compare_results[np.lexsort((compare_results[:,2], compare_results[:,1]))][::-1]
     return sorted_compare_results
 
 
-# lexsort takes second sort level first
-# a = np.array([
-#     [0,1,1],
-#     [0,3,1],
-#     [0,3,2],
-#     [0,1,3],
-#     [0,2,1],
-#     [0,2,2],
-#     [0,1,2],
-#     [0,2,3],
-#     [0,3,3],
-# ])
-# a[np.lexsort((a[:,2],a[:,1]))]
-# => array([[0, 1, 1],
-#        [0, 1, 2],
-#        [0, 1, 3],
-#        [0, 2, 1],
-#        [0, 2, 2],
-#        [0, 2, 3],
-#        [0, 3, 1],
-#        [0, 3, 2],
-#        [0, 3, 3]])
+# additional methods:
+def hr_additional_desc(compare_results):
+    # hr is primary and therefore second sorting key
+    # nmd is seondary and therefore second first key
+    sorted_compare_results = compare_results[np.lexsort((-compare_results[:,7], compare_results[:,1]))][::-1]
+    return sorted_compare_results
+
+def hr_combi3_desc(compare_results):
+    # hr is primary and therefore second sorting key
+    # nmd is seondary and therefore second first key
+    sorted_compare_results = compare_results[np.lexsort((-compare_results[:,5], compare_results[:,1]))][::-1]
+    return sorted_compare_results
+
+def hr_combi4_desc(compare_results):
+    # hr is primary and therefore second sorting key
+    # nmd is seondary and therefore second first key
+    sorted_compare_results = compare_results[np.lexsort((-compare_results[:,6], compare_results[:,1]))][::-1]
+    return sorted_compare_results
+
+def combi1_asc(compare_results):
+    sorted_compare_results = compare_results[np.argsort(compare_results[:,3])]
+    return sorted_compare_results
+
+def combi2_asc(compare_results):
+    sorted_compare_results = compare_results[np.argsort(compare_results[:,4])]
+    return sorted_compare_results
+
 
 osuname = os.uname().nodename
 print("osuname", osuname)
@@ -211,14 +244,25 @@ def eval_single_combination(arg_obj):
     poseline_fallback = arg_obj["poseline_fallback"]
     bisection_fallback = arg_obj["bisection_fallback"]
     glac_fallback = arg_obj["glac_fallback"]
+    compare_other = arg_obj["compare_other"]
 
     setup = compare_setupA if norm_method == 'norm_by_global_action' else compare_setupB
     if sort_method_name == 'cr_desc':
         sort_method = cr_desc
     elif sort_method_name == 'nmd_desc':
         sort_method = nmd_desc
-    elif sort_method_name == 'lexsort_hr_nmd':
-        sort_method = lexsort_hr_nmd
+    elif sort_method_name == 'hr_nmd_desc':
+        sort_method = hr_nmd_desc
+    elif sort_method_name == 'hr_additional_desc':
+        sort_method = hr_additional_desc
+    elif sort_method_name == 'hr_combi3_desc':
+        sort_method = hr_combi3_desc
+    elif sort_method_name == 'hr_combi4_desc':
+        sort_method = hr_combi4_desc
+    elif sort_method_name == 'combi1_asc':
+        sort_method = combi1_asc
+    elif sort_method_name == 'combi2_asc':
+        sort_method = combi2_asc
     else:
         raise NotImplementedError("sort_method: {} not implemented".format(sort_method_name))
 
@@ -236,7 +280,7 @@ def eval_single_combination(arg_obj):
         new_datastore_values.append(datastore[key])
 
     start_time = datetime.datetime.now()
-    eval_dataframe, precision_curves = setup(new_datastore_values, sort_method, norm_method, glac_fallback)
+    eval_dataframe, precision_curves = setup(new_datastore_values, sort_method, norm_method, glac_fallback, compare_other)
     norm_alias = {
         "minmax_norm_by_imgrect":"Size",
         "minmax_norm_by_bbox":"Bbox",
@@ -277,6 +321,8 @@ def eval_single_combination(arg_obj):
         "norm_method": norm_method,
         "compare_method": "compare_pose_lines_3",
         "sort_method": sort_method.__name__,
+
+        "compare_other": compare_other,
 
         "correction_angle": correction_angle,
         "cone_opening_angle": cone_opening_angle,
