@@ -37,10 +37,12 @@ def minmax_norm_by_bbox(lines: Sequence[PoseLine]) -> Sequence[PoseLine]:
 
 def norm_by_global_action(pose_lines: Sequence[PoseLine], global_action_lines: Sequence[GlobalActionLine], fallback=False) -> Sequence[Sequence[PoseLine]]:
     if(len(global_action_lines) == 0):
+        print("global_action_lines 0")
         if(fallback):
+            print("return fallback", [pose_lines])
             return [pose_lines]
         else:
-            return [[]] # TODO: evaluate if maybe "return [pose_lines]" is better
+            return [[]]
     normed_poses_seq = []
     for ga_line in global_action_lines:
         if(len(pose_lines) == 0):

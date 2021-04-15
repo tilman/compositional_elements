@@ -77,7 +77,9 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback):
         elif norm_method == 'minmax_norm_by_imgrect':
             query_pose_lines = minmax_norm_by_imgrect(query_data["compoelem"]["pose_lines"], query_data["compoelem"]["width"], query_data["compoelem"]["height"])
         elif norm_method == 'minmax_norm_by_bbox':
+            print("query lines input pl0.top.xy, pl0.bottom.xy", query_data["compoelem"]["pose_lines"][0].top.xy,  query_data["compoelem"]["pose_lines"][0].bottom.xy)
             query_pose_lines = minmax_norm_by_bbox(query_data["compoelem"]["pose_lines"])
+            print("query lines output pl0.top.xy, pl0.bottom.xy", query_pose_lines[0].top.xy,  query_pose_lines[0].bottom.xy)
         else:
             raise NotImplementedError("norm_method: {} not implemented".format(norm_method))
         for target_data in data:
@@ -88,7 +90,9 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback):
             elif norm_method == 'minmax_norm_by_imgrect':
                 target_pose_lines = minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["width"], target_data["compoelem"]["height"])
             elif norm_method == 'minmax_norm_by_bbox':
+                print("target lines input pl0.top.xy, pl0.bottom.xy", target_data["compoelem"]["pose_lines"][0].top.xy,  target_data["compoelem"]["pose_lines"][0].bottom.xy)
                 target_pose_lines = minmax_norm_by_bbox(target_data["compoelem"]["pose_lines"])
+                print("target lines output pl0.top.xy, pl0.bottom.xy", target_pose_lines[0].top.xy,  target_pose_lines[0].bottom.xy)
             else:
                 raise NotImplementedError("norm_method: {} not implemented".format(norm_method))
             combined_ratio, hit_ratio, neg_mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
