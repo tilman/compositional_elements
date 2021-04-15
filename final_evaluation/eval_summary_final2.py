@@ -25,8 +25,10 @@ print(len(evaluation_log))
 #display_metrics = ["p@1","p@2","p@3","p@5","p@10","p@20","p@30","p@50","p@rel","mAP","r@1","r@2","r@3","r@5","r@10","r@20","r@30","r@50","r@rel","mAR"]
 #display_metrics = ["p@1"]
 display_metrics = ["p@1","p@2","p@3"]
-a = pd.DataFrame([[ le['experiment_name'], le['filename'][24:-4], le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["experiment_name", "name", "date", *display_metrics]).sort_values("date")
+#a = pd.DataFrame([[ le['experiment_name'], le['filename'][24:-4], le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["experiment_name", "name", "date", *display_metrics])
+a = pd.DataFrame([[ le['experiment_name'], le['filename'][24:-4], le['datetime'].strftime("%d.%m.%y-%H"), *le["eval_dataframe"].loc["total (mean)", display_metrics] ] for le in evaluation_log], columns=["experiment_name", "name", "date", *display_metrics])
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
-print(a)
+a = a[a['date'] == "15.04.21-11"]
+print(a.sort_values("p@1"), len(a))
 #print(a[-1:len(a)].to_csv())

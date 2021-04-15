@@ -13,38 +13,38 @@ else:
 EVAL_RESULTS_FILE = COMPOELEM_ROOT+"/final_evaluation/evaluation_log.pkl"
 
 evaluation_log = []
-[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth150_fb", "rb"))]
+#[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth150_fb", "rb"))]
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth150_noFb", "rb"))]
-[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth200_fb", "rb"))]
+#[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth200_fb", "rb"))]
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth200_noFb", "rb"))]
-[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth250_fb", "rb"))]
+#[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth250_fb", "rb"))]
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth250_noFb", "rb"))]
-[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth300_fb", "rb"))]
+#[evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth300_fb", "rb"))]
 [evaluation_log.append(le) for le in pickle.load(open(".tmpEvalLog_fth300_noFb", "rb"))]
 # new second batch
 for le in pickle.load(open(".tmpEvalLog_fth150_onlyPoseFb","rb")):
-    le["prefix"] = "pFb"
+    le["prefix"] = "pl"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth150_onlyPoseFb_normGacFallback","rb")):
-    le["prefix"] = "pgFb"
+    le["prefix"] = "pl,ar"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth200_onlyPoseFb","rb")):
-    le["prefix"] = "pFb"
+    le["prefix"] = "pl"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth200_onlyPoseFb_normGacFallback","rb")):
-    le["prefix"] = "pgFb"
+    le["prefix"] = "pl,ar"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth250_onlyPoseFb","rb")):
-    le["prefix"] = "pFb"
+    le["prefix"] = "pl"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth250_onlyPoseFb_normGacFallback","rb")):
-    le["prefix"] = "pgFb"
+    le["prefix"] = "pl,ar"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth300_onlyPoseFb","rb")):
-    le["prefix"] = "pFb"
+    le["prefix"] = "pl"
     evaluation_log.append(le)
 for le in pickle.load(open(".tmpEvalLog_fth300_onlyPoseFb_normGacFallback","rb")):
-    le["prefix"] = "pgFb"
+    le["prefix"] = "pl,ar"
     evaluation_log.append(le)
 
 # evaluation_log = pickle.load(open(EVAL_RESULTS_FILE, "rb"))
@@ -101,9 +101,11 @@ def get_short_eval_name(log_entry):
         )
     elif "setup" in log_entry:
         if "correction_angle" in log_entry:
-          return "{}|ca{},co{},cs{},csb{}|th{}".format(
+          #return "${};\\rho{},\\omega={},\\sigma={},\\eta={};\\beta{}$".format(
+          return "{} & {} & {} & {} & {} & {}".format(
+          
             #   aliasNames[log_entry["setup"]], 
-              log_entry["prefix"] if "prefix" in log_entry else ("wFb" if log_entry["with_fallback"] else "nFb"),
+              log_entry["prefix"] if "prefix" in log_entry else ("pl,bi" if log_entry["with_fallback"] else "x"),
             #   aliasNames[log_entry["datastore_name"]], 
             #   aliasNames[log_entry["norm_method"]], 
             #   aliasNames[log_entry["compare_method"]],
@@ -168,9 +170,26 @@ new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log
 # new_log_entries = list(filter(lambda log_entry: log_entry["new"], evaluation_log))
 log = new_log_entries
 display_metrics = ["p@1","p@2","p@3","p@5","p@10","p@50","r@1","r@5","r@10","r@50"]
-a = pd.DataFrame([[get_short_eval_name(le), le['datetime'].strftime("%d.%m.%y %H:%M"), *le["eval_dataframe"].loc["total (mean)", display_metrics]] for le in log], columns=["short name", "datetime", *display_metrics]).sort_values("p@1")
+a = pd.DataFrame([
+    [
+        get_short_eval_name(le), 
+        le['datetime'].strftime("%d.%m.%y %H:%M"), 
+        *le["eval_dataframe"].loc["total (mean)", display_metrics],
+        np.mean(le["eval_dataframe"].loc["total (mean)", ["p@1","p@2","p@3","p@5","p@10"]]),
+        np.mean(le["eval_dataframe"].loc["total (mean)", ["r@1","r@2","r@3","r@5","r@10"]]),
+    ] for le in log], columns=["short name", "datetime", *display_metrics, "p@1-p@10 mean", "r@1-r@10 mean"]).sort_values("p@1-p@10 mean")
 # pd.set_option('display.max_rows', None)
 #print(a[-20:len(a)])
-print(a)
-#print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
+print(a[-10:len(a)])
 
+for r in a.iloc[-10:len(a)][["short name", "p@1", "r@1", "p@1-p@10 mean", "r@1-r@10 mean"]].to_numpy()[::-1]:
+    name, p1, r1, p1_10_mean, r1_10_mean = r
+    p1 = round(p1*100,2)
+    r1 = round(r1*100,2)
+    p1_10_mean = round(p1_10_mean*100,2)
+    r1_10_mean = round(r1_10_mean*100,2)
+    line = "{}        &    {}\\%    &   {}\\%    &  {}\\%   &   {}\\% \\\\".format(name, p1, r1, p1_10_mean, r1_10_mean)
+    print(line)
+
+
+#print(a.iloc[[1,23,36,49]]) # highscores for each method categorie
