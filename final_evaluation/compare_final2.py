@@ -582,9 +582,9 @@ experiments_combined_vgg19 = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
     },
     {
         "experiment_name":"combined vgg19",
@@ -598,9 +598,9 @@ experiments_combined_vgg19 = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"vgg19_ncos",
     },
@@ -616,9 +616,9 @@ experiments_combined_vgg19 = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"vgg19_ncos",
     },
@@ -634,9 +634,9 @@ experiments_combined_vgg19 = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"vgg19_ncos",
     },
@@ -652,9 +652,9 @@ experiments_combined_vgg19 = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"vgg19_ncos",
     },
@@ -670,9 +670,118 @@ experiments_combined_vgg19 = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"vgg19_ncos",
+    },
+
+##### tuned #############
+    
+    {
+        "experiment_name":"combined vgg19 tuned baseline",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+    },
+    {
+        "experiment_name":"combined vgg19 tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_additional_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19 tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi3_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19 tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi4_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19 tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi1_asc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"vgg19_ncos",
+    },
+    {
+        "experiment_name":"combined vgg19 tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi2_asc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"vgg19_ncos",
     },
@@ -693,9 +802,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
     },
     {
         "experiment_name":"combined SIFT",
@@ -709,9 +818,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -727,9 +836,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -745,9 +854,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -763,9 +872,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -781,9 +890,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":0,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -801,9 +910,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":2.5,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
     },
     {
         "experiment_name":"combined tuned SIFT",
@@ -817,9 +926,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":2.5,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -835,9 +944,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":2.5,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -853,9 +962,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":2.5,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -871,9 +980,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":2.5,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -889,9 +998,9 @@ experiments_combined_sift = [
         "cone_base_scale_factor":2.5,
         "filter_threshold": 150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
 
         "compare_other":"sift_bfm1",
     },
@@ -912,6 +1021,7 @@ def main():
     #p.map(eval_single_combination, experiments3_fix) #glac fallback
     #p.map(eval_single_combination, experiments_combined_vgg19)
     p.map(eval_single_combination, experiments_combined_sift)
+    #p.map(eval_single_combination, experiments_combined_vgg19)
     print("map done")
     p.close()
     print("closed")
