@@ -773,8 +773,8 @@ experiments_combined_resnet_weighted_additional = [
         "additional_feature_weight": weight,
         "compare_other":"resnet50_cos",
     }
-    for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
-    for sort in ["combi1_asc", "combi2_asc"]
+    for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95][::-1]
+    for sort in ["combi1_asc", "combi2_asc", "hr_combi3_desc", "hr_combi4_desc"]
 ]
 
 experiments_combined_vgg_weighted_additional = [
