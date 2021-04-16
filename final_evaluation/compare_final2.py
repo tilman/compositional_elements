@@ -1077,8 +1077,8 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments_combined_sift)
     #p.map(eval_single_combination_traditional, experiments_traditional[0:1])
     #p.map(eval_single_combination_deep, experiments_deep)
-    #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
-    p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
+    p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
+    #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
     print("map done")
     p.close()

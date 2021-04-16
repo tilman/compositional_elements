@@ -35,7 +35,7 @@ a = pd.DataFrame([
         le['experiment_name'],
         le["compare_other"] if "compare_other" in le else None, 
         #le['filename'][24:-4],
-        le['filename'][24:76],
+        le['filename'][24:-4],
         le['datetime'].strftime("%d.%m.%y %H:%M"), 
         *le["eval_dataframe"].loc["total (mean)", display_metrics],
         np.mean(le["eval_dataframe"].loc["total (mean)", ["p@1","p@2","p@3","p@5","p@10"]]),
@@ -46,10 +46,13 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
 # a = a[a['name'] == "normGlac_cr_desc_ca20_co80_cs10_cbs0_th150_fbPlTrue_fbBisFalse_fbGaTrue"]
 #a = a[a['experiment_name'] == "gridsearch 2 - pl,norm dependency"]
-a = a[a['experiment_name'].str.contains("resnet|vgg")]
+#a = a[a['experiment_name'].str.contains("resnet|vgg")]
+a = a[a['experiment_name'].str.contains("gridsearch 2 - pl,norm dependen")]
+a = a[a['name'].str.contains("normNone")]
 # print(a.sort_values("date"), len(a))
 #print(a[-30:len(a)].sort_values("experiment_name")[["experiment_name", "name", "p@1"]])
-print(a[-230:len(a)].sort_values("p@1")[["experiment_name", "compare_other", "name", "p@1", "p@2", "p@5", "p@10"]])
+#print(a[-230:len(a)].sort_values("p@1")[["experiment_name", "compare_other", "name", "p@1", "p@2", "p@5", "p@10"]])
+print(a[-230:len(a)].sort_values("p@1")[["name", "p@1", "r@1", "p@1-p@10 mean", "r@1-r@10 mean"]])
 
 # for r in a.iloc[-10:len(a)][["name", "p@1", "r@1", "p@1-p@10 mean", "r@1-r@10 mean"]].to_numpy()[::-1]:
 #    name, p1, r1, p1_10_mean, r1_10_mean = r
