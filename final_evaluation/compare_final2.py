@@ -571,96 +571,96 @@ experiments3_fix = [
 ]
 
 experiments_combined_resnet = [
-    {
-        "experiment_name":"combined resnet eucl tuned",
+    # {
+    #     "experiment_name":"combined resnet eucl tuned",
 
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_additional_desc",
+    #     "norm_method":"norm_by_global_action",
+    #     "sort_method_name":"hr_additional_desc",
 
-        "correction_angle":50,
-        "cone_opening_angle":70,
-        "cone_scale_factor":5,
-        "cone_base_scale_factor":2.5,
-        "filter_threshold": 150,
+    #     "correction_angle":50,
+    #     "cone_opening_angle":70,
+    #     "cone_scale_factor":5,
+    #     "cone_base_scale_factor":2.5,
+    #     "filter_threshold": 150,
 
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
+    #     "poseline_fallback":True,
+    #     "bisection_fallback":False,
+    #     "glac_fallback":True,
 
-        "compare_other":"resnet50_eucl",
-    },
-    {
-        "experiment_name":"combined resnet eucl tuned",
+    #     "compare_other":"resnet50_eucl",
+    # },
+    # {
+    #     "experiment_name":"combined resnet eucl tuned",
 
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_combi3_desc",
+    #     "norm_method":"norm_by_global_action",
+    #     "sort_method_name":"hr_combi3_desc",
 
-        "correction_angle":50,
-        "cone_opening_angle":70,
-        "cone_scale_factor":5,
-        "cone_base_scale_factor":2.5,
-        "filter_threshold": 150,
+    #     "correction_angle":50,
+    #     "cone_opening_angle":70,
+    #     "cone_scale_factor":5,
+    #     "cone_base_scale_factor":2.5,
+    #     "filter_threshold": 150,
 
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
+    #     "poseline_fallback":True,
+    #     "bisection_fallback":False,
+    #     "glac_fallback":True,
 
-        "compare_other":"resnet50_eucl",
-    },
-    {
-        "experiment_name":"combined resnet eucl tuned",
+    #     "compare_other":"resnet50_eucl",
+    # },
+    # {
+    #     "experiment_name":"combined resnet eucl tuned",
 
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_combi4_desc",
+    #     "norm_method":"norm_by_global_action",
+    #     "sort_method_name":"hr_combi4_desc",
 
-        "correction_angle":50,
-        "cone_opening_angle":70,
-        "cone_scale_factor":5,
-        "cone_base_scale_factor":2.5,
-        "filter_threshold": 150,
+    #     "correction_angle":50,
+    #     "cone_opening_angle":70,
+    #     "cone_scale_factor":5,
+    #     "cone_base_scale_factor":2.5,
+    #     "filter_threshold": 150,
 
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
+    #     "poseline_fallback":True,
+    #     "bisection_fallback":False,
+    #     "glac_fallback":True,
 
-        "compare_other":"resnet50_eucl",
-    },
-    {
-        "experiment_name":"combined resnet eucl tuned",
+    #     "compare_other":"resnet50_eucl",
+    # },
+    # {
+    #     "experiment_name":"combined resnet eucl tuned",
 
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"combi1_asc",
+    #     "norm_method":"norm_by_global_action",
+    #     "sort_method_name":"combi1_asc",
 
-        "correction_angle":50,
-        "cone_opening_angle":70,
-        "cone_scale_factor":5,
-        "cone_base_scale_factor":2.5,
-        "filter_threshold": 150,
+    #     "correction_angle":50,
+    #     "cone_opening_angle":70,
+    #     "cone_scale_factor":5,
+    #     "cone_base_scale_factor":2.5,
+    #     "filter_threshold": 150,
 
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
+    #     "poseline_fallback":True,
+    #     "bisection_fallback":False,
+    #     "glac_fallback":True,
 
-        "compare_other":"resnet50_eucl",
-    },
-    {
-        "experiment_name":"combined resnet eucl tuned",
+    #     "compare_other":"resnet50_eucl",
+    # },
+    # {
+    #     "experiment_name":"combined resnet eucl tuned",
 
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"combi2_asc",
+    #     "norm_method":"norm_by_global_action",
+    #     "sort_method_name":"combi2_asc",
 
-        "correction_angle":50,
-        "cone_opening_angle":70,
-        "cone_scale_factor":5,
-        "cone_base_scale_factor":2.5,
-        "filter_threshold": 150,
+    #     "correction_angle":50,
+    #     "cone_opening_angle":70,
+    #     "cone_scale_factor":5,
+    #     "cone_base_scale_factor":2.5,
+    #     "filter_threshold": 150,
 
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
+    #     "poseline_fallback":True,
+    #     "bisection_fallback":False,
+    #     "glac_fallback":True,
 
-        "compare_other":"resnet50_eucl",
-    },
+    #     "compare_other":"resnet50_eucl",
+    # },
     {
         "experiment_name":"combined resnet ncos tuned",
 
@@ -752,6 +752,55 @@ experiments_combined_resnet = [
         "compare_other":"resnet50_cos",
     },
 ]
+
+experiments_combined_resnet_weighted_additional = [
+    {
+        "experiment_name":"weighted combined resnet ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name": sort,
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "additional_feature_weight": weight,
+        "compare_other":"resnet50_cos",
+    }
+    for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
+    for sort in ["combi1_asc", "combi2_asc"]
+]
+
+experiments_combined_vgg_weighted_additional = [
+    {
+        "experiment_name":"weighted combined vgg19 ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name": sort,
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "additional_feature_weight": weight,
+        "compare_other":"vgg19_ncos",
+    }
+    for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
+    for sort in ["combi1_asc", "combi2_asc"]
+]
+
 
 
 experiments_combined_sift = [
@@ -1077,9 +1126,10 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments_combined_sift)
     #p.map(eval_single_combination_traditional, experiments_traditional[0:1])
     #p.map(eval_single_combination_deep, experiments_deep)
-    p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
+    #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
     #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
+    p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
     print("map done")
     p.close()
     print("closed")
