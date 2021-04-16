@@ -1110,6 +1110,44 @@ second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compar
 
 #eval_single_combination_traditional(experiments_traditional[0])
 
+
+final_grid_search_results = [
+    # untuned
+    {
+        "experiment_name":"BASELINE",
+
+        "norm_method":"none",
+        "sort_method_name":"cr_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold":150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+    # tuned
+    {
+        "experiment_name":"BASELINE",
+
+        "norm_method":"none",
+        "sort_method_name":"cr_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold":150,
+
+        "poseline_fallback":False,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    },
+]
+
 def main():
     print("starting pool")
     p = multiprocessing.Pool()
@@ -1129,7 +1167,9 @@ def main():
     #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
     #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
-    p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
+    #p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
+    #p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
+    p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
     print("map done")
     p.close()
     print("closed")
