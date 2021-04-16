@@ -1119,5 +1119,5 @@ def main():
     p.join()
     print("joined")
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()

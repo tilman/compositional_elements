@@ -244,7 +244,7 @@ def eval_single_combination(arg_obj):
     poseline_fallback = arg_obj["poseline_fallback"]
     bisection_fallback = arg_obj["bisection_fallback"]
     glac_fallback = arg_obj["glac_fallback"]
-    compare_other = arg_obj["compare_other"]
+    compare_other = arg_obj["compare_other"] or None
 
     setup = compare_setupA if norm_method == 'norm_by_global_action' else compare_setupB
     if sort_method_name == 'cr_desc':
