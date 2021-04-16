@@ -2,7 +2,8 @@
 import multiprocessing
 import numpy as np
 
-from .compare_final2_compoelem import eval_single_combination
+from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
+from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
 
 # allowed values:
 # norm_method: minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action, none, 
@@ -1043,17 +1044,17 @@ def main():
     print("starting pool")
     p = multiprocessing.Pool()
     print("pool started")
-    #p.map(eval_single_combination, experiments[0:8])
-    #p.map(eval_single_combination, experiments[8:len(experiments)])
-    #p.map(eval_single_combination, experiments[15:len(experiments)])
-    #p.map(eval_single_combination, experiments[25:27])
-    #p.map(eval_single_combination, [experiments[19]]) #glac fallback
-    #p.map(eval_single_combination, experiments2_fbFalse) #glac fallback
-    #p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
-    #p.map(eval_single_combination, experiments3_fix) #glac fallback
-    #p.map(eval_single_combination, experiments_combined_vgg19)
-    #p.map(eval_single_combination, experiments_combined_sift)
-    p.map(eval_single_combination, experiments_traditional)
+    #p.map(eval_single_combination_compoelem, experiments[0:8])
+    #p.map(eval_single_combination_compoelem, experiments[8:len(experiments)])
+    #p.map(eval_single_combination_compoelem, experiments[15:len(experiments)])
+    #p.map(eval_single_combination_compoelem, experiments[25:27])
+    #p.map(eval_single_combination_compoelem, [experiments[19]]) #glac fallback
+    #p.map(eval_single_combination_compoelem, experiments2_fbFalse) #glac fallback
+    #p.map(eval_single_combination_compoelem, experiments2_fbTrue) #glac fallback
+    #p.map(eval_single_combination_compoelem, experiments3_fix) #glac fallback
+    #p.map(eval_single_combination_compoelem, experiments_combined_vgg19)
+    #p.map(eval_single_combination_compoelem, experiments_combined_sift)
+    p.map(eval_single_combination_traditional, experiments_traditional)
     print("map done")
     p.close()
     print("closed")
