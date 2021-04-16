@@ -34,7 +34,7 @@ def _pickle_keypoint(keypoint): #  : cv2.KeyPoint
 # Apply the bundling to pickle
 copyreg.pickle(cv2.KeyPoint().__class__, _pickle_keypoint)
 
-def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other):
+def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other, additional_feature_weight):
     if norm_method != 'norm_by_global_action':
         raise NotImplementedError("only norm_by_global_action is implemented")
     res_metrics = {}
@@ -68,10 +68,12 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other)
                     pair_compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, target_data))
             combined_ratio, hit_ratio, neg_mean_distance_hits, target_data = filter_pose_line_ga_result(pair_compare_results)
 
-            r_combi1 = r_addition * (1 - combined_ratio)
-            r_combi2 = r_addition + (1 - combined_ratio)
-            r_combi3 = r_addition * (1 - neg_mean_distance_hits)
-            r_combi4 = r_addition + (1 - neg_mean_distance_hits)
+            a = additional_feature_weight
+            wra = r_addition * (1-a)
+            r_combi1 = wra * (1 - combined_ratio * a)
+            r_combi2 = wra + (1 - combined_ratio * a)
+            r_combi3 = wra * (1 - neg_mean_distance_hits * a)
+            r_combi4 = wra + (1 - neg_mean_distance_hits * a)
 
 
             compare_results.append((combined_ratio, hit_ratio, neg_mean_distance_hits, r_combi1, r_combi2, r_combi3, r_combi4, r_addition, target_data))
@@ -91,7 +93,7 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other)
                 res_metrics[key][label].append(metrics[key])
     return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
 
-def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other):
+def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other, additional_feature_weight):
     if compare_other is not None:
         raise NotImplementedError("compare other not implemented")
     res_metrics = {}
@@ -103,9 +105,7 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other)
         elif norm_method == 'minmax_norm_by_imgrect':
             query_pose_lines = minmax_norm_by_imgrect(query_data["compoelem"]["pose_lines"], query_data["compoelem"]["width"], query_data["compoelem"]["height"])
         elif norm_method == 'minmax_norm_by_bbox':
-            #print("query lines input pl0.top.xy, pl0.bottom.xy", query_data["compoelem"]["pose_lines"][0].top.xy,  query_data["compoelem"]["pose_lines"][0].bottom.xy)
             query_pose_lines = minmax_norm_by_bbox(query_data["compoelem"]["pose_lines"])
-            #print("query lines output pl0.top.xy, pl0.bottom.xy", query_pose_lines[0].top.xy,  query_pose_lines[0].bottom.xy)
         else:
             raise NotImplementedError("norm_method: {} not implemented".format(norm_method))
         for target_data in data:
@@ -116,9 +116,7 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other)
             elif norm_method == 'minmax_norm_by_imgrect':
                 target_pose_lines = minmax_norm_by_imgrect(target_data["compoelem"]["pose_lines"], target_data["compoelem"]["width"], target_data["compoelem"]["height"])
             elif norm_method == 'minmax_norm_by_bbox':
-                #print("target lines input pl0.top.xy, pl0.bottom.xy", target_data["compoelem"]["pose_lines"][0].top.xy,  target_data["compoelem"]["pose_lines"][0].bottom.xy)
                 target_pose_lines = minmax_norm_by_bbox(target_data["compoelem"]["pose_lines"])
-                #print("target lines output pl0.top.xy, pl0.bottom.xy", target_pose_lines[0].top.xy,  target_pose_lines[0].bottom.xy)
             else:
                 raise NotImplementedError("norm_method: {} not implemented".format(norm_method))
             combined_ratio, hit_ratio, neg_mean_distance_hits = compare_pose_lines_3(query_pose_lines, target_pose_lines)
@@ -248,6 +246,7 @@ def eval_single_combination(arg_obj):
     poseline_fallback = arg_obj["poseline_fallback"]
     bisection_fallback = arg_obj["bisection_fallback"]
     glac_fallback = arg_obj["glac_fallback"]
+    additional_feature_weight = arg_obj["additional_feature_weight"]
     compare_other = arg_obj["compare_other"] if "compare_other" in arg_obj else None
 
     setup = compare_setupA if norm_method == 'norm_by_global_action' else compare_setupB
@@ -284,7 +283,7 @@ def eval_single_combination(arg_obj):
         new_datastore_values.append(datastore[key])
 
     start_time = datetime.datetime.now()
-    eval_dataframe, precision_curves = setup(new_datastore_values, sort_method, norm_method, glac_fallback, compare_other)
+    eval_dataframe, precision_curves = setup(new_datastore_values, sort_method, norm_method, glac_fallback, compare_other, additional_feature_weight)
     norm_alias = {
         "minmax_norm_by_imgrect":"Size",
         "minmax_norm_by_bbox":"Bbox",
