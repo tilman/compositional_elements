@@ -3,8 +3,8 @@ import multiprocessing
 import numpy as np
 
 from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
-from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
-from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
+# from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
+# from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
 
 # allowed values:
 # norm_method: minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action, none, 
