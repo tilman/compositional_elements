@@ -34,7 +34,7 @@ a = pd.DataFrame([
         le,
         le['experiment_name'], 
         #le['filename'][24:-4],
-        le['filename'][13:56],
+        le['filename'][24:76],
         le['datetime'].strftime("%d.%m.%y %H:%M"), 
         *le["eval_dataframe"].loc["total (mean)", display_metrics],
         np.mean(le["eval_dataframe"].loc["total (mean)", ["p@1","p@2","p@3","p@5","p@10"]]),
@@ -47,7 +47,7 @@ pd.set_option('display.max_colwidth', None)
 a = a[a['experiment_name'] == "gridsearch 2 - pl,norm dependency"]
 # print(a.sort_values("date"), len(a))
 #print(a[-30:len(a)].sort_values("experiment_name")[["experiment_name", "name", "p@1"]])
-print(a[-30:len(a)].sort_values("p@1")[["experiment_name", "name", "p@1", "p@2", "p@5", "p@10"]])
+print(a[-230:len(a)].sort_values("p@1")[["experiment_name", "name", "p@1", "p@2", "p@5", "p@10"]])
 
 # for r in a.iloc[-10:len(a)][["name", "p@1", "r@1", "p@1-p@10 mean", "r@1-r@10 mean"]].to_numpy()[::-1]:
 #    name, p1, r1, p1_10_mean, r1_10_mean = r

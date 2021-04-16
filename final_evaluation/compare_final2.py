@@ -1046,7 +1046,7 @@ second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compar
         "cone_opening_angle":80,
         "cone_scale_factor":10,
         "cone_base_scale_factor":0,
-        "filter_threshold": th*100 if "none" else th,
+        "filter_threshold": th*1000 if "none" else th,
 
         "poseline_fallback":pl_fb,
         "bisection_fallback":False,
@@ -1054,7 +1054,8 @@ second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compar
     }
     for th in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50]
     for pl_fb in [True, False]
-    for norm in ["minmax_norm_by_imgrect", "minmax_norm_by_bbox", "none"]
+    #for norm in ["minmax_norm_by_imgrect", "minmax_norm_by_bbox", "none"]
+    for norm in ["none"] #disable others for the fix
 ]
 
 #eval_single_combination_traditional(experiments_traditional[0])
@@ -1076,8 +1077,8 @@ def main():
     #p.map(eval_single_combination_traditional, experiments_traditional[0:1])
     #p.map(eval_single_combination_deep, experiments_deep)
     #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
-    #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
-    p.map(eval_single_combination_compoelem, experiments_combined_resnet)
+    p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
+    #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
     print("map done")
     p.close()
     print("closed")
