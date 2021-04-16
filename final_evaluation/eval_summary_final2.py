@@ -34,7 +34,7 @@ a = pd.DataFrame([
         le,
         le['experiment_name'], 
         #le['filename'][24:-4],
-        le['filename'][33:50],
+        le['filename'][13:56],
         le['datetime'].strftime("%d.%m.%y %H:%M"), 
         *le["eval_dataframe"].loc["total (mean)", display_metrics],
         np.mean(le["eval_dataframe"].loc["total (mean)", ["p@1","p@2","p@3","p@5","p@10"]]),

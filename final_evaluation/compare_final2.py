@@ -4,6 +4,7 @@ import numpy as np
 
 from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
 from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
+from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
 
 # allowed values:
 # norm_method: minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action, none, 
@@ -1009,7 +1010,7 @@ experiments_combined_sift = [
 
 experiments_traditional = [
     {
-        "experiment_name":"combined tuned SIFT",
+        "experiment_name":"traditional baseline",#misstake: "combined tuned SIFT",
         "compare_method_name":"compare_briefBFMatcher1",
         "feature_key":"brief",
     },
@@ -1040,6 +1041,60 @@ experiments_traditional = [
     },
 ]
 
+
+experiments_deep = [
+    {
+        "experiment_name":"deep baseline",
+        "compare_method_name":"eucl_dist_flatten",
+        "feature_key":"imageNet_vgg19_bn_features",
+    },
+    {
+        "experiment_name":"deep baseline",
+        "compare_method_name":"negative_cosine_dist_flatten",
+        "feature_key":"imageNet_vgg19_bn_features",
+    },
+    {
+        "experiment_name":"deep baseline",
+        "compare_method_name":"eucl_dist_flatten",
+        "feature_key":"places365_resnet50_feature_noFC",
+    },
+    {
+        "experiment_name":"deep baseline",
+        "compare_method_name":"negative_cosine_dist_flatten",
+        "feature_key":"places365_resnet50_feature_noFC",
+    },
+]
+
+#for exp in experiments_deep:
+#    print("exp",exp)
+#    eval_single_combination_deep(exp)
+
+
+
+second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compare files
+    {
+        "experiment_name":"gridsearch 2 - pl,norm dependency",
+
+        "norm_method": norm,
+        "sort_method_name":"hr_nmd_desc",
+
+        "correction_angle":20,
+        "cone_opening_angle":80,
+        "cone_scale_factor":10,
+        "cone_base_scale_factor":0,
+        "filter_threshold": th*100 if "none" else th,
+
+        "poseline_fallback":pl_fb,
+        "bisection_fallback":False,
+        "glac_fallback":False,
+    }
+    for th in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50]
+    for pl_fb in [True, False]
+    for norm in ["minmax_norm_by_imgrect", "minmax_norm_by_bbox", "none"]
+]
+
+#eval_single_combination_traditional(experiments_traditional[0])
+
 def main():
     print("starting pool")
     p = multiprocessing.Pool()
@@ -1054,12 +1109,15 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments3_fix) #glac fallback
     #p.map(eval_single_combination_compoelem, experiments_combined_vgg19)
     #p.map(eval_single_combination_compoelem, experiments_combined_sift)
-    p.map(eval_single_combination_traditional, experiments_traditional)
+    #p.map(eval_single_combination_traditional, experiments_traditional[0:1])
+    #p.map(eval_single_combination_deep, experiments_deep)
+    #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
+    p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
     print("map done")
     p.close()
     print("closed")
     p.join()
     print("joined")
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
