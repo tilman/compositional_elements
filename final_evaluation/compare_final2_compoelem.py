@@ -287,7 +287,7 @@ def eval_single_combination(arg_obj):
         "norm_by_global_action":"Glac",
         "none":"None",
     }
-    filename = "final2_time{}_norm{}_{}_ca{}_co{}_cs{}_cbs{}_th{}_fbPl{}_fbBis{}_fbGa{}.pkl".format(
+    filename = "final2_time{}_norm{}_{}_ca{}_co{}_cs{}_cbs{}_th{}_fbPl{}_fbBis{}_fbGa{}_{}.pkl".format(
         start_time.strftime("%d%m%y%H%M%S"),
 
         norm_alias[norm_method],
@@ -302,6 +302,8 @@ def eval_single_combination(arg_obj):
         poseline_fallback,
         bisection_fallback,
         glac_fallback,
+
+        compare_other,
     )
     print("filename", filename, "p@1", eval_dataframe["p@1"]["total (mean)"])
     res_summary = {

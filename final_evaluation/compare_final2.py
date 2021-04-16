@@ -1006,6 +1006,38 @@ experiments_combined_sift = [
     },
 ]
 
+experiments_traditional = [
+    {
+        "experiment_name":"combined tuned SIFT",
+        "compare_method_name":"compare_briefBFMatcher1",
+        "feature_key":"brief",
+    },
+    {
+        "experiment_name":"traditional baseline",
+        "compare_method_name":"compare_briefBFMatcher2",
+        "feature_key":"brief",
+    },
+    {
+        "experiment_name":"traditional baseline",
+        "compare_method_name":"compare_orbBFMatcher1",
+        "feature_key":"orb",
+    },
+    {
+        "experiment_name":"traditional baseline",
+        "compare_method_name":"compare_orbBFMatcher2",
+        "feature_key":"orb",
+    },
+    {
+        "experiment_name":"traditional baseline",
+        "compare_method_name":"compare_siftBFMatcher1",
+        "feature_key":"sift",
+    },
+    {
+        "experiment_name":"traditional baseline",
+        "compare_method_name":"compare_siftBFMatcher2",
+        "feature_key":"sift",
+    },
+]
 
 def main():
     print("starting pool")
@@ -1020,8 +1052,8 @@ def main():
     #p.map(eval_single_combination, experiments2_fbTrue) #glac fallback
     #p.map(eval_single_combination, experiments3_fix) #glac fallback
     #p.map(eval_single_combination, experiments_combined_vgg19)
-    p.map(eval_single_combination, experiments_combined_sift)
-    #p.map(eval_single_combination, experiments_combined_vgg19)
+    #p.map(eval_single_combination, experiments_combined_sift)
+    p.map(eval_single_combination, experiments_traditional)
     print("map done")
     p.close()
     print("closed")

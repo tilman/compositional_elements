@@ -184,7 +184,7 @@ print(a[-10:len(a)])
 
 for r in a.iloc[-10:len(a)][["short name", "p@1", "r@1", "p@1-p@10 mean", "r@1-r@10 mean"]].to_numpy()[::-1]:
     name, p1, r1, p1_10_mean, r1_10_mean = r
-    p1 = round(p1*100,3)
+    p1 = round(p1*100},3)
     r1 = round(r1*100,4)
     p1_10_mean = round(p1_10_mean*100,3)
     r1_10_mean = round(r1_10_mean*100,4)
