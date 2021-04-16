@@ -1046,7 +1046,7 @@ second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compar
         "cone_opening_angle":80,
         "cone_scale_factor":10,
         "cone_base_scale_factor":0,
-        "filter_threshold": th*1000 if "none" else th,
+        "filter_threshold": th*1000 if norm == "none" else th, #fix1,fix2
 
         "poseline_fallback":pl_fb,
         "bisection_fallback":False,
@@ -1055,7 +1055,8 @@ second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compar
     for th in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50]
     for pl_fb in [True, False]
     #for norm in ["minmax_norm_by_imgrect", "minmax_norm_by_bbox", "none"]
-    for norm in ["none"] #disable others for the fix
+    for norm in ["minmax_norm_by_imgrect", "minmax_norm_by_bbox"] #fix 2
+    #for norm in ["none"] #disable others for the fix
 ]
 
 #eval_single_combination_traditional(experiments_traditional[0])
