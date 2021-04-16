@@ -570,135 +570,9 @@ experiments3_fix = [
     }
 ]
 
-experiments_combined_vgg19 = [
-    
+experiments_combined_resnet = [
     {
-        "experiment_name":"combined vgg19 baseline",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_nmd_desc",
-
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-    },
-    {
-        "experiment_name":"combined vgg19",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_additional_desc",
-
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-
-        "compare_other":"vgg19_ncos",
-    },
-    {
-        "experiment_name":"combined vgg19",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_combi3_desc",
-
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-
-        "compare_other":"vgg19_ncos",
-    },
-    {
-        "experiment_name":"combined vgg19",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_combi4_desc",
-
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-
-        "compare_other":"vgg19_ncos",
-    },
-    {
-        "experiment_name":"combined vgg19",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"combi1_asc",
-
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-
-        "compare_other":"vgg19_ncos",
-    },
-    {
-        "experiment_name":"combined vgg19",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"combi2_asc",
-
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-
-        "compare_other":"vgg19_ncos",
-    },
-
-##### tuned #############
-    
-    {
-        "experiment_name":"combined vgg19 tuned baseline",
-
-        "norm_method":"norm_by_global_action",
-        "sort_method_name":"hr_nmd_desc",
-
-        "correction_angle":50,
-        "cone_opening_angle":70,
-        "cone_scale_factor":5,
-        "cone_base_scale_factor":2.5,
-        "filter_threshold": 150,
-
-        "poseline_fallback":True,
-        "bisection_fallback":False,
-        "glac_fallback":True,
-    },
-    {
-        "experiment_name":"combined vgg19 tuned",
+        "experiment_name":"combined resnet eucl tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name":"hr_additional_desc",
@@ -713,10 +587,10 @@ experiments_combined_vgg19 = [
         "bisection_fallback":False,
         "glac_fallback":True,
 
-        "compare_other":"vgg19_ncos",
+        "compare_other":"resnet50_eucl",
     },
     {
-        "experiment_name":"combined vgg19 tuned",
+        "experiment_name":"combined resnet eucl tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name":"hr_combi3_desc",
@@ -731,10 +605,10 @@ experiments_combined_vgg19 = [
         "bisection_fallback":False,
         "glac_fallback":True,
 
-        "compare_other":"vgg19_ncos",
+        "compare_other":"resnet50_eucl",
     },
     {
-        "experiment_name":"combined vgg19 tuned",
+        "experiment_name":"combined resnet eucl tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name":"hr_combi4_desc",
@@ -749,10 +623,10 @@ experiments_combined_vgg19 = [
         "bisection_fallback":False,
         "glac_fallback":True,
 
-        "compare_other":"vgg19_ncos",
+        "compare_other":"resnet50_eucl",
     },
     {
-        "experiment_name":"combined vgg19 tuned",
+        "experiment_name":"combined resnet eucl tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name":"combi1_asc",
@@ -767,10 +641,10 @@ experiments_combined_vgg19 = [
         "bisection_fallback":False,
         "glac_fallback":True,
 
-        "compare_other":"vgg19_ncos",
+        "compare_other":"resnet50_eucl",
     },
     {
-        "experiment_name":"combined vgg19 tuned",
+        "experiment_name":"combined resnet eucl tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name":"combi2_asc",
@@ -785,7 +659,97 @@ experiments_combined_vgg19 = [
         "bisection_fallback":False,
         "glac_fallback":True,
 
-        "compare_other":"vgg19_ncos",
+        "compare_other":"resnet50_eucl",
+    },
+    {
+        "experiment_name":"combined resnet ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_additional_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"resnet50_cos",
+    },
+    {
+        "experiment_name":"combined resnet ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi3_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"resnet50_cos",
+    },
+    {
+        "experiment_name":"combined resnet ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_combi4_desc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"resnet50_cos",
+    },
+    {
+        "experiment_name":"combined resnet ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi1_asc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"resnet50_cos",
+    },
+    {
+        "experiment_name":"combined resnet ncos tuned",
+
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"combi2_asc",
+
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
+        "filter_threshold": 150,
+
+        "poseline_fallback":True,
+        "bisection_fallback":False,
+        "glac_fallback":True,
+
+        "compare_other":"resnet50_cos",
     },
 ]
 
@@ -1112,7 +1076,8 @@ def main():
     #p.map(eval_single_combination_traditional, experiments_traditional[0:1])
     #p.map(eval_single_combination_deep, experiments_deep)
     #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
-    p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
+    #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
+    p.map(eval_single_combination_compoelem, experiments_combined_resnet)
     print("map done")
     p.close()
     print("closed")
