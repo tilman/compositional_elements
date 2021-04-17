@@ -46,8 +46,8 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
 # a = a[a['name'] == "normGlac_cr_desc_ca20_co80_cs10_cbs0_th150_fbPlTrue_fbBisFalse_fbGaTrue"]
 #a = a[a['experiment_name'] == "BASELINE"]
-a = a[a['experiment_name'].str.contains("BASELINE")]
-#a = a[a['experiment_name'].str.contains("weighted combined")]
+#a = a[a['experiment_name'].str.contains("BASELINE")]
+a = a[a['experiment_name'].str.contains("weighted combined")]
 #a = a[a['experiment_name'].str.contains("gridsearch|step 2 bbox norm setup") == False]
 #a = a[a['name'].str.contains("hr_nmd_desc|lexsort_hr_nmd")]
 # print(a.sort_values("date"), len(a))
@@ -68,7 +68,7 @@ print(a[-230:len(a)].sort_values("p@1")[["experiment_name", "compare_other", "na
 #from plotnine import ggplot, aes, geom_line
 
 # plot precision curve
-if True:
+if False:
     a = a[a['name'].str.contains("normGlac_hr_nmd_desc_ca50_co70_cs5_cbs2.5_th150_fbPlTrue_fbBisFalse_fbGaTrue_otherNone_aw0.5")]
     print(a.iloc[0]["log_entry"]["precision_curves"].values())
     # (
