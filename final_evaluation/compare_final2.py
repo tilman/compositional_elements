@@ -1114,10 +1114,10 @@ second_grid_search = [ #step 2 evaluation bbox norm, other is in seperate compar
 final_grid_search_results = [
     # untuned
     {
-        "experiment_name":"BASELINE",
+        "experiment_name":"BASELINE ICC+ U AR + fix precision curve",
 
-        "norm_method":"none",
-        "sort_method_name":"cr_desc",
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_nmd_desc",
 
         "correction_angle":20,
         "cone_opening_angle":80,
@@ -1125,26 +1125,26 @@ final_grid_search_results = [
         "cone_base_scale_factor":0,
         "filter_threshold":150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
     },
     # tuned
     {
-        "experiment_name":"BASELINE",
+        "experiment_name":"BASELINE ICC+ T AR + fix precision curve",
 
-        "norm_method":"none",
-        "sort_method_name":"cr_desc",
+        "norm_method":"norm_by_global_action",
+        "sort_method_name":"hr_nmd_desc",
 
-        "correction_angle":20,
-        "cone_opening_angle":80,
-        "cone_scale_factor":10,
-        "cone_base_scale_factor":0,
+        "correction_angle":50,
+        "cone_opening_angle":70,
+        "cone_scale_factor":5,
+        "cone_base_scale_factor":2.5,
         "filter_threshold":150,
 
-        "poseline_fallback":False,
+        "poseline_fallback":True,
         "bisection_fallback":False,
-        "glac_fallback":False,
+        "glac_fallback":True,
     },
 ]
 
@@ -1167,9 +1167,9 @@ def main():
     #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
     #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
-    p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
-    p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
+    #p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
     #p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
+    p.map(eval_single_combination_compoelem, final_grid_search_results)
     print("map done")
     p.close()
     print("closed")
