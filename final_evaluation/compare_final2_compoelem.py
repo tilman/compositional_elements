@@ -89,7 +89,10 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other,
         res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
         metrics = eval_utils.score_retrievals(query_label, res_labels)
         label = metrics["label"]
-        precision_curves[label] = metrics["precision_at_rank"]
+        if label in precision_curves:
+            precision_curves[label].append(metrics["precision_at_rank"])
+        else:
+            precision_curves[label] = [metrics["precision_at_rank"]]
         for key in metrics.keys():
             if key != "label":
                 if key not in res_metrics:
