@@ -10,6 +10,8 @@ import cv2
 
 from .compare_deepfeatures import negative_cosine_dist_flatten, eucl_dist_flatten
 from .compare_sift import compare_siftBFMatcher1
+from .compare_orb import compare_orbBFMatcher1
+from .compare_brief import compare_briefBFMatcher1
 
 from compoelem.config import config
 from compoelem.generate import global_action, pose_abstraction
@@ -54,6 +56,10 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other,
                 r_addition = eucl_dist_flatten(query_data["places365_resnet50_feature_noFC"], target_data["places365_resnet50_feature_noFC"])
             elif compare_other == 'sift_bfm1':
                 r_addition = compare_siftBFMatcher1(query_data["sift"], target_data["sift"])
+            elif compare_other == 'orb_bfm1':
+                r_addition = compare_orbBFMatcher1(query_data["orb"], target_data["orb"])
+            elif compare_other == 'brief_bfm1':
+                r_addition = compare_briefBFMatcher1(query_data["brief"], target_data["brief"])
             elif compare_other is None:
                 r_addition = 0
             else:

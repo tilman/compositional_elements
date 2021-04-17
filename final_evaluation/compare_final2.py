@@ -778,9 +778,32 @@ experiments_combined_resnet_weighted_additional = [
     for sort in ["combi1_asc", "combi2_asc", "hr_combi3_desc", "hr_combi4_desc"]
 ]
 #
-experiments_combined_vgg_weighted_additional = [
+# experiments_combined_vgg_weighted_additional = [
+#     {
+#         "experiment_name":"weighted combined vgg19 ncos tuned",
+
+#         "norm_method":"norm_by_global_action",
+#         "sort_method_name": sort,
+
+#         "correction_angle":50,
+#         "cone_opening_angle":70,
+#         "cone_scale_factor":5,
+#         "cone_base_scale_factor":2.5,
+#         "filter_threshold": 150,
+
+#         "poseline_fallback":True,
+#         "bisection_fallback":False,
+#         "glac_fallback":True,
+
+#         "additional_feature_weight": weight,
+#         "compare_other":"vgg19_ncos",
+#     }
+#     for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
+#     for sort in ["combi1_asc", "combi2_asc"]
+# ]
+experiments_combined_traditional_weighted_additional = [
     {
-        "experiment_name":"weighted combined vgg19 ncos tuned",
+        "experiment_name":"weighted combined traditional ncos tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name": sort,
@@ -796,10 +819,12 @@ experiments_combined_vgg_weighted_additional = [
         "glac_fallback":True,
 
         "additional_feature_weight": weight,
-        "compare_other":"vgg19_ncos",
+        "compare_other": other,
     }
-    for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
-    for sort in ["combi1_asc", "combi2_asc", "hr_combi3_desc", "hr_combi4_desc"]
+    #for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
+    for weight in [0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90]
+    for sort in ["combi1_asc", "combi2_asc"]
+    for other in ["sift_bfm1","orb_bfm1","brief_bfm1"]
 ]
 
 
