@@ -1195,7 +1195,7 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
     #p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
-    p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
+    p.map(eval_single_combination_compoelem, experiments_combined_traditional_weighted_additional)
     print("map done")
     p.close()
     print("closed")
