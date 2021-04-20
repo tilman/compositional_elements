@@ -41,6 +41,7 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other,
         raise NotImplementedError("only norm_by_global_action is implemented")
     res_metrics = {}
     precision_curves = {}
+    all_retrieval_res = []
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
         #query_pose_lines = minmax_norm_by_imgrect(query_data["compoelem"][pose_lines], query_data["width"], query_data["height"])
@@ -87,6 +88,13 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other,
         sorted_compare_results = sort_method(compare_results)
         query_label = query_data["className"]
         res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
+        res_keys = list(map(lambda x: x["className"]+'_'+x["imgName"], sorted_compare_results[:,-1]))
+        all_retrieval_res.append(np.array([
+            query_data["className"]+'_'+query_data["imgName"],
+            query_label,
+            res_keys,
+            res_labels
+        ]))
         metrics = eval_utils.score_retrievals(query_label, res_labels)
         label = metrics["label"]
         if label in precision_curves:
@@ -100,13 +108,14 @@ def compare_setupA(data, sort_method, norm_method, glac_fallback, compare_other,
                 if label not in res_metrics[key]:
                     res_metrics[key][label] = []
                 res_metrics[key][label].append(metrics[key])
-    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
+    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves, np.array(all_retrieval_res))
 
 def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other, additional_feature_weight):
     if compare_other is not None:
         raise NotImplementedError("compare other not implemented")
     res_metrics = {}
     precision_curves = {}
+    all_retrieval_res = []
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
         if norm_method == 'none':
@@ -134,6 +143,13 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other,
         sorted_compare_results = sort_method(compare_results)
         query_label = query_data["className"]
         res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
+        res_keys = list(map(lambda x: x["className"]+'_'+x["imgName"], sorted_compare_results[:,-1]))
+        all_retrieval_res.append(np.array([
+            query_data["className"]+'_'+query_data["imgName"],
+            query_label,
+            res_keys,
+            res_labels
+        ]))
         metrics = eval_utils.score_retrievals(query_label, res_labels)
         label = metrics["label"]
         if label in precision_curves:
@@ -147,7 +163,7 @@ def compare_setupB(data, sort_method, norm_method, glac_fallback, compare_other,
                 if label not in res_metrics[key]:
                     res_metrics[key][label] = []
                 res_metrics[key][label].append(metrics[key])
-    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
+    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves, np.array(all_retrieval_res))
 
 # indices for sorting functions
 # 0: combined_ratio
@@ -295,7 +311,7 @@ def eval_single_combination(arg_obj):
         new_datastore_values.append(datastore[key])
 
     start_time = datetime.datetime.now()
-    eval_dataframe, precision_curves = setup(new_datastore_values, sort_method, norm_method, glac_fallback, compare_other, additional_feature_weight)
+    eval_dataframe, precision_curves, all_retrieval_res = setup(new_datastore_values, sort_method, norm_method, glac_fallback, compare_other, additional_feature_weight)
     norm_alias = {
         "minmax_norm_by_imgrect":"Size",
         "minmax_norm_by_bbox":"Bbox",
@@ -333,6 +349,7 @@ def eval_single_combination(arg_obj):
 
         "eval_dataframe": eval_dataframe,
         "precision_curves": precision_curves,
+        "all_retrieval_res": all_retrieval_res,
         
         "config": config,
 

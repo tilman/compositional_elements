@@ -56,11 +56,30 @@ def negative_cosine_dist_flatten(t1, t2):
 
 
 
+# TODO: extend eval res for qualitative plotting:
+'''
+# first step, find best result and store index for it
+res_classNames = [
+    # 25k string variables
+    res_for_key_idx1: ["baptism","baptism",...,"aduration"]
+]
+# second step, find indices for best result
+res_keys = [
+    # 25k string variables
+    res_for_key_idx1: ["key_for_rank1","key_for_rank2",...,"key_for_rank50"]
+    ...
+    res_for_key_idx500:
+]
+res = [
+    {query_key, query_label, res_keys, res_labels}
+]
+'''
 
     
 def compare(data, compare_method, feature_key):
     res_metrics = {}
     precision_curves = {}
+    all_retrieval_res = []
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
         for target_data in data:
@@ -71,6 +90,13 @@ def compare(data, compare_method, feature_key):
         sorted_compare_results = sort_asc(compare_results)
         query_label = query_data["className"]
         res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
+        res_keys = list(map(lambda x: x["className"]+'_'+x["imgName"], sorted_compare_results[:,-1]))
+        all_retrieval_res.append(np.array([
+            query_data["className"]+'_'+query_data["imgName"],
+            query_label,
+            res_keys,
+            res_labels
+        ]))
         metrics = eval_utils.score_retrievals(query_label, res_labels)
         label = metrics["label"]
         if label in precision_curves:
@@ -84,7 +110,7 @@ def compare(data, compare_method, feature_key):
                 if label not in res_metrics[key]:
                     res_metrics[key][label] = []
                 res_metrics[key][label].append(metrics[key])
-    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
+    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves, np.array(all_retrieval_res))
 
 
 def sort_asc(compare_results):
@@ -138,7 +164,7 @@ datastore_name = DATASTORE_NAME
 #         "glac_fallback":glac_fallback,
 #     })
 def eval_single_combination(arg_obj):
-    print(arg_obj)
+    print("arg_obj", arg_obj)
     experiment_name = arg_obj["experiment_name"]
     compare_method_name = arg_obj["compare_method_name"]
     feature_key = arg_obj["feature_key"]
@@ -152,7 +178,7 @@ def eval_single_combination(arg_obj):
 
 
     start_time = datetime.datetime.now()
-    eval_dataframe, precision_curves = compare(list(datastore.values()), compare_method, feature_key)
+    eval_dataframe, precision_curves, all_retrieval_res = compare(list(datastore.values()), compare_method, feature_key)
     filename = "final2_time{}_{}_{}.pkl".format(
         start_time.strftime("%d%m%y%H%M%S"),
         
@@ -170,6 +196,7 @@ def eval_single_combination(arg_obj):
 
         "eval_dataframe": eval_dataframe,
         "precision_curves": precision_curves,
+        "all_retrieval_res": all_retrieval_res,
         
         "compare_method_name": compare_method_name,
         "feature_key": feature_key,

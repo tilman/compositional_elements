@@ -179,7 +179,7 @@ save_as_pdf_pages(np.array(precision_pair_plots).flatten(), filename="/Users/til
 def get_combined_plot(legend):
     global all_means
 
-    mpd = pd.DataFrame([{"method": c, "precision":p, "rank":r+1} for c in all_means.keys() for r,p in enumerate(all_means[c]) ])
+    mpd = pd.DataFrame([{"method": c, "precision":p, "rank":r+1} for c in all_means.keys() if "combi2_asc" not in c for r,p in enumerate(all_means[c]) ])
     title = "all methods"
 
     print("title",title,legend)

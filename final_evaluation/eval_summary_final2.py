@@ -50,7 +50,8 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
 # a = a[a['name'] == "normGlac_cr_desc_ca20_co80_cs10_cbs0_th150_fbPlTrue_fbBisFalse_fbGaTrue"]
 #a = a[a['experiment_name'] == "BASELINE"]
-a = a[a['experiment_name'].str.contains("BASELINE ICC\+ T AR \+ fix precision curve")]
+#a = a[a['experiment_name'].str.contains("BASELINE ICC\+ T AR \+ fix precision curve")]
+a = a[a['experiment_name'].str.contains("plots")]
 #a = a[a['experiment_name'].str.contains("baseline")]
 #a = a[a['experiment_name'].str.contains("gridsearch|step 2 bbox norm setup") == False]
 #a = a[a['name'].str.contains("hr_nmd_desc|lexsort_hr_nmd")]

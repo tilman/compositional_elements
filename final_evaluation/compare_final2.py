@@ -4,7 +4,7 @@ import numpy as np
 
 from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
 # from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
-# from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
+#from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
 
 # allowed values:
 # norm_method: minmax_norm_by_imgrect, minmax_norm_by_bbox, norm_by_global_action, none, 
@@ -1290,7 +1290,24 @@ new_datapoints_for_plots_for_top_results = [
     }
 ]
 
+new_datapoints_for_plots_for_top_deep_results = [
+    {
+        "experiment_name":"plots: VGG19 ncos",
+        "compare_method_name":"negative_cosine_dist_flatten",
+        "feature_key":"imageNet_vgg19_bn_features",
+    },
+    {
+        "experiment_name":"plots: ResNet50 ncos",
+        "compare_method_name":"negative_cosine_dist_flatten",
+        "feature_key":"places365_resnet50_feature_noFC",
+    }
+]
+# print(new_datapoints_for_plots_for_top_deep_results)
 
+
+# eval_single_combination_deep(new_datapoints_for_plots_for_top_deep_results[0])
+# eval_single_combination_deep(new_datapoints_for_plots_for_top_deep_results[1])
+# exit()
 
 def main():
     print("starting pool")
@@ -1316,6 +1333,7 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments_combined_traditional_weighted_additional)
     #p.map(eval_single_combination_compoelem, final_grid_search_results)
     p.map(eval_single_combination_compoelem, new_datapoints_for_plots_for_top_results)
+    #p.map(eval_single_combination_deep, new_datapoints_for_plots_for_top_deep_results)
     print("map done")
     p.close()
     print("closed")
