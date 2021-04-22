@@ -194,7 +194,7 @@ def hr_nmd_desc(compare_results):
 # additional methods:
 def hr_additional_desc(compare_results):
     # hr is primary and therefore second sorting key
-    # nmd is seondary and therefore second first key
+    # r_addidtion is seondary and therefore second first key
     sorted_compare_results = compare_results[np.lexsort((-compare_results[:,7], compare_results[:,1]))][::-1]
     return sorted_compare_results
 
@@ -364,8 +364,8 @@ def eval_single_combination(arg_obj):
         "cone_scale_factor": cone_scale_factor,
         "filter_threshold": filter_threshold,
 
-        "poseline_fallback":"poseline_fallback",
-        "bisection_fallback":"bisection_fallback",
-        "glac_fallback":"glac_fallback",
+        "poseline_fallback": poseline_fallback,
+        "bisection_fallback": bisection_fallback,
+        "glac_fallback": glac_fallback,
     }
     pickle.dump(res_summary, open(EVAL_RESULTS_FILE_DIR+filename, "wb"))

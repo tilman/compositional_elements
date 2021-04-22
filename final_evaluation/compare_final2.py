@@ -821,8 +821,11 @@ experiments_combined_traditional_weighted_additional = [
         "compare_other": other,
     }
     #for weight in [0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
-    for weight in [0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90]
-    for sort in ["combi1_asc", "combi2_asc"]
+    # for weight in [0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90]
+    # for sort in ["combi1_asc", "combi2_asc"]
+    # for other in ["sift_bfm1","orb_bfm1","brief_bfm1"]
+    for weight in [0.50,]
+    for sort in ["hr_additional_desc"]
     for other in ["sift_bfm1","orb_bfm1","brief_bfm1"]
 ]
 
@@ -1330,9 +1333,9 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
     #p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
-    #p.map(eval_single_combination_compoelem, experiments_combined_traditional_weighted_additional)
+    p.map(eval_single_combination_compoelem, experiments_combined_traditional_weighted_additional)
     #p.map(eval_single_combination_compoelem, final_grid_search_results)
-    p.map(eval_single_combination_compoelem, new_datapoints_for_plots_for_top_results)
+    #p.map(eval_single_combination_compoelem, new_datapoints_for_plots_for_top_results)
     #p.map(eval_single_combination_deep, new_datapoints_for_plots_for_top_deep_results)
     print("map done")
     p.close()
