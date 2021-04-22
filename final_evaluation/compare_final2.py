@@ -2,7 +2,8 @@
 import multiprocessing
 import numpy as np
 
-from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
+#from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
+from .compare_final2_linkingArt import eval_single_combination as eval_single_combination_linkingArt
 # from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
 #from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
 
@@ -1312,6 +1313,33 @@ new_datapoints_for_plots_for_top_deep_results = [
 # eval_single_combination_deep(new_datapoints_for_plots_for_top_deep_results[1])
 # exit()
 
+
+
+experiments_linking_art_trough_humanposes = [
+    {
+        "experiment_name":"LATP robust verification with bipart distance",
+        "compare_method_name":"compare_dist_bipart",
+        "with_robust_verify":True,
+    },
+    {
+        "experiment_name":"LATP robust verification with min distance",
+        "compare_method_name":"compare_dist_min",
+        "with_robust_verify":True,
+    },
+    {
+        "experiment_name":"LATP bipart distance only",
+        "compare_method_name":"compare_dist_bipart",
+        "with_robust_verify":False,
+    },
+    {
+        "experiment_name":"LATP min distance only",
+        "compare_method_name":"compare_dist_min",
+        "with_robust_verify":False,
+    }
+]
+
+
+
 def main():
     print("starting pool")
     p = multiprocessing.Pool()
@@ -1333,10 +1361,11 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet)
     #p.map(eval_single_combination_compoelem, experiments_combined_resnet_weighted_additional)
     #p.map(eval_single_combination_compoelem, experiments_combined_vgg_weighted_additional)
-    p.map(eval_single_combination_compoelem, experiments_combined_traditional_weighted_additional)
+    #p.map(eval_single_combination_compoelem, experiments_combined_traditional_weighted_additional)
     #p.map(eval_single_combination_compoelem, final_grid_search_results)
     #p.map(eval_single_combination_compoelem, new_datapoints_for_plots_for_top_results)
     #p.map(eval_single_combination_deep, new_datapoints_for_plots_for_top_deep_results)
+    p.map(eval_single_combination_linkingArt, experiments_linking_art_trough_humanposes)
     print("map done")
     p.close()
     print("closed")
