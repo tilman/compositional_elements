@@ -34,7 +34,7 @@ python setup.py install
 ```
 
 ## Usage:
-See [docs](https://tilman.github.io/compoelem/compoelem/) and [tests](tests/test_e2e.py) for example usage.
+See [docs](https://tilman.github.io/compositional_elements/compoelem/) and [tests](tests/test_e2e.py) for example usage.
 
 ## Run Test Suite:
 `python setup.py pytest`
