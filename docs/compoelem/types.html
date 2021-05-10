@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>compoelem.types API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>compoelem.types</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from dataclasses import dataclass
+from typing import Sequence, Tuple
+import numpy as np
+
+from shapely.geometry import LineString, Point, Polygon
+
+from .detect.openpose_common_utils import CocoPart
+
+Img = Sequence[Sequence[int]]
+
+class Keypoint:
+    x: int
+    y: int
+    score: float
+    isNone: bool
+    def __init__(self, x: int, y: int, score: float = 0):
+        self.x = int(x)
+        self.y = int(y)
+        self.score = score
+        self.isNone = False
+    def __str__(self) -&gt; str:
+        return &#34;Kp ({},{})&#34;.format(self.x, self.y)
+    def __repr__(self) -&gt; str:
+        return &#34;Kp ({},{})&#34;.format(self.x, self.y)
+
+class NoneKeypoint(Keypoint):
+    x: int
+    y: int
+    isNone: bool
+    score: int
+    def __init__(self):
+        self.x = -1
+        self.y = -1
+        self.score = 0
+        self.isNone = True
+    def __str__(self) -&gt; str:
+        return &#34;N Kp&#34;
+    def __repr__(self) -&gt; str:
+        return &#34;N Kp&#34;
+
+@dataclass
+class Pose:
+    keypoints: Sequence[Keypoint]
+
+Poses = Sequence[Pose]
+
+class PoseTriangle:
+    shape: Polygon
+    top: Keypoint
+    left: Keypoint
+    right: Keypoint
+    def __init__(self, top: Keypoint, left: Keypoint, right: Keypoint): 
+        self.top = top
+        self.left = left
+        self.right = right
+        self.shape = Polygon([[top.x, top.y], [left.x, left.y], [right.x, right.y]])
+
+class PoseLine:
+    line: LineString
+    top: Point
+    bottom: Point
+    def __init__(self, top:Point, bottom: Point): 
+        self.top = top
+        self.bottom = bottom
+        self.line = LineString([[top.x, top.y], [bottom.x, bottom.y]])
+
+ConeCombination = Tuple[int, ...]
+
+class ConeIntersection:
+    shape: Polygon
+    cone_combination: ConeCombination
+    cone_combination_length: int
+    def __init__(self, shape: Polygon, cone_combination: ConeCombination): 
+        self.shape = shape
+        self.cone_combination = cone_combination
+        self.cone_combination_length = len(cone_combination)
+
+class GlobalActionLine:
+    line: LineString
+    start: Point
+    end: Point
+    center: Point
+    area: float
+    angle: float
+    intersection_shape: Polygon
+    def __init__(self, center: Point, angle: float, area: float, intersection_shape: Polygon = None):
+        self.angle = angle
+        self.area = area
+        self.center = center
+        if intersection_shape:
+            self.intersection_shape = intersection_shape
+        else:
+            self.intersection_shape = Polygon()
+
+        dist = 2000 # FIXME: move hardcoded value to config, or maybe calculate dist based on area
+        if np.isnan(angle):
+            x_offset = 0
+            y_offset = 0
+            #print(&#34;Warning: GlobalActionLine angle is NaN&#34;)
+        else:
+            x_offset = int(dist * np.cos(angle))
+            y_offset = int(dist * np.sin(angle))
+        self.start = Point(center.x - x_offset, center.y - y_offset)
+        self.end = Point(center.x + x_offset, center.y + y_offset)
+
+
+class PoseDirection:
+    line: LineString
+    start: Point
+    end: Point
+    cone: Polygon
+    def __init__(self, start:Point, end: Point, cone: Polygon): 
+        self.start = start
+        self.end = end
+        self.line = LineString([[start.x, start.y], [end.x, end.y]])
+        self.cone = cone</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="compoelem.types.ConeIntersection"><code class="flex name class">
+<span>class <span class="ident">ConeIntersection</span></span>
+<span>(</span><span>shape: shapely.geometry.polygon.Polygon, cone_combination: Tuple[int, ...])</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ConeIntersection:
+    shape: Polygon
+    cone_combination: ConeCombination
+    cone_combination_length: int
+    def __init__(self, shape: Polygon, cone_combination: ConeCombination): 
+        self.shape = shape
+        self.cone_combination = cone_combination
+        self.cone_combination_length = len(cone_combination)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.ConeIntersection.cone_combination"><code class="name">var <span class="ident">cone_combination</span> : Tuple[int, ...]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.ConeIntersection.cone_combination_length"><code class="name">var <span class="ident">cone_combination_length</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.ConeIntersection.shape"><code class="name">var <span class="ident">shape</span> : shapely.geometry.polygon.Polygon</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.GlobalActionLine"><code class="flex name class">
+<span>class <span class="ident">GlobalActionLine</span></span>
+<span>(</span><span>center: shapely.geometry.point.Point, angle: float, area: float, intersection_shape: shapely.geometry.polygon.Polygon = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GlobalActionLine:
+    line: LineString
+    start: Point
+    end: Point
+    center: Point
+    area: float
+    angle: float
+    intersection_shape: Polygon
+    def __init__(self, center: Point, angle: float, area: float, intersection_shape: Polygon = None):
+        self.angle = angle
+        self.area = area
+        self.center = center
+        if intersection_shape:
+            self.intersection_shape = intersection_shape
+        else:
+            self.intersection_shape = Polygon()
+
+        dist = 2000 # FIXME: move hardcoded value to config, or maybe calculate dist based on area
+        if np.isnan(angle):
+            x_offset = 0
+            y_offset = 0
+            #print(&#34;Warning: GlobalActionLine angle is NaN&#34;)
+        else:
+            x_offset = int(dist * np.cos(angle))
+            y_offset = int(dist * np.sin(angle))
+        self.start = Point(center.x - x_offset, center.y - y_offset)
+        self.end = Point(center.x + x_offset, center.y + y_offset)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.GlobalActionLine.angle"><code class="name">var <span class="ident">angle</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.GlobalActionLine.area"><code class="name">var <span class="ident">area</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.GlobalActionLine.center"><code class="name">var <span class="ident">center</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.GlobalActionLine.end"><code class="name">var <span class="ident">end</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.GlobalActionLine.intersection_shape"><code class="name">var <span class="ident">intersection_shape</span> : shapely.geometry.polygon.Polygon</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.GlobalActionLine.line"><code class="name">var <span class="ident">line</span> : shapely.geometry.linestring.LineString</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.GlobalActionLine.start"><code class="name">var <span class="ident">start</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.Keypoint"><code class="flex name class">
+<span>class <span class="ident">Keypoint</span></span>
+<span>(</span><span>x: int, y: int, score: float = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Keypoint:
+    x: int
+    y: int
+    score: float
+    isNone: bool
+    def __init__(self, x: int, y: int, score: float = 0):
+        self.x = int(x)
+        self.y = int(y)
+        self.score = score
+        self.isNone = False
+    def __str__(self) -&gt; str:
+        return &#34;Kp ({},{})&#34;.format(self.x, self.y)
+    def __repr__(self) -&gt; str:
+        return &#34;Kp ({},{})&#34;.format(self.x, self.y)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="compoelem.types.NoneKeypoint" href="#compoelem.types.NoneKeypoint">NoneKeypoint</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.Keypoint.isNone"><code class="name">var <span class="ident">isNone</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.Keypoint.score"><code class="name">var <span class="ident">score</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.Keypoint.x"><code class="name">var <span class="ident">x</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.Keypoint.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.NoneKeypoint"><code class="flex name class">
+<span>class <span class="ident">NoneKeypoint</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NoneKeypoint(Keypoint):
+    x: int
+    y: int
+    isNone: bool
+    score: int
+    def __init__(self):
+        self.x = -1
+        self.y = -1
+        self.score = 0
+        self.isNone = True
+    def __str__(self) -&gt; str:
+        return &#34;N Kp&#34;
+    def __repr__(self) -&gt; str:
+        return &#34;N Kp&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.NoneKeypoint.isNone"><code class="name">var <span class="ident">isNone</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.NoneKeypoint.score"><code class="name">var <span class="ident">score</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.NoneKeypoint.x"><code class="name">var <span class="ident">x</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.NoneKeypoint.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.Pose"><code class="flex name class">
+<span>class <span class="ident">Pose</span></span>
+<span>(</span><span>keypoints: Sequence[<a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pose(keypoints: Sequence[compoelem.types.Keypoint])</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Pose:
+    keypoints: Sequence[Keypoint]</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.Pose.keypoints"><code class="name">var <span class="ident">keypoints</span> : Sequence[<a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.PoseDirection"><code class="flex name class">
+<span>class <span class="ident">PoseDirection</span></span>
+<span>(</span><span>start: shapely.geometry.point.Point, end: shapely.geometry.point.Point, cone: shapely.geometry.polygon.Polygon)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PoseDirection:
+    line: LineString
+    start: Point
+    end: Point
+    cone: Polygon
+    def __init__(self, start:Point, end: Point, cone: Polygon): 
+        self.start = start
+        self.end = end
+        self.line = LineString([[start.x, start.y], [end.x, end.y]])
+        self.cone = cone</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.PoseDirection.cone"><code class="name">var <span class="ident">cone</span> : shapely.geometry.polygon.Polygon</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseDirection.end"><code class="name">var <span class="ident">end</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseDirection.line"><code class="name">var <span class="ident">line</span> : shapely.geometry.linestring.LineString</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseDirection.start"><code class="name">var <span class="ident">start</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.PoseLine"><code class="flex name class">
+<span>class <span class="ident">PoseLine</span></span>
+<span>(</span><span>top: shapely.geometry.point.Point, bottom: shapely.geometry.point.Point)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PoseLine:
+    line: LineString
+    top: Point
+    bottom: Point
+    def __init__(self, top:Point, bottom: Point): 
+        self.top = top
+        self.bottom = bottom
+        self.line = LineString([[top.x, top.y], [bottom.x, bottom.y]])</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.PoseLine.bottom"><code class="name">var <span class="ident">bottom</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseLine.line"><code class="name">var <span class="ident">line</span> : shapely.geometry.linestring.LineString</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseLine.top"><code class="name">var <span class="ident">top</span> : shapely.geometry.point.Point</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="compoelem.types.PoseTriangle"><code class="flex name class">
+<span>class <span class="ident">PoseTriangle</span></span>
+<span>(</span><span>top: <a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a>, left: <a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a>, right: <a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PoseTriangle:
+    shape: Polygon
+    top: Keypoint
+    left: Keypoint
+    right: Keypoint
+    def __init__(self, top: Keypoint, left: Keypoint, right: Keypoint): 
+        self.top = top
+        self.left = left
+        self.right = right
+        self.shape = Polygon([[top.x, top.y], [left.x, left.y], [right.x, right.y]])</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="compoelem.types.PoseTriangle.left"><code class="name">var <span class="ident">left</span> : <a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseTriangle.right"><code class="name">var <span class="ident">right</span> : <a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseTriangle.shape"><code class="name">var <span class="ident">shape</span> : shapely.geometry.polygon.Polygon</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="compoelem.types.PoseTriangle.top"><code class="name">var <span class="ident">top</span> : <a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="compoelem" href="index.html">compoelem</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="compoelem.types.ConeIntersection" href="#compoelem.types.ConeIntersection">ConeIntersection</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.ConeIntersection.cone_combination" href="#compoelem.types.ConeIntersection.cone_combination">cone_combination</a></code></li>
+<li><code><a title="compoelem.types.ConeIntersection.cone_combination_length" href="#compoelem.types.ConeIntersection.cone_combination_length">cone_combination_length</a></code></li>
+<li><code><a title="compoelem.types.ConeIntersection.shape" href="#compoelem.types.ConeIntersection.shape">shape</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.GlobalActionLine" href="#compoelem.types.GlobalActionLine">GlobalActionLine</a></code></h4>
+<ul class="two-column">
+<li><code><a title="compoelem.types.GlobalActionLine.angle" href="#compoelem.types.GlobalActionLine.angle">angle</a></code></li>
+<li><code><a title="compoelem.types.GlobalActionLine.area" href="#compoelem.types.GlobalActionLine.area">area</a></code></li>
+<li><code><a title="compoelem.types.GlobalActionLine.center" href="#compoelem.types.GlobalActionLine.center">center</a></code></li>
+<li><code><a title="compoelem.types.GlobalActionLine.end" href="#compoelem.types.GlobalActionLine.end">end</a></code></li>
+<li><code><a title="compoelem.types.GlobalActionLine.intersection_shape" href="#compoelem.types.GlobalActionLine.intersection_shape">intersection_shape</a></code></li>
+<li><code><a title="compoelem.types.GlobalActionLine.line" href="#compoelem.types.GlobalActionLine.line">line</a></code></li>
+<li><code><a title="compoelem.types.GlobalActionLine.start" href="#compoelem.types.GlobalActionLine.start">start</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.Keypoint" href="#compoelem.types.Keypoint">Keypoint</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.Keypoint.isNone" href="#compoelem.types.Keypoint.isNone">isNone</a></code></li>
+<li><code><a title="compoelem.types.Keypoint.score" href="#compoelem.types.Keypoint.score">score</a></code></li>
+<li><code><a title="compoelem.types.Keypoint.x" href="#compoelem.types.Keypoint.x">x</a></code></li>
+<li><code><a title="compoelem.types.Keypoint.y" href="#compoelem.types.Keypoint.y">y</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.NoneKeypoint" href="#compoelem.types.NoneKeypoint">NoneKeypoint</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.NoneKeypoint.isNone" href="#compoelem.types.NoneKeypoint.isNone">isNone</a></code></li>
+<li><code><a title="compoelem.types.NoneKeypoint.score" href="#compoelem.types.NoneKeypoint.score">score</a></code></li>
+<li><code><a title="compoelem.types.NoneKeypoint.x" href="#compoelem.types.NoneKeypoint.x">x</a></code></li>
+<li><code><a title="compoelem.types.NoneKeypoint.y" href="#compoelem.types.NoneKeypoint.y">y</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.Pose" href="#compoelem.types.Pose">Pose</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.Pose.keypoints" href="#compoelem.types.Pose.keypoints">keypoints</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.PoseDirection" href="#compoelem.types.PoseDirection">PoseDirection</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.PoseDirection.cone" href="#compoelem.types.PoseDirection.cone">cone</a></code></li>
+<li><code><a title="compoelem.types.PoseDirection.end" href="#compoelem.types.PoseDirection.end">end</a></code></li>
+<li><code><a title="compoelem.types.PoseDirection.line" href="#compoelem.types.PoseDirection.line">line</a></code></li>
+<li><code><a title="compoelem.types.PoseDirection.start" href="#compoelem.types.PoseDirection.start">start</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.PoseLine" href="#compoelem.types.PoseLine">PoseLine</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.PoseLine.bottom" href="#compoelem.types.PoseLine.bottom">bottom</a></code></li>
+<li><code><a title="compoelem.types.PoseLine.line" href="#compoelem.types.PoseLine.line">line</a></code></li>
+<li><code><a title="compoelem.types.PoseLine.top" href="#compoelem.types.PoseLine.top">top</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="compoelem.types.PoseTriangle" href="#compoelem.types.PoseTriangle">PoseTriangle</a></code></h4>
+<ul class="">
+<li><code><a title="compoelem.types.PoseTriangle.left" href="#compoelem.types.PoseTriangle.left">left</a></code></li>
+<li><code><a title="compoelem.types.PoseTriangle.right" href="#compoelem.types.PoseTriangle.right">right</a></code></li>
+<li><code><a title="compoelem.types.PoseTriangle.shape" href="#compoelem.types.PoseTriangle.shape">shape</a></code></li>
+<li><code><a title="compoelem.types.PoseTriangle.top" href="#compoelem.types.PoseTriangle.top">top</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>compoelem.generate.global_action API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>compoelem.generate.global_action</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import itertools
+from typing import cast
+
+import numpy as np
+from compoelem.generate.bisection import get_centroids_for_bisection, get_angle_in_respect_to_x
+from compoelem.generate.pose_direction import get_pose_directions
+from compoelem.types import *
+from shapely.geometry.polygon import Polygon
+
+
+def get_cone_combination_intersections(pose_directions: Sequence[PoseDirection]) -&gt; Sequence[ConeIntersection]:
+    &#34;&#34;&#34;calculate every intersection of all combinations of input pose list.
+    It will return all combination intersections which are not null.
+    So we can later for example select the intersection with the highest combination_length as our target.
+
+    Args:
+        pose_directions (Sequence[PoseDirection]): Output of get_pose_directions(poses)
+
+    Returns:
+        Sequence[Tuple[Combination, int, Polygon]]: a ordered list of pairs (combination_length, combination, combi_intersection_result)
+                                                    ordered with ascending combination_length
+    &#34;&#34;&#34;
+    combination_intersections: Sequence[ConeIntersection] = []
+    # we increase the length of the combinations of cones. Ending in a combination_length with all cones in one combination
+    # len(pose_directions) == 7:
+    #   combination_length = 1 =&gt; [(0,), (1,), (2,), (3,), (4,), (5,), (6,), (7,)]
+    #   combination_length = 2 =&gt; [(0, 1), ..., (0, 7), (1, 2), ..., (1, 7), (2, 3), ...]   # no duplicate combinations live (1, 0) since intersection would be the same
+    #   combination_length = 8 =&gt; [(0, 1, 2, 3, 4, 5, 6, 7)]
+    # combinations can still get HUGGEE... for 21 poses: 2097151 combinations: sum([len(list(itertools.combinations(range(0,21), r))) for r in range(1,22)])
+    # is the same as 2097151 2**21-1 =&gt; Loop has size: (2^len(pose_directions))-1
+
+    # # old from 0 to len(poserange) =&gt; and calc all
+    # # new from len(poserange) to 0 and break after first r is found where entries exist
+    # for combination_length in list(range(1,len(pose_directions)+1))[::-1]:
+    #     cone_combinations: Sequence[ConeCombination] = list(itertools.combinations(range(0,len(pose_directions)), combination_length))
+    #     # generating all combinations of cones with combi length r
+    #     for combination in cone_combinations:
+    #         # start the recursive intersection calculation with the first entry of the combination tuple as the target cone
+    #         combi_intersection_result = pose_directions[combination[0]].cone
+    #         for i in combination[1:]:
+    #             # iterate over the remaining combinations and recursivly call the intersection on the current intersection
+    #             # this will slowly make the intersection smaller till all intersections from the combination are generated
+    #             combi_intersection_result = cast(Polygon, combi_intersection_result.intersection(pose_directions[i].cone))
+    #         if not combi_intersection_result.is_empty:
+    #             # only append the final intersection if the target cone is not empty
+    #             # also store the combination tuple
+    #             combination_intersections.append(ConeIntersection(combi_intersection_result, combination))
+    #     if len(combination_intersections) &gt; 0:
+    #         # new optimization, calc backwards (from many combinations) to less combinations
+    #         # since length_cone_combinations with combination_length has pyramid form. we have potential to save a lot of calculations!!!
+    #         print(&#34;cone_combination_length&#34;, map(lambda x: x.cone_combination_length, combination_intersections), &#34;length_cone_combinations&#34;, len(cone_combinations))
+    #         break
+    # return combination_intersections
+
+
+    # old from 0 to len(poserange) =&gt; and calc all
+    # new from len(poserange) to 0 and break after first r is found where entries exist
+    for combination_length in range(1,len(pose_directions)+1):
+        cone_combinations: Sequence[ConeCombination] = list(itertools.combinations(range(0,len(pose_directions)), combination_length))
+        # generating all combinations of cones with combi length r
+        empty_round = True
+        for combination in cone_combinations:
+            # start the recursive intersection calculation with the first entry of the combination tuple as the target cone
+            combi_intersection_result = pose_directions[combination[0]].cone
+            for i in combination[1:]:
+                # iterate over the remaining combinations and recursivly call the intersection on the current intersection
+                # this will slowly make the intersection smaller till all intersections from the combination are generated
+                combi_intersection_result = cast(Polygon, combi_intersection_result.intersection(pose_directions[i].cone))
+            if not combi_intersection_result.is_empty:
+                # only append the final intersection if the target cone is not empty
+                # also store the combination tuple
+                combination_intersections.append(ConeIntersection(combi_intersection_result, combination))
+                empty_round = False
+        if empty_round: # NEW add empty round as optimization
+            # print(&#34;empty round at combi length&#34;, combination_length)
+            # if we now have one round without any intersections, increasing the combination length by one will not have any intersections as well
+            break
+    return combination_intersections
+
+def get_filtered_cone_intersections(poses, fallback) -&gt; Sequence[ConeIntersection]:
+    &#34;&#34;&#34;get the filtered cone intersections from the poses. We filter by selecting the intersections with the most cones participating. Therfore it could happen that the amount of intersections is greater than 1.
+
+    Args:
+        poses ([type]): converted HRNet output
+
+    Returns:
+        Sequence[Polygon]: Each entry is a cone intersection represented by a Polygon
+    &#34;&#34;&#34;
+    pose_directions = get_pose_directions(poses, fallback)
+    combination_intersections = get_cone_combination_intersections(pose_directions)
+    if len(combination_intersections) == 0:
+        return []
+    # since combination_intersections is ordered. The combi_length of the last entry will always be the highest combi_length
+    filtered_combi_length = combination_intersections[-1].cone_combination_length
+    filtered_cone_intersections = [v for v in combination_intersections if v.cone_combination_length == filtered_combi_length]
+    return filtered_cone_intersections
+
+def get_combined_angle(poses, fallback) -&gt; float:
+    &#34;&#34;&#34;calculates and combines the bisection angle of all input poses.
+
+    Args:
+        poses ([type]): Openpose transformed output poses
+
+    Returns:
+        float: angle in radians
+    &#34;&#34;&#34;
+    angles: Sequence[float] = []
+    for pose in poses:
+        try:
+            angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints, fallback)))
+        except ValueError as e:
+            #print(e)
+            pass
+    return np.mean(angles) * -1
+
+def get_global_action_lines(poses, fallback=False) -&gt; Sequence[GlobalActionLine]:
+    &#34;&#34;&#34;calculate global action lines. Therefore we calculate the intersecting pose direction cones and take the centroid of
+    the intersection with the most cones participating. From these participating cones we also calculate the angle from the
+    bisection vector and average it together to calculate the angle for the global action line. The line is then drawn trough
+    the intersection area centroid with this newly calculated centroid.
+
+    Args:
+        poses ([type]): Openpose transformed output poses
+
+    Returns:
+        Sequence[GlobalActionLine]: a single or multiple global action lines. Mostly a single line but if there are multiple 
+        different intersection areas with the same amount of cones participating we take all of them.
+    &#34;&#34;&#34;
+    cone_intersections = get_filtered_cone_intersections(poses, fallback)
+    global_action_lines = []
+    for cone_intersection in cone_intersections:
+        filtered_participating_poses = np.array(poses)[np.array(cone_intersection.cone_combination)]
+        if len(filtered_participating_poses) &gt; 0:
+            combined_angle = get_combined_angle(filtered_participating_poses, fallback)
+            global_action_lines.append(
+                GlobalActionLine(
+                    cast(Point, cone_intersection.shape.centroid),
+                    combined_angle,
+                    cone_intersection.shape.area,
+                    cone_intersection.shape
+                )
+            )
+    return global_action_lines</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="compoelem.generate.global_action.get_combined_angle"><code class="name flex">
+<span>def <span class="ident">get_combined_angle</span></span>(<span>poses, fallback) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>calculates and combines the bisection angle of all input poses.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>poses</code></strong> :&ensp;<code>[type]</code></dt>
+<dd>Openpose transformed output poses</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>angle in radians</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_combined_angle(poses, fallback) -&gt; float:
+    &#34;&#34;&#34;calculates and combines the bisection angle of all input poses.
+
+    Args:
+        poses ([type]): Openpose transformed output poses
+
+    Returns:
+        float: angle in radians
+    &#34;&#34;&#34;
+    angles: Sequence[float] = []
+    for pose in poses:
+        try:
+            angles.append(get_angle_in_respect_to_x(*get_centroids_for_bisection(pose.keypoints, fallback)))
+        except ValueError as e:
+            #print(e)
+            pass
+    return np.mean(angles) * -1</code></pre>
+</details>
+</dd>
+<dt id="compoelem.generate.global_action.get_cone_combination_intersections"><code class="name flex">
+<span>def <span class="ident">get_cone_combination_intersections</span></span>(<span>pose_directions: Sequence[<a title="compoelem.types.PoseDirection" href="../types.html#compoelem.types.PoseDirection">PoseDirection</a>]) ‑> Sequence[<a title="compoelem.types.ConeIntersection" href="../types.html#compoelem.types.ConeIntersection">ConeIntersection</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>calculate every intersection of all combinations of input pose list.
+It will return all combination intersections which are not null.
+So we can later for example select the intersection with the highest combination_length as our target.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pose_directions</code></strong> :&ensp;<code>Sequence[PoseDirection]</code></dt>
+<dd>Output of get_pose_directions(poses)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Sequence[Tuple[Combination, int, Polygon]]</code></dt>
+<dd>a ordered list of pairs (combination_length, combination, combi_intersection_result)
+ordered with ascending combination_length</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cone_combination_intersections(pose_directions: Sequence[PoseDirection]) -&gt; Sequence[ConeIntersection]:
+    &#34;&#34;&#34;calculate every intersection of all combinations of input pose list.
+    It will return all combination intersections which are not null.
+    So we can later for example select the intersection with the highest combination_length as our target.
+
+    Args:
+        pose_directions (Sequence[PoseDirection]): Output of get_pose_directions(poses)
+
+    Returns:
+        Sequence[Tuple[Combination, int, Polygon]]: a ordered list of pairs (combination_length, combination, combi_intersection_result)
+                                                    ordered with ascending combination_length
+    &#34;&#34;&#34;
+    combination_intersections: Sequence[ConeIntersection] = []
+    # we increase the length of the combinations of cones. Ending in a combination_length with all cones in one combination
+    # len(pose_directions) == 7:
+    #   combination_length = 1 =&gt; [(0,), (1,), (2,), (3,), (4,), (5,), (6,), (7,)]
+    #   combination_length = 2 =&gt; [(0, 1), ..., (0, 7), (1, 2), ..., (1, 7), (2, 3), ...]   # no duplicate combinations live (1, 0) since intersection would be the same
+    #   combination_length = 8 =&gt; [(0, 1, 2, 3, 4, 5, 6, 7)]
+    # combinations can still get HUGGEE... for 21 poses: 2097151 combinations: sum([len(list(itertools.combinations(range(0,21), r))) for r in range(1,22)])
+    # is the same as 2097151 2**21-1 =&gt; Loop has size: (2^len(pose_directions))-1
+
+    # # old from 0 to len(poserange) =&gt; and calc all
+    # # new from len(poserange) to 0 and break after first r is found where entries exist
+    # for combination_length in list(range(1,len(pose_directions)+1))[::-1]:
+    #     cone_combinations: Sequence[ConeCombination] = list(itertools.combinations(range(0,len(pose_directions)), combination_length))
+    #     # generating all combinations of cones with combi length r
+    #     for combination in cone_combinations:
+    #         # start the recursive intersection calculation with the first entry of the combination tuple as the target cone
+    #         combi_intersection_result = pose_directions[combination[0]].cone
+    #         for i in combination[1:]:
+    #             # iterate over the remaining combinations and recursivly call the intersection on the current intersection
+    #             # this will slowly make the intersection smaller till all intersections from the combination are generated
+    #             combi_intersection_result = cast(Polygon, combi_intersection_result.intersection(pose_directions[i].cone))
+    #         if not combi_intersection_result.is_empty:
+    #             # only append the final intersection if the target cone is not empty
+    #             # also store the combination tuple
+    #             combination_intersections.append(ConeIntersection(combi_intersection_result, combination))
+    #     if len(combination_intersections) &gt; 0:
+    #         # new optimization, calc backwards (from many combinations) to less combinations
+    #         # since length_cone_combinations with combination_length has pyramid form. we have potential to save a lot of calculations!!!
+    #         print(&#34;cone_combination_length&#34;, map(lambda x: x.cone_combination_length, combination_intersections), &#34;length_cone_combinations&#34;, len(cone_combinations))
+    #         break
+    # return combination_intersections
+
+
+    # old from 0 to len(poserange) =&gt; and calc all
+    # new from len(poserange) to 0 and break after first r is found where entries exist
+    for combination_length in range(1,len(pose_directions)+1):
+        cone_combinations: Sequence[ConeCombination] = list(itertools.combinations(range(0,len(pose_directions)), combination_length))
+        # generating all combinations of cones with combi length r
+        empty_round = True
+        for combination in cone_combinations:
+            # start the recursive intersection calculation with the first entry of the combination tuple as the target cone
+            combi_intersection_result = pose_directions[combination[0]].cone
+            for i in combination[1:]:
+                # iterate over the remaining combinations and recursivly call the intersection on the current intersection
+                # this will slowly make the intersection smaller till all intersections from the combination are generated
+                combi_intersection_result = cast(Polygon, combi_intersection_result.intersection(pose_directions[i].cone))
+            if not combi_intersection_result.is_empty:
+                # only append the final intersection if the target cone is not empty
+                # also store the combination tuple
+                combination_intersections.append(ConeIntersection(combi_intersection_result, combination))
+                empty_round = False
+        if empty_round: # NEW add empty round as optimization
+            # print(&#34;empty round at combi length&#34;, combination_length)
+            # if we now have one round without any intersections, increasing the combination length by one will not have any intersections as well
+            break
+    return combination_intersections</code></pre>
+</details>
+</dd>
+<dt id="compoelem.generate.global_action.get_filtered_cone_intersections"><code class="name flex">
+<span>def <span class="ident">get_filtered_cone_intersections</span></span>(<span>poses, fallback) ‑> Sequence[<a title="compoelem.types.ConeIntersection" href="../types.html#compoelem.types.ConeIntersection">ConeIntersection</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the filtered cone intersections from the poses. We filter by selecting the intersections with the most cones participating. Therfore it could happen that the amount of intersections is greater than 1.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>poses</code></strong> :&ensp;<code>[type]</code></dt>
+<dd>converted HRNet output</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Sequence[Polygon]</code></dt>
+<dd>Each entry is a cone intersection represented by a Polygon</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_filtered_cone_intersections(poses, fallback) -&gt; Sequence[ConeIntersection]:
+    &#34;&#34;&#34;get the filtered cone intersections from the poses. We filter by selecting the intersections with the most cones participating. Therfore it could happen that the amount of intersections is greater than 1.
+
+    Args:
+        poses ([type]): converted HRNet output
+
+    Returns:
+        Sequence[Polygon]: Each entry is a cone intersection represented by a Polygon
+    &#34;&#34;&#34;
+    pose_directions = get_pose_directions(poses, fallback)
+    combination_intersections = get_cone_combination_intersections(pose_directions)
+    if len(combination_intersections) == 0:
+        return []
+    # since combination_intersections is ordered. The combi_length of the last entry will always be the highest combi_length
+    filtered_combi_length = combination_intersections[-1].cone_combination_length
+    filtered_cone_intersections = [v for v in combination_intersections if v.cone_combination_length == filtered_combi_length]
+    return filtered_cone_intersections</code></pre>
+</details>
+</dd>
+<dt id="compoelem.generate.global_action.get_global_action_lines"><code class="name flex">
+<span>def <span class="ident">get_global_action_lines</span></span>(<span>poses, fallback=False) ‑> Sequence[<a title="compoelem.types.GlobalActionLine" href="../types.html#compoelem.types.GlobalActionLine">GlobalActionLine</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>calculate global action lines. Therefore we calculate the intersecting pose direction cones and take the centroid of
+the intersection with the most cones participating. From these participating cones we also calculate the angle from the
+bisection vector and average it together to calculate the angle for the global action line. The line is then drawn trough
+the intersection area centroid with this newly calculated centroid.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>poses</code></strong> :&ensp;<code>[type]</code></dt>
+<dd>Openpose transformed output poses</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Sequence[GlobalActionLine]</code></dt>
+<dd>a single or multiple global action lines. Mostly a single line but if there are multiple </dd>
+</dl>
+<p>different intersection areas with the same amount of cones participating we take all of them.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_global_action_lines(poses, fallback=False) -&gt; Sequence[GlobalActionLine]:
+    &#34;&#34;&#34;calculate global action lines. Therefore we calculate the intersecting pose direction cones and take the centroid of
+    the intersection with the most cones participating. From these participating cones we also calculate the angle from the
+    bisection vector and average it together to calculate the angle for the global action line. The line is then drawn trough
+    the intersection area centroid with this newly calculated centroid.
+
+    Args:
+        poses ([type]): Openpose transformed output poses
+
+    Returns:
+        Sequence[GlobalActionLine]: a single or multiple global action lines. Mostly a single line but if there are multiple 
+        different intersection areas with the same amount of cones participating we take all of them.
+    &#34;&#34;&#34;
+    cone_intersections = get_filtered_cone_intersections(poses, fallback)
+    global_action_lines = []
+    for cone_intersection in cone_intersections:
+        filtered_participating_poses = np.array(poses)[np.array(cone_intersection.cone_combination)]
+        if len(filtered_participating_poses) &gt; 0:
+            combined_angle = get_combined_angle(filtered_participating_poses, fallback)
+            global_action_lines.append(
+                GlobalActionLine(
+                    cast(Point, cone_intersection.shape.centroid),
+                    combined_angle,
+                    cone_intersection.shape.area,
+                    cone_intersection.shape
+                )
+            )
+    return global_action_lines</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="compoelem.generate" href="index.html">compoelem.generate</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="compoelem.generate.global_action.get_combined_angle" href="#compoelem.generate.global_action.get_combined_angle">get_combined_angle</a></code></li>
+<li><code><a title="compoelem.generate.global_action.get_cone_combination_intersections" href="#compoelem.generate.global_action.get_cone_combination_intersections">get_cone_combination_intersections</a></code></li>
+<li><code><a title="compoelem.generate.global_action.get_filtered_cone_intersections" href="#compoelem.generate.global_action.get_filtered_cone_intersections">get_filtered_cone_intersections</a></code></li>
+<li><code><a title="compoelem.generate.global_action.get_global_action_lines" href="#compoelem.generate.global_action.get_global_action_lines">get_global_action_lines</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

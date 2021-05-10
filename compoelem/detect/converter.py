@@ -1,8 +1,9 @@
 import cv2
-from numpy.lib.arraypad import _set_wrap_both
-from compoelem.detect.openpose.lib.utils.common import BodyPart, Human
+#from numpy.lib.arraypad import _set_wrap_both
 from typing import Tuple
 from compoelem.config import config
+
+from .openpose_common_utils import BodyPart, Human
 
 from compoelem.types import *
 
