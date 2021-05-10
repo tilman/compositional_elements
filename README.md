@@ -40,8 +40,12 @@ See [docs](https://tilman.github.io/compoelem/compoelem/) and [tests](tests/test
 `python setup.py pytest`
 
 ## Build the documentation:
+first built the project and then run:
 `pip install pdoc3`
 `rm -rf docs && pdoc3 --html --output-dir docs --config show_source_code=False compoelem`
+or 
+`pip install pdoc`
+`pdoc -o ./docs ./compoelem`
 
 ## Development: bump version and install locally
 ```bash
