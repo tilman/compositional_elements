@@ -3,8 +3,8 @@ import multiprocessing
 import numpy as np
 
 #from .compare_final2_compoelem import eval_single_combination as eval_single_combination_compoelem
-from .compare_final2_linkingArt import eval_single_combination as eval_single_combination_linkingArt
-# from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
+# from .compare_final2_linkingArt import eval_single_combination as eval_single_combination_linkingArt
+from .compare_final2_traditional import eval_single_combination as eval_single_combination_traditional
 #from .compare_final2_deep import eval_single_combination as eval_single_combination_deep
 
 # allowed values:
@@ -803,7 +803,7 @@ experiments_combined_vgg_weighted_additional = [
 ]
 experiments_combined_traditional_weighted_additional = [
     {
-        "experiment_name":"weighted combined traditional ncos tuned",
+        "experiment_name":"weighted combined traditional tuned",
 
         "norm_method":"norm_by_global_action",
         "sort_method_name": sort,
@@ -1051,36 +1051,36 @@ experiments_combined_sift = [
 ]
 
 experiments_traditional = [
-    {
-        "experiment_name":"traditional baseline",#misstake: "combined tuned SIFT",
-        "compare_method_name":"compare_briefBFMatcher1",
-        "feature_key":"brief",
-    },
-    {
-        "experiment_name":"traditional baseline",
-        "compare_method_name":"compare_briefBFMatcher2",
-        "feature_key":"brief",
-    },
-    {
-        "experiment_name":"traditional baseline",
-        "compare_method_name":"compare_orbBFMatcher1",
-        "feature_key":"orb",
-    },
-    {
-        "experiment_name":"traditional baseline",
-        "compare_method_name":"compare_orbBFMatcher2",
-        "feature_key":"orb",
-    },
+    # {
+    #     "experiment_name":"traditional baseline",#misstake: "combined tuned SIFT",
+    #     "compare_method_name":"compare_briefBFMatcher1",
+    #     "feature_key":"brief",
+    # },
+    # {
+    #     "experiment_name":"traditional baseline",
+    #     "compare_method_name":"compare_briefBFMatcher2",
+    #     "feature_key":"brief",
+    # },
+    # {
+    #     "experiment_name":"traditional baseline",
+    #     "compare_method_name":"compare_orbBFMatcher1",
+    #     "feature_key":"orb",
+    # },
+    # {
+    #     "experiment_name":"traditional baseline",
+    #     "compare_method_name":"compare_orbBFMatcher2",
+    #     "feature_key":"orb",
+    # },
     {
         "experiment_name":"traditional baseline",
         "compare_method_name":"compare_siftBFMatcher1",
         "feature_key":"sift",
     },
-    {
-        "experiment_name":"traditional baseline",
-        "compare_method_name":"compare_siftBFMatcher2",
-        "feature_key":"sift",
-    },
+    # {
+    #     "experiment_name":"traditional baseline",
+    #     "compare_method_name":"compare_siftBFMatcher2",
+    #     "feature_key":"sift",
+    # },
 ]
 
 
@@ -1354,7 +1354,7 @@ def main():
     #p.map(eval_single_combination_compoelem, experiments3_fix) #glac fallback
     #p.map(eval_single_combination_compoelem, experiments_combined_vgg19)
     #p.map(eval_single_combination_compoelem, experiments_combined_sift)
-    #p.map(eval_single_combination_traditional, experiments_traditional[0:1])
+    p.map(eval_single_combination_traditional, experiments_traditional)
     #p.map(eval_single_combination_deep, experiments_deep)
     #p.map(eval_single_combination_compoelem, second_grid_search[0:len(second_grid_search)//2]) # laptop
     #p.map(eval_single_combination_compoelem, second_grid_search[len(second_grid_search)//2:len(second_grid_search)]) # lab 
@@ -1365,7 +1365,7 @@ def main():
     #p.map(eval_single_combination_compoelem, final_grid_search_results)
     #p.map(eval_single_combination_compoelem, new_datapoints_for_plots_for_top_results)
     #p.map(eval_single_combination_deep, new_datapoints_for_plots_for_top_deep_results)
-    p.map(eval_single_combination_linkingArt, experiments_linking_art_trough_humanposes)
+    #p.map(eval_single_combination_linkingArt, experiments_linking_art_trough_humanposes)
     print("map done")
     p.close()
     print("closed")

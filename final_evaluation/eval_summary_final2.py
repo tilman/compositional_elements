@@ -39,7 +39,7 @@ a = pd.DataFrame([
         le['experiment_name'],
         le["compare_other"] if "compare_other" in le else None, 
         #le['filename'][24:-4],
-        le['filename'][24:-4],
+        le['filename'][24:-20],
         le['datetime'].strftime("%d.%m.%y %H:%M"), 
         *le["eval_dataframe"].loc["total (mean)", display_metrics],
         np.mean(le["eval_dataframe"].loc["total (mean)", ["p@1","p@2","p@3","p@5","p@10"]]),
@@ -52,7 +52,7 @@ pd.set_option('display.max_colwidth', None)
 #a = a[a['experiment_name'] == "BASELINE"]
 #a = a[a['experiment_name'].str.contains("BASELINE ICC\+ T AR \+ fix precision curve")]
 #a = a[a['experiment_name'].str.contains("plots")]
-a = a[a['experiment_name'].str.contains("combined traditional")]
+a = a[a['experiment_name'].str.contains("LATP")]
 #a = a[a['experiment_name'].str.contains("baseline")]
 #a = a[a['experiment_name'].str.contains("gridsearch|step 2 bbox norm setup") == False]
 #a = a[a['name'].str.contains("hr_nmd_desc|lexsort_hr_nmd")]

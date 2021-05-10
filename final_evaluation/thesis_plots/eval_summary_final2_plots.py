@@ -37,6 +37,7 @@ a = pd.DataFrame([
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
 a = a[a['experiment_name'].str.contains("plots")]
+print(a['experiment_name'])
     #print(a[["experiment_name","name","datetime", *display_metrics]])
     #a = a[a['name'].str.contains("70421134822_normGlac_hr_nmd_desc_ca20_co80_cs10_cbs0_th150_fbPlTrue_fbBisFalse_fbGaTrue_otherNone_aw0.5")]
     #a = a[a['name'].str.contains("70421134822_normGlac_hr_nmd_desc_ca20_co80_cs10_cbs0_th150_fbPlTrue_fbBisFalse_fbGaTrue_otherNone_aw0.5")]
@@ -84,12 +85,12 @@ def get_precsion_plot(data, legend):
     )
 
 # first generate all individual plots, with and without legend
-precision_plots = [
-    get_precsion_plot(a.iloc[i], legend)
-    for i in range(0,len(a))
-    for legend in [True, False]
-]
-save_as_pdf_pages(precision_plots, filename="/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/thesis_latex/images/ggplot_output/eval/precision_plots.pdf")
+# precision_plots = [
+    # get_precsion_plot(a.iloc[i], legend)
+    # for i in range(0,len(a))
+    # for legend in [True, False]
+# ]
+# save_as_pdf_pages(precision_plots, filename="/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/thesis_latex/images/ggplot_output/eval/precision_plots.pdf")
 
 
 def get_precsion_pair_plot(data1, data2, legend):
@@ -159,17 +160,17 @@ def get_precsion_pair_plot(data1, data2, legend):
     ]
 precision_pair_plots = [
     get_precsion_pair_plot(
-        a[a['experiment_name'].str.contains(si)].iloc[0],
-        a[a['experiment_name'].str.contains(sj)].iloc[0],
+        a[a['experiment_name'] == si].iloc[0],
+        a[a['experiment_name'] == sj].iloc[0],
         legend
     )
     for si,sj in [
-        ("ICC\+ U AR","ICC\+ T AR"),
+        ("plots: ICC+ U AR","plots: ICC+ T AR"),
         
-        ("ICC\+ T AR \& VGG19 combi1_asc","ICC\+ T AR"),
-        ("ICC\+ T AR \& ResNet50 combi1_asc","ICC\+ T AR"),
+        ("plots: ICC+ T AR & VGG19 combi1_asc","plots: ICC+ T AR"),
+        ("plots: ICC+ T AR & ResNet50 combi1_asc","plots: ICC+ T AR"),
 
-        ("ICC\+ T AR \& ResNet50 combi1_asc","ICC\+ T AR \& VGG19 combi1_asc"),
+        ("plots: ICC+ T AR & ResNet50 combi1_asc","plots: ICC+ T AR & VGG19 combi1_asc"),
     ]
     for legend in [True, False]
 ]
@@ -179,8 +180,14 @@ save_as_pdf_pages(np.array(precision_pair_plots).flatten(), filename="/Users/til
 def get_combined_plot(legend):
     global all_means
 
-    mpd = pd.DataFrame([{"method": c, "precision":p, "rank":r+1} for c in all_means.keys() if "combi2_asc" not in c for r,p in enumerate(all_means[c]) ])
-    title = "all methods"
+    mpd = pd.DataFrame([
+        {"method": c, "precision":p, "rank":r+1} 
+        for c in all_means.keys() 
+            if "combi1_asc" not in c
+            and ("ICC+ T AR" in c or "ncos" in c) # only show top 5
+        for r,p in enumerate(all_means[c])
+    ])
+    title = "overall top 5 methods"
 
     print("title",title,legend)
     if legend:
@@ -196,8 +203,8 @@ def get_combined_plot(legend):
         + theme(plot_title = element_text(size=11) )
     )
 
-combined_plots = [
-    get_combined_plot(legend)
-    for legend in [True, False]
-]
-save_as_pdf_pages(combined_plots, filename="/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/thesis_latex/images/ggplot_output/eval/combined_plots.pdf")
+# combined_plots = [
+    # get_combined_plot(legend)
+    # for legend in [True, False]
+# ]
+# save_as_pdf_pages(combined_plots, filename="/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/thesis_latex/images/ggplot_output/eval/combined_plots.pdf")

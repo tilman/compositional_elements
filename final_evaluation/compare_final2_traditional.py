@@ -137,6 +137,7 @@ def compare_siftBFMatcher2(sift1, sift2):
 def compare(data, compare_method, feature_key):
     res_metrics = {}
     precision_curves = {}
+    all_retrieval_res = []
     for query_data in tqdm(data, total=len(data)):
         compare_results = []
         for target_data in data:
@@ -147,6 +148,13 @@ def compare(data, compare_method, feature_key):
         sorted_compare_results = sort_desc(compare_results)
         query_label = query_data["className"]
         res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
+        res_keys = list(map(lambda x: x["className"]+'_'+x["imgName"], sorted_compare_results[:,-1]))
+        all_retrieval_res.append(np.array([
+            query_data["className"]+'_'+query_data["imgName"],
+            query_label,
+            res_keys,
+            res_labels
+        ]))
         metrics = eval_utils.score_retrievals(query_label, res_labels)
         label = metrics["label"]
         if label in precision_curves:
@@ -160,7 +168,7 @@ def compare(data, compare_method, feature_key):
                 if label not in res_metrics[key]:
                     res_metrics[key][label] = []
                 res_metrics[key][label].append(metrics[key])
-    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves)
+    return (eval_utils.get_eval_dataframe(res_metrics), precision_curves, np.array(all_retrieval_res))
 
 
 def sort_desc(compare_results):
@@ -236,7 +244,7 @@ def eval_single_combination(arg_obj):
 
 
     start_time = datetime.datetime.now()
-    eval_dataframe, precision_curves = compare(list(datastore.values()), compare_method, feature_key)
+    eval_dataframe, precision_curves, all_retrieval_res = compare(list(datastore.values()), compare_method, feature_key)
     filename = "final2_time{}_{}_{}.pkl".format(
         start_time.strftime("%d%m%y%H%M%S"),
         
@@ -254,6 +262,7 @@ def eval_single_combination(arg_obj):
 
         "eval_dataframe": eval_dataframe,
         "precision_curves": precision_curves,
+        "all_retrieval_res": all_retrieval_res,
         
         "config": config,
 

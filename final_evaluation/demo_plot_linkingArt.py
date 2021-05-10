@@ -38,14 +38,18 @@ DATASET_ROOT = "/Users/tilman/Documents/Programme/Python/new_bachelor_thesis/dat
 datastore = pickle.load(open(DATASTORE_FILE, "rb"))
 
 data = list(datastore.values())
-query_data = data[0] #400
+#query_data = data[0] #400
+#query_data = datastore["annunciation_page_8_item_11_3annunc.jpg"]
+query_data = datastore["adoration_page_11_item_15_adormag1.jpg"]
+print(query_data["className"])
+print("a", query_data["className"])
 compare_results = []
 for target_data in data:
     if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
         continue
-    distance, combinations = compare_dist_bipart(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
+    distance, combination = compare_dist_min(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"])
     #[28 0.48810905977318275 list([(4, 6), (5, 4), (6, 7)])
-    compare_results.append((distance, combinations, target_data)) # we will use the same precomputed poses as we already computed for compoelem method
+    compare_results.append((distance, combination, target_data)) # we will use the same precomputed poses as we already computed for compoelem method
 compare_results = np.array(compare_results)
 sorted_compare_results = sort_asc(compare_results)
 
@@ -55,59 +59,70 @@ l = 50
         # => TODO: pose pairs whose distance exceeds 0.1 are discarded
 # for last segment set all to unmatched
 # then perform lexsort, Sort in a manner that all matched ones comes to the front and unmatched to the back. Second criteria is than distance from above
-compare_results = [(0, *r) for r in sorted_compare_results[l:-1]] #TODO check if padding with 0 is really what we want. Since idx0 stand for max(total_consistent) in the robust_verify result i guess so
-for target in sorted_compare_results[0:l]:
-    target_data = target[-1]
-    if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
-        continue
-    matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"], neck_norm=True)
-    compare_results.append((matched, *target))
-compare_results = np.array(compare_results)
-sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], -compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
+# compare_results = [(0, *r) for r in sorted_compare_results[l:-1]] #TODO check if padding with 0 is really what we want. Since idx0 stand for max(total_consistent) in the robust_verify result i guess so
+# for target in sorted_compare_results[0:l]:
+#     target_data = target[-1]
+#     if query_data["className"] == target_data["className"] and query_data["imgName"] == target_data["imgName"]:
+#         continue
+#     matched = robust_verify(query_data["compoelem"]["humans"], target_data["compoelem"]["humans"], neck_norm=True)
+#     compare_results.append((matched, *target))
+# compare_results = np.array(compare_results)
+# sorted_compare_results = compare_results[np.lexsort((compare_results[:,1], -compare_results[:,0]))] # first level of sorting is 0 (verification), and then 1 (distance)
 
 query_label = query_data["className"]
 res_labels = list(map(lambda x: x["className"], sorted_compare_results[:,-1]))
 metrics = eval_utils.score_retrievals(query_label, res_labels)
-print(metrics)
+#print(metrics)
 
 #fig, axis = plt.subplots(1, 6)
 
-RES_PLOT_SIZE = 3
+RES_PLOT_SIZE = 5
 
-fig, axis = plt.subplots(RES_PLOT_SIZE, 4)
+fig, axis = plt.subplots(1, RES_PLOT_SIZE+1)
+query_img = cv2.imread(DATASET_ROOT+'/'+query_data["className"]+'/'+query_data["imgName"])
+query_img = draw_humans(query_img, query_data["compoelem"]["humans"])
+query_img_rgb = cv2.cvtColor(query_img, cv2.COLOR_BGR2RGB)
+axis[0].imshow(query_img_rgb)
+axis[0].axis('off')
+axis[0].set_title('query\n{}'.format(query_label))
+
 for idx, res in enumerate(sorted_compare_results[0:RES_PLOT_SIZE]): #type: ignore
-    print(res)
-    matched_keypoints, score, combinations, res_data = res # type: ignore => numpy unpack typing not fully supported
-    query_img = cv2.imread(DATASET_ROOT+'/'+query_data["className"]+'/'+query_data["imgName"])
+    print("idx",idx)
+    distance, combination, res_data = res # type: ignore => numpy unpack typing not fully supported
+    print("dist",distance,combination)
     res_img = cv2.imread(DATASET_ROOT+'/'+res_data["className"]+'/'+res_data["imgName"])
 
     # draw all poses:
-    query_img_all = draw_humans(np.array(query_img), query_data["compoelem"]["humans"])
-    res_img_all = draw_humans(np.array(res_img), res_data["compoelem"]["humans"])
+    #query_img_all = draw_humans(np.array(query_img), query_data["compoelem"]["humans"])
+    # res_img_all = draw_humans(np.array(res_img), res_data["compoelem"]["humans"])
 
     # draw all matched poses:
-    for idx_r, idx_s in combinations:
-        query_img = draw_humans(query_img, query_data["compoelem"]["humans"][idx_r:idx_r+1])
-        res_img = draw_humans(res_img, res_data["compoelem"]["humans"][idx_s:idx_s+1])
+    # for idx_r, idx_s in combinations:
+    #query_img = draw_humans(query_img, [query_data["compoelem"]["humans"][combination[0]]])
+    res_img = draw_humans(res_img, [res_data["compoelem"]["humans"][combination[1]]])
 
-    query_img_all_rgb = cv2.cvtColor(query_img_all, cv2.COLOR_BGR2RGB)
-    query_img_rgb = cv2.cvtColor(query_img, cv2.COLOR_BGR2RGB)
+    # query_img_all_rgb = cv2.cvtColor(query_img_all, cv2.COLOR_BGR2RGB)
+    # query_img_rgb = cv2.cvtColor(query_img, cv2.COLOR_BGR2RGB)
     res_img_rgb = cv2.cvtColor(res_img, cv2.COLOR_BGR2RGB)
-    res_img_all_rgb = cv2.cvtColor(res_img_all, cv2.COLOR_BGR2RGB)
-    ax = axis[idx]
-    ax[0].imshow(query_img_all_rgb)
-    ax[0].axis('off')
-    ax[0].set_title('all query poses'.format(query_data["className"]))
-    ax[1].imshow(query_img_rgb)
-    ax[1].axis('off')
-    ax[1].set_title('matched poses {}'.format(query_data["className"]))
-    ax[2].imshow(res_img_rgb)
-    ax[2].axis('off')
-    ax[2].set_title("matched poses\nmatched kp:{} score{:.3f} {}".format(matched_keypoints, score, res_data["className"]))
-    ax[3].imshow(res_img_all_rgb)
-    ax[3].axis('off')
-    ax[3].set_title("all target poses".format(matched_keypoints, score, res_data["className"]))
-    print("res_key", idx, res_data["imgName"])
+    # res_img_all_rgb = cv2.cvtColor(res_img_all, cv2.COLOR_BGR2RGB)
+    ax = axis[idx+1]
+    ax.imshow(res_img_rgb)
+    ax.axis('off')
+    ax.set_title('retrieval {}\n{}'.format(idx+1,res_data["className"]))
+
+    # ax[0].imshow(query_img_all_rgb)
+    # ax[0].axis('off')
+    # ax[0].set_title('all query poses')
+    # ax[1].imshow(query_img_rgb)
+    # ax[1].axis('off')
+    # ax[1].set_title('matched poses {}'.format(query_data["className"]))
+    # ax[2].imshow(res_img_rgb)
+    # ax[2].axis('off')
+    # ax[2].set_title("matched poses\nmatched distance{:.3f} {}".format(distance, res_data["className"]))
+    # ax[3].imshow(res_img_all_rgb)
+    # ax[3].axis('off')
+    # ax[3].set_title("all target poses")
+    # print("res_key", idx, res_data["imgName"])
 
 #plt.tight_layout()
 # plt.subplots_adjust(top=0.85) # Make space for title
