@@ -1,4 +1,4 @@
-from typing import Sequence, Tuple, cast
+from typing import Sequence, Tuple
 
 import cv2
 import numpy as np

@@ -1,5 +1,5 @@
 import argparse
-from compoelem.detect.openpose.lib.utils.common import Human
+from .openpose.lib.utils.common import Human
 from typing import Sequence
 import torch
 import torch.nn as nn
