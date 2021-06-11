@@ -4,6 +4,10 @@ Library for generating and comparing compositional elements from art historic im
 # colabs to this project
 https://drive.google.com/drive/folders/1ajWBqMry1zhEYhIC5dhzpnReOHeEJVuq?usp=sharing
 
+# Dataset
+The dataset we used for the evaluation of our method can be found here:
+https://drive.google.com/file/d/1-lSW62XNsjwgeSSTtdlpMtAU9RjEqugD/view
+
 ## Build and Setup:
 ```bash
 git clone https://github.com/tilman/compoelem
